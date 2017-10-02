@@ -1,10 +1,27 @@
 ﻿<div class="jumbotron">
     <h1>Chatbot</h1>
     <p class="lead">Talk to me.</p>
-    <p>
+    <form method="post">
         <input type="text" placeholder="Enter some text..." />
-    </p>
+        <input type="submit" value="Submit" />
+    </form>
 </div>
 <div class="row">
-    <span>No previous conversation.</span>
+    <span class="message empty">
+        @DateTime.Now.ToShortDateString()
+    </span>
+    <span class="message me">TestMessage</span>
+    <span class="message me">TestMessage2</span>
+    <span class="message other">Hey!</span>
+    <span class="message me">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in dui sollicitudin, posuere magna vel, fermentum eros. Curabitur ut orci non lacus bibendum convallis. Vestibulum mattis, enim ut faucibus auctor, libero quam mattis ex, at venenatis quam leo tincidunt quam. Mauris nisi est, venenatis vel tristique et, pulvinar vel magna. Curabitur sodales accumsan dolor, sit amet mattis ipsum consectetur sed. Duis nisi magna, condimentum ac aliquam vel, ultricies at mi. Phasellus et dolor commodo, luctus sapien quis, tincidunt tellus. Ut eu finibus orci. Nam et metus quam. Nulla eu ipsum et urna aliquam aliquet nec id purus. Donec tempor placerat dolor, quis auctor sapien ullamcorper luctus.
+
+        Etiam at lorem portti
+    </span>
+    <span class="message me">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in dui sollicitudin, posuere magna vel, fermentum eros. Curabitur ut orci non lacus bibendum convallis. Vestibulum mattis, enim ut faucibus auctor, libero quam mattis ex, at venenatis quam leo tincidunt quam. Mauris nisi est, venenatis vel tristique et, pulvinar vel magna. Curabitur sodales accumsan dolor, sit amet mattis ipsum consectetur sed. Duis nisi magna, condimentum ac aliquam vel, ultricies at mi. Phasellus et dolor commodo, luctus sapien quis, tincidunt tellus. Ut eu finibus orci. Nam et metus quam. Nulla eu ipsum et urna aliquam aliquet nec id purus. Donec tempor placerat dolor, quis auctor sapien ullamcorper luctus.
+
+        Etiam at lorem portti
+    </span>
+    <span class="message me">TestMessage2</span>
 </div>
