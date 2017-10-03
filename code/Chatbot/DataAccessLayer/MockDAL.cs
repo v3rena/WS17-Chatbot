@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Autofac;
 
 namespace Chatbot.DataAccessLayer
 {
@@ -16,6 +17,13 @@ namespace Chatbot.DataAccessLayer
             return "MockDAL";
         }
 
-
+        public class Module : Autofac.Module
+        {
+            protected override void Load(ContainerBuilder builder)
+            {
+                base.Load(builder);
+                builder.RegisterType<MockDAL>().As<IDataAccessLayer>().InstancePerRequest();
+            }
+        }
     }
 }

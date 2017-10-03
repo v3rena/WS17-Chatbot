@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Autofac.Integration.Mvc;
 using Chatbot.DataAccessLayer;
 using Chatbot.Services;
@@ -50,7 +51,8 @@ namespace Chatbot
             // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
 
-            builder.RegisterType<MockDAL>().As<IDataAccessLayer>().InstancePerRequest();
+            builder.RegisterModule<MockDAL.Module>();
+            //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
