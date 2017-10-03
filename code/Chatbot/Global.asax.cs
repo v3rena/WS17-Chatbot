@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Chatbot.DataAccessLayer;
+using Chatbot.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +46,11 @@ namespace Chatbot
 
             // OPTIONAL: Enable property injection into action filters.
             builder.RegisterFilterProvider();
+
+            // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterType<BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
+
+            builder.RegisterType<MockDAL>().As<IDataAccessLayer>().InstancePerRequest();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
