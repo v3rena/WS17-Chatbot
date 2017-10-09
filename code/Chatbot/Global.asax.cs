@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -18,6 +19,25 @@ namespace Chatbot
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+
+            //Database.SetInitializer(new TestInitializer());
+            /*
+            using (var ctx = new TestContext())
+            {
+                Test test = new Test() { TestName = "it worked" };
+
+                ctx.Test.Add(test);
+                ctx.SaveChanges();
+            }
+            */
+
+            using (var context = new TestContext())
+            {
+                var test = new Test() { TestName = "it worked" };
+                context.Test.Add(test);
+                context.SaveChanges();
+            }
         }
     }
 }
