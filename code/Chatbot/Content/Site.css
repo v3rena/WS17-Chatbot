@@ -7,22 +7,31 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    position: absolute;
+    top: 65px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 
 .row {
     display: flex;
     flex-direction: column;
     padding: 0em 1em;
+    margin-bottom: 2em;
+    overflow: auto;
 }
 
+.messageFormContainer {
+    border-top: 1px solid black;
+    padding-top: 1em;
+    flex-shrink: 0;
+    overflow: hidden;
+}
 
 .message {
     position: relative;
@@ -85,11 +94,16 @@ textarea {
     margin-top: 0.25em;
 }
 
-.message.empty {
+.message.info {
     max-width: unset;
     width: 100%;
     background-color: white;
     border: 2px solid #444444;
     text-align: center;
     font-weight: 700;
+}
+
+.message.info.error {
+    background-color: #dc3545;
+    color: white;
 }

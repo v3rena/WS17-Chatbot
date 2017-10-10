@@ -3,25 +3,39 @@ var url = "/api/message/";
 $("#messageForm").submit(function (event) {
     event.preventDefault();
 
-    var posting = $.post(url, { message: $("#message").val() });
+    var m = $("#message").val();
+    $("#message").val("");
+    var posting = $.post(url, { Message: m });
     //add own message
-    posting.always(function (data) {
-        addMessage(data.Message, true);
-    });
+    addMessage(m, false, true);
+
     //add response message
     posting.done(function (data) {
         addMessage(data.Message, false);
     });
-    //error
+    //add error message
     posting.fail(function (data) {
-        alert("something went wrong!");
+        addMessage("something went wrong", true);
     });
 });
 
-function addMessage(message, me) {
-    if (me) {
-        $("#messageContainer").append("<span class=\"message me\">" + message + "</span>");
+function addMessage(message, error, me = null) {
+    var poster;
+    if (me != null) {
+        if (me) {
+            poster = "me";
+        } else {
+            poster = "other";
+        }
     } else {
-        $("#messageContainer").append("<span class=\"message other\">" + message + "</span>");
+        poster = "";
     }
+    var status;
+    if (error) {
+        status = "info error";
+    } else {
+        status = "";
+    }
+
+    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message + "</span>");
 }
