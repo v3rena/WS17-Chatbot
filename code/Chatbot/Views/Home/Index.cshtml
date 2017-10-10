@@ -1,12 +1,12 @@
 ﻿<div class="jumbotron">
     <h1>Chatbot</h1>
     <p class="lead">Talk to me.</p>
-    <form method="post">
-        <input type="text" placeholder="Enter some text..." />
+    <form method="post" id="messageForm">
+        <input type="text" id="message" placeholder="Enter some text..." value="MyMessage"/>
         <input type="submit" value="Submit" />
     </form>
 </div>
-<div class="row">
+<div id="messageContainer" class="row">
     <span class="message empty">
         @DateTime.Now.ToShortDateString()
     </span>
