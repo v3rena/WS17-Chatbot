@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chatbot.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,16 @@ namespace Chatbot.Controllers
 {
     public class HomeController : Controller
     {
+        private IBusinessLayer _bl;
+
+        public HomeController(IBusinessLayer bl)
+        {
+            _bl = bl;
+        }
+
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = _bl.GetName();
 
             return View();
         }
