@@ -21,17 +21,8 @@ namespace Chatbot
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 
-            //Database.SetInitializer(new TestInitializer());
-            /*
-            using (var ctx = new TestContext())
-            {
-                Test test = new Test() { TestName = "it worked" };
-
-                ctx.Test.Add(test);
-                ctx.SaveChanges();
-            }
-            */
-
+            Database.SetInitializer<TestContext>(new MigrateDatabaseToLatestVersion<TestContext,Migrations.Configuration>());
+            
             using (var context = new TestContext())
             {
                 var test = new Test() { TestName = "it worked" };
