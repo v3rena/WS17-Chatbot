@@ -13,9 +13,6 @@ namespace Chatbot
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.IgnoreRoute("{file}.js");
-            routes.IgnoreRoute("{file}.html");
-
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
