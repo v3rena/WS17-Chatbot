@@ -5,13 +5,13 @@ $("#messageForm").submit(function (event) {
 
     var m = $("#message").val();
     $("#message").val("");
-    var posting = $.post(url, { Message: m });
+    var posting = $.post(url, { Content: m });
     //add own message
     addMessage(m, false, true);
 
     //add response message
     posting.done(function (data) {
-        addMessage(data.Message, false);
+        addMessage(data, false);
     });
     //add error message
     posting.fail(function (data) {

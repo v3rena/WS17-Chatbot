@@ -1,11 +1,14 @@
 ﻿using Autofac;
 using Autofac.Core;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
+using Chatbot.Bot;
 using Chatbot.DataAccessLayer;
 using Chatbot.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -39,6 +42,10 @@ namespace Chatbot
             builder.RegisterModelBinders(typeof(WebApiApplication).Assembly);
             builder.RegisterModelBinderProvider();
 
+            // requires Autofac.WebApi2
+            // required for System.Web.Http.ApiController
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+
             // OPTIONAL: Register web abstractions like HttpContextBase.
             builder.RegisterModule<AutofacWebTypesModule>();
 
@@ -51,12 +58,18 @@ namespace Chatbot
             // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
             builder.RegisterType<BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
 
+            builder.RegisterType<EchoBot>().As<IBot>().InstancePerRequest();
+
             builder.RegisterModule<MockDAL.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+
+            // requires Autofac.WebApi2
+            // required for System.Web.Http.ApiController
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
     }
 }
