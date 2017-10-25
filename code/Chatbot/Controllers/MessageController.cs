@@ -29,7 +29,7 @@ namespace Chatbot.Controllers
         [ResponseType(typeof(IMessage))]
         [ActionName("Default")]
         [HttpPost]
-        public IMessage PostMessage([FromBody] IMessage Content)
+        public IMessage Index([FromBody] IMessage Content)
         {
             return _bl.ProcessMessage(Content);
         }
