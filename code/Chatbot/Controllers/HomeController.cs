@@ -1,8 +1,4 @@
-﻿using Chatbot.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Chatbot.Interfaces;
 using System.Web.Mvc;
 
 namespace Chatbot.Controllers
@@ -18,7 +14,7 @@ namespace Chatbot.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Title = _bl.GetName();
+            ViewBag.Title = "ChatBot";
 
             return View();
         }

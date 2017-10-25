@@ -1,12 +1,13 @@
-﻿using Chatbot.Models;
-using Chatbot.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using Chatbot.Interfaces;
+using Chatbot.Interfaces.DTOs;
+using System.Web.Http.Description;
 
 namespace Chatbot.Controllers
 {
@@ -25,10 +26,12 @@ namespace Chatbot.Controllers
         //
         // Content=...
 
+        [ResponseType(typeof(IMessage))]
+        [ActionName("Default")]
         [HttpPost]
-        public string Index([FromBody] Message m)
+        public IMessage PostMessage([FromBody] IMessage Content)
         {
-            return _bl.ProcessMessage(m.Content);
+            return _bl.ProcessMessage(Content);
         }
     }
 }

@@ -6,17 +6,21 @@ $("#messageForm").submit(function (event) {
     var m = $("#message").val();
     $("#message").val("");
     var posting = $.post(url, { Content: m });
+    var posting = $.ajax({
+        url: url,
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ Content: m }),
+        success: function (data) {
+            addMessage(data, false);
+        },
+        error: function (data) {
+            addMessage("something went wrong", true);
+        }
+    });
     //add own message
     addMessage(m, false, true);
 
-    //add response message
-    posting.done(function (data) {
-        addMessage(data, false);
-    });
-    //add error message
-    posting.fail(function (data) {
-        addMessage("something went wrong", true);
-    });
 });
 
 function addMessage(message, error, me = null) {

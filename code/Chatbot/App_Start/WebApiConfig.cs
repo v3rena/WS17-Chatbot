@@ -17,7 +17,8 @@ namespace Chatbot
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { action = "Default", id = RouteParameter.Optional },
+                constraints: new { id = @"^[0-9]*$" }
             );
         }
     }

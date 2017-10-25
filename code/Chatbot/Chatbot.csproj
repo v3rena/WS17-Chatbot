@@ -30,7 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,7 +39,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,6 +56,9 @@
     </Reference>
     <Reference Include="Autofac.Integration.WebApi, Version=4.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.4.1.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
@@ -166,20 +169,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Bot\EchoBot.cs" />
-    <Compile Include="Bot\IBot.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DataAccessLayer\IDataAccessLayer.cs" />
-    <Compile Include="DataAccessLayer\MockDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Message.cs" />
+    <Compile Include="PluginManager\PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BusinessLayer.cs" />
-    <Compile Include="Services\IBusinessLayer.cs" />
+    <Compile Include="BusinessLayer\BusinessLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -202,7 +199,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -223,6 +222,28 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.DataAccessLayer\Chatbot.DataAccessLayer.csproj">
+      <Project>{ac9f74a2-8aef-4728-88b0-4fe15beb1bce}</Project>
+      <Name>Chatbot.DataAccessLayer</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
+      <Project>{cea872ac-27c7-4770-9649-169771bb736e}</Project>
+      <Name>Chatbot.Interfaces.DTOs</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Interfaces.Models\Chatbot.Interfaces.Models.csproj">
+      <Project>{0ec4528f-3c24-4609-b66c-658010ca81ed}</Project>
+      <Name>Chatbot.Interfaces.Models</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
+      <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
+      <Name>Chatbot.Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -240,7 +261,8 @@
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>65118</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <DevelopmentServerVPath>
+          </DevelopmentServerVPath>
           <IISUrl>http://localhost:65118/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
@@ -254,7 +276,14 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>
+  </Target>-->
   <Target Name="AfterBuild">
-  </Target> -->
+    <ItemGroup>
+      <ThirdPartyLibs Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml ; $(OutputPath)ApplicationInsights.config" Exclude="$(OutputPath)Chatbot*.dll ; $(OutputPath)Chatbot*.pdb ; $(OutputPath)Chatbot.dll.config" />
+	  <LocalizedThirdPartyLibs Include="$(OutputPath)de\*" />
+    </ItemGroup>
+    <Move SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
+	<Move SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
+	<RemoveDir Directories="$(OutputPath)de" />
+  </Target>
 </Project>
