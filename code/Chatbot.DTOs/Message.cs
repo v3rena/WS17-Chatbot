@@ -6,6 +6,11 @@ namespace Chatbot.DTOs
     {
         public string Content { get; set; }
 
+        public Message()
+        {
+
+        }
+
         public Message(string content)
         {
             Content = content;

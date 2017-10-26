@@ -5,12 +5,11 @@ $("#messageForm").submit(function (event) {
 
     var m = $("#message").val();
     $("#message").val("");
-    var posting = $.post(url, { Content: m });
     var posting = $.ajax({
         url: url,
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ Content: m }),
+        data: JSON.stringify({ "Content" : "test" }),
         success: function (data) {
             addMessage(data, false);
         },

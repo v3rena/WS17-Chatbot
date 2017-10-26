@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 
 namespace Chatbot.Controllers
 {
+    [RoutePrefix("api/message")]
     public class MessageController : ApiController
     {
         private readonly IBusinessLayer _bl;
@@ -26,12 +27,12 @@ namespace Chatbot.Controllers
         //
         // Content=...
 
-        [ResponseType(typeof(IMessage))]
-        [ActionName("Default")]
         [HttpPost]
-        public IMessage Index([FromBody] IMessage Content)
+        [Route("")]
+        [ResponseType(typeof(IMessage))]
+        public IMessage PostMessage([FromBody]IMessage message)
         {
-            return _bl.ProcessMessage(Content);
+            return _bl.ProcessMessage(message);
         }
     }
 }
