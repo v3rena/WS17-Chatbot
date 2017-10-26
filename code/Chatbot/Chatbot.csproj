@@ -279,9 +279,21 @@
   </Target>-->
   <Target Name="AfterBuild">
     <ItemGroup>
+	  <PluginLibs Include="$(OutputPath)Chatbot.Plugins*.dll ; $(OutputPath)Chatbot.Plugins*.pdb" />
+	  <ModelLibs Include="$(OutputPath)Chatbot.Models*.dll ; $(OutputPath)Chatbot.Models*.pdb" />
+	  <MappingLibs Include="$(OutputPath)Chatbot.Mapping*.dll ; $(OutputPath)Chatbot.Mapping*.pdb" />
+	  <DALLibs Include="$(OutputPath)Chatbot.DataAccessLayer*.dll ; $(OutputPath)Chatbot.DataAccessLayer*.pdb" />
+	  <DTOLibs Include="$(OutputPath)Chatbot.DTOs*.dll ; $(OutputPath)Chatbot.DTOs*.pdb" />
+	  <InterfaceLibs Include="$(OutputPath)Chatbot.Interfaces*.dll ; $(OutputPath)Chatbot.Interfaces*.pdb" />
       <ThirdPartyLibs Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml ; $(OutputPath)ApplicationInsights.config" Exclude="$(OutputPath)Chatbot*.dll ; $(OutputPath)Chatbot*.pdb ; $(OutputPath)Chatbot.dll.config" />
 	  <LocalizedThirdPartyLibs Include="$(OutputPath)de\*" />
     </ItemGroup>
+	<Move SourceFiles="@(PluginLibs)" DestinationFolder="$(OutputPath)plugins" />
+	<Move SourceFiles="@(ModelLibs)" DestinationFolder="$(OutputPath)util" />
+	<Move SourceFiles="@(MappingLibs)" DestinationFolder="$(OutputPath)util" />
+	<Move SourceFiles="@(DALLibs)" DestinationFolder="$(OutputPath)util" />
+	<Move SourceFiles="@(DTOLibs)" DestinationFolder="$(OutputPath)util" />
+	<Move SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
     <Move SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
 	<Move SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
 	<RemoveDir Directories="$(OutputPath)de" />
