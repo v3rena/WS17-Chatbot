@@ -6,11 +6,11 @@ namespace Chatbot.BusinessLayer
     public class BusinessLayer : IBusinessLayer
     {
         private readonly IPluginManager _pluginManager;
-        private readonly IDataAccessLayer _dal;
+        //private readonly IDataAccessLayer _dal;
 
         public BusinessLayer(IDataAccessLayer dal, IPluginManager pluginManager)
         {
-            _dal = dal;
+            //_dal = dal;
             _pluginManager = pluginManager;
         }
 

@@ -63,9 +63,9 @@ namespace Chatbot.PluginManager
             _plugins = new List<IPlugin>();
 
 #if DEBUG
-            string path = HttpContext.Current.Server.MapPath("~") + "\\bin\\debug\\plugins";
+            string path = HttpContext.Current.Server.MapPath("~") + @"\bin\debug\plugins";
 #else
-            string path = HttpContext.Current.Server.MapPath("~") + "\\bin\\release\plugins";
+            string path = HttpContext.Current.Server.MapPath("~") + @"\bin\release\plugins";
 #endif
             foreach (string file in Directory.GetFiles(path))
             {
