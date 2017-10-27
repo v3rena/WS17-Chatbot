@@ -5,11 +5,9 @@ namespace Chatbot.Controllers
 {
     public class HomeController : Controller
     {
-        private IBusinessLayer _bl;
-
-        public HomeController(IBusinessLayer bl)
+        public HomeController()
         {
-            _bl = bl;
+
         }
 
         public ActionResult Index()
