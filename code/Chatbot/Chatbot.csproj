@@ -300,14 +300,21 @@
       <ThirdPartyLibs Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml ; $(OutputPath)ApplicationInsights.config" Exclude="$(OutputPath)Chatbot*.dll ; $(OutputPath)Chatbot*.pdb ; $(OutputPath)Chatbot.dll.config" />
       <LocalizedThirdPartyLibs Include="$(OutputPath)de\*" />
     </ItemGroup>
-    <Move SourceFiles="@(PluginLibs)" DestinationFolder="$(OutputPath)plugins" />
-    <Move SourceFiles="@(ModelLibs)" DestinationFolder="$(OutputPath)util" />
-    <Move SourceFiles="@(MappingLibs)" DestinationFolder="$(OutputPath)util" />
-    <Move SourceFiles="@(DALLibs)" DestinationFolder="$(OutputPath)util" />
-    <Move SourceFiles="@(DTOLibs)" DestinationFolder="$(OutputPath)util" />
-    <Move SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
-    <Move SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
-    <Move SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
+    <Copy SourceFiles="@(PluginLibs)" DestinationFolder="$(OutputPath)plugins" />
+    <Copy SourceFiles="@(ModelLibs)" DestinationFolder="$(OutputPath)util" />
+    <Copy SourceFiles="@(MappingLibs)" DestinationFolder="$(OutputPath)util" />
+    <Copy SourceFiles="@(DALLibs)" DestinationFolder="$(OutputPath)util" />
+    <Copy SourceFiles="@(DTOLibs)" DestinationFolder="$(OutputPath)util" />
+    <Copy SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
+    <Copy SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
+    <Copy SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
+	<Delete Files="@(PluginLibs)" />
+	<Delete Files="@(ModelLibs)" />
+	<Delete Files="@(MappingLibs)" />
+	<Delete Files="@(DALLibs)" />
+	<Delete Files="@(DTOLibs)" />
+	<Delete Files="@(InterfaceLibs)" />
+	<Delete Files="@(ThirdPartyLibs)" />
     <RemoveDir Directories="$(OutputPath)de" />
   </Target>
 </Project>
