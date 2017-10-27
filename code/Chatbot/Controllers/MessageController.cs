@@ -1,34 +1,30 @@
-﻿using Chatbot.Models;
-using Chatbot.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
+﻿using AutoMapper;
+using Chatbot.Interfaces;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Chatbot.Controllers
 {
+    [RoutePrefix("api/message")]
     public class MessageController : ApiController
     {
         private readonly IBusinessLayer _bl;
+        private readonly IMapper _mapper;
 
-        public MessageController(IBusinessLayer bl)
+        public MessageController(IBusinessLayer bl, IMapper mapper)
         {
             _bl = bl;
+            _mapper = mapper;
         }
 
         // POST api/message/
-        // Request URL:http://localhost:65118/api/message/
-        // Content-Type:application/x-www-form-urlencoded; charset=UTF-8
-        //
-        // Content=...
-
+        // { "Content" : "" }
         [HttpPost]
-        public string Index([FromBody] Message m)
+        [Route("")]
+        [ResponseType(typeof(Interfaces.DTOs.IMessage))]
+        public Interfaces.DTOs.IMessage PostMessage([FromBody]DTOs.Message message)
         {
-            return _bl.ProcessMessage(m.Content);
+            return _mapper.Map<Interfaces.DTOs.IMessage>(_bl.ProcessMessage(_mapper.Map<Interfaces.Models.IMessage>(message)));
         }
     }
 }

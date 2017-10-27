@@ -1,19 +1,17 @@
 ﻿using Autofac;
-using Autofac.Core;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
-using Chatbot.Bot;
-using Chatbot.DataAccessLayer;
-using Chatbot.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Chatbot.Interfaces;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Chatbot.DataAccessLayer;
+using AutoMapper;
+using System.Collections.Generic;
+using System;
+using Chatbot.Mapping;
 
 namespace Chatbot
 {
@@ -23,7 +21,7 @@ namespace Chatbot
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
-//            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            // FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
@@ -55,10 +53,25 @@ namespace Chatbot
             // OPTIONAL: Enable property injection into action filters.
             builder.RegisterFilterProvider();
 
-            // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
-            builder.RegisterType<BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
+            #region AutoMapper
 
-            builder.RegisterType<EchoBot>().As<IBot>().InstancePerRequest();
+            builder.RegisterAssemblyTypes().AssignableTo(typeof(Profile)).As<Profile>();
+
+            builder
+                .Register(c => 
+                    new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>())
+                )
+                .AsSelf()
+                .SingleInstance();
+            
+            builder.Register(c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve)).As<IMapper>().InstancePerLifetimeScope();
+
+            #endregion
+
+            // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterType<BusinessLayer.BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
+
+            builder.RegisterType<PluginManager.PluginManager>().As<IPluginManager>().SingleInstance();
 
             builder.RegisterModule<MockDAL.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));

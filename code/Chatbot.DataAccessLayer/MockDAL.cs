@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Autofac;
+﻿using Autofac;
+using Chatbot.Interfaces;
 
 namespace Chatbot.DataAccessLayer
 {
     public class MockDAL : IDataAccessLayer
     {
-        public MockDAL()
-        {
-        }
-
-        public string GetName()
-        {
-            return "MockDAL";
-        }
+        public string Name => "MockDAL";
 
         public class Module : Autofac.Module
         {

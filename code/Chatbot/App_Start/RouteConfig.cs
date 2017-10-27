@@ -18,12 +18,6 @@ namespace Chatbot
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-
-            routes.MapRoute(
-                name: "Message",
-                url: "{controller}/{message}",
-                defaults: new { controller = "Message", message = "Index" }
-            );
         }
     }
 }
