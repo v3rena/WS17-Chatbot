@@ -9,11 +9,16 @@ namespace Chatbot.Models
 {
     public class Message : IMessage
     {
+        public string Content { get; set; }
+
+        public Message()
+        {
+
+        }
+
         public Message(string content)
         {
             Content = content;
         }
-
-        public string Content { get; set; }
     }
 }

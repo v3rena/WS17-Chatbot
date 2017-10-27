@@ -51,6 +51,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
+      <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
+      <Name>Chatbot.DTOs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
       <Project>{cea872ac-27c7-4770-9649-169771bb736e}</Project>
       <Name>Chatbot.Interfaces.DTOs</Name>
@@ -60,6 +64,10 @@
       <Project>{0ec4528f-3c24-4609-b66c-658010ca81ed}</Project>
       <Name>Chatbot.Interfaces.Models</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
+      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
+      <Name>Chatbot.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

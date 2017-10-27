@@ -228,6 +228,10 @@
       <Name>Chatbot.DataAccessLayer</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
+      <Project>{5249E6F8-05CF-47B6-95BE-4776F003093F}</Project>
+      <Name>Chatbot.DTOs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
       <Project>{cea872ac-27c7-4770-9649-169771bb736e}</Project>
       <Name>Chatbot.Interfaces.DTOs</Name>
@@ -242,6 +246,14 @@
       <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
       <Name>Chatbot.Interfaces</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Mapping\Chatbot.Mapping.csproj">
+      <Project>{fe7dbe15-8ffa-4c74-8f45-c8eaa129b857}</Project>
+      <Name>Chatbot.Mapping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
+      <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
+      <Name>Chatbot.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -279,23 +291,23 @@
   </Target>-->
   <Target Name="AfterBuild">
     <ItemGroup>
-	  <PluginLibs Include="$(OutputPath)Chatbot.Plugins*.dll ; $(OutputPath)Chatbot.Plugins*.pdb" />
-	  <ModelLibs Include="$(OutputPath)Chatbot.Models*.dll ; $(OutputPath)Chatbot.Models*.pdb" />
-	  <MappingLibs Include="$(OutputPath)Chatbot.Mapping*.dll ; $(OutputPath)Chatbot.Mapping*.pdb" />
-	  <DALLibs Include="$(OutputPath)Chatbot.DataAccessLayer*.dll ; $(OutputPath)Chatbot.DataAccessLayer*.pdb" />
-	  <DTOLibs Include="$(OutputPath)Chatbot.DTOs*.dll ; $(OutputPath)Chatbot.DTOs*.pdb" />
-	  <InterfaceLibs Include="$(OutputPath)Chatbot.Interfaces*.dll ; $(OutputPath)Chatbot.Interfaces*.pdb" />
+      <PluginLibs Include="$(OutputPath)Chatbot.Plugins*.dll ; $(OutputPath)Chatbot.Plugins*.pdb" />
+      <ModelLibs Include="$(OutputPath)Chatbot.Models*.dll ; $(OutputPath)Chatbot.Models*.pdb" />
+      <MappingLibs Include="$(OutputPath)Chatbot.Mapping*.dll ; $(OutputPath)Chatbot.Mapping*.pdb" />
+      <DALLibs Include="$(OutputPath)Chatbot.DataAccessLayer*.dll ; $(OutputPath)Chatbot.DataAccessLayer*.pdb" />
+      <DTOLibs Include="$(OutputPath)Chatbot.DTOs*.dll ; $(OutputPath)Chatbot.DTOs*.pdb" />
+      <InterfaceLibs Include="$(OutputPath)Chatbot.Interfaces*.dll ; $(OutputPath)Chatbot.Interfaces*.pdb" />
       <ThirdPartyLibs Include="$(OutputPath)*.dll ; $(OutputPath)*.pdb ; $(OutputPath)*.xml ; $(OutputPath)ApplicationInsights.config" Exclude="$(OutputPath)Chatbot*.dll ; $(OutputPath)Chatbot*.pdb ; $(OutputPath)Chatbot.dll.config" />
-	  <LocalizedThirdPartyLibs Include="$(OutputPath)de\*" />
+      <LocalizedThirdPartyLibs Include="$(OutputPath)de\*" />
     </ItemGroup>
-	<Move SourceFiles="@(PluginLibs)" DestinationFolder="$(OutputPath)plugins" />
-	<Move SourceFiles="@(ModelLibs)" DestinationFolder="$(OutputPath)util" />
-	<Move SourceFiles="@(MappingLibs)" DestinationFolder="$(OutputPath)util" />
-	<Move SourceFiles="@(DALLibs)" DestinationFolder="$(OutputPath)util" />
-	<Move SourceFiles="@(DTOLibs)" DestinationFolder="$(OutputPath)util" />
-	<Move SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
+    <Move SourceFiles="@(PluginLibs)" DestinationFolder="$(OutputPath)plugins" />
+    <Move SourceFiles="@(ModelLibs)" DestinationFolder="$(OutputPath)util" />
+    <Move SourceFiles="@(MappingLibs)" DestinationFolder="$(OutputPath)util" />
+    <Move SourceFiles="@(DALLibs)" DestinationFolder="$(OutputPath)util" />
+    <Move SourceFiles="@(DTOLibs)" DestinationFolder="$(OutputPath)util" />
+    <Move SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
     <Move SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
-	<Move SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
-	<RemoveDir Directories="$(OutputPath)de" />
+    <Move SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
+    <RemoveDir Directories="$(OutputPath)de" />
   </Target>
 </Project>

@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using Chatbot.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Chatbot.Interfaces;
+using Chatbot.Interfaces.Models;
 
 namespace Chatbot.BusinessLayer
 {
@@ -11,20 +7,17 @@ namespace Chatbot.BusinessLayer
     {
         private readonly IPluginManager _pluginManager;
         private readonly IDataAccessLayer _dal;
-        private readonly IMapper _mapper;
 
-        public BusinessLayer(IDataAccessLayer dal, IPluginManager pluginManager, IMapper mapper)
+        public BusinessLayer(IDataAccessLayer dal, IPluginManager pluginManager)
         {
             _dal = dal;
             _pluginManager = pluginManager;
-            _mapper = mapper;
         }
 
-        public Interfaces.DTOs.IMessage ProcessMessage(Interfaces.DTOs.IMessage message)
+        public IMessage ProcessMessage(IMessage message)
         {
-            Interfaces.Models.IMessage messageModel = _mapper.Map<Interfaces.Models.IMessage>(message);
-            IPlugin chosenPlugin = _pluginManager.ChoosePlugin(messageModel);
-            return _mapper.Map<Interfaces.DTOs.IMessage>(chosenPlugin.Handle(messageModel));
+            IPlugin chosenPlugin = _pluginManager.ChoosePlugin(message);
+            return chosenPlugin.Handle(message);
         }
     }
 }

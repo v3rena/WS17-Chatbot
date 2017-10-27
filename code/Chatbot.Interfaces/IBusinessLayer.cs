@@ -1,4 +1,4 @@
-﻿using Chatbot.Interfaces.DTOs;
+﻿using Chatbot.Interfaces.Models;
 
 namespace Chatbot.Interfaces
 {

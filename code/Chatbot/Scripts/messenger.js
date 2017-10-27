@@ -5,21 +5,24 @@ $("#messageForm").submit(function (event) {
 
     var m = $("#message").val();
     $("#message").val("");
+
+    var message = { Content : m };
+
     var posting = $.ajax({
         url: url,
-        type: 'POST',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify({ "Content" : "test" }),
+        type: "POST",
+        data: message,
+        dataType: "json",
         success: function (data) {
-            addMessage(data, false);
+            addMessage(data, false, false);
+        },
+        beforeSend: function() {
+            addMessage(message, false, true);
         },
         error: function (data) {
             addMessage("something went wrong", true);
         }
     });
-    //add own message
-    addMessage(m, false, true);
-
 });
 
 function addMessage(message, error, me = null) {
@@ -40,5 +43,5 @@ function addMessage(message, error, me = null) {
         status = "";
     }
 
-    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message + "</span>");
+    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message.Content + "</span>");
 }
