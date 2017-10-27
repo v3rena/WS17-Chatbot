@@ -9,13 +9,12 @@ namespace Chatbot.Controllers
 {
     public class HomeController : Controller
     {
-        private IBusinessLayer<Test> _bl;
+        private IBusinessLayer _bl;
 
-        public HomeController(IBusinessLayer<Test> bl)
+        public HomeController(IBusinessLayer bl)
         {
             _bl = bl;
         }
-
 
         public ActionResult Index()
         {

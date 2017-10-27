@@ -26,6 +26,15 @@ namespace Chatbot
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 			CreateMasterContainer();
+			
+			Database.SetInitializer<TestContext>(new MigrateDatabaseToLatestVersion<TestContext,Migrations.Configuration>());
+			
+			using (var context = new TestContext())
+			{
+				var test = new Test() { TestName = "it worked" };
+				context.Test.Add(test);
+				context.SaveChanges();
+			}
 		}
 
 		private void CreateMasterContainer()
@@ -50,7 +59,7 @@ namespace Chatbot
 			builder.RegisterFilterProvider();
 
 			// or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
-			builder.RegisterType<BusinessLayer<Test>>().As<IBusinessLayer<Test>>().InstancePerRequest();
+			builder.RegisterType<BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
 
 			builder.RegisterModule<MockDAL.Module>();
 			//builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
