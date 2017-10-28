@@ -1,13 +1,14 @@
 ﻿using Autofac;
-using Chatbot.Data.Setup;
-using Chatbot.DataAccessLayer;
+using Chatbot.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
 
-namespace Chatbot.Data.DataAccessLayer
+
+namespace Chatbot.DataAccessLayer
 {
     public class DAL : IDataAccessLayer<Test>
     {

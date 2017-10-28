@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chatbot.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
