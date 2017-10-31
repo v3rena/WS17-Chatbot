@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{2F902770-51C2-4569-94CB-E759A3239434}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatbot.Plugins.WeatherPlugin", "Chatbot.Plugins.WeatherPlugin\Chatbot.Plugins.WeatherPlugin.csproj", "{AE28F4B0-788D-419B-93E9-ED5D800D64F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{FE7DBE15-8FFA-4C74-8F45-C8EAA129B857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE7DBE15-8FFA-4C74-8F45-C8EAA129B857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE7DBE15-8FFA-4C74-8F45-C8EAA129B857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE28F4B0-788D-419B-93E9-ED5D800D64F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE28F4B0-788D-419B-93E9-ED5D800D64F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE28F4B0-788D-419B-93E9-ED5D800D64F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE28F4B0-788D-419B-93E9-ED5D800D64F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{5249E6F8-05CF-47B6-95BE-4776F003093F} = {26BE8D2C-6322-4141-A40A-9D833B51C25C}
 		{B295E63E-B685-4686-A4A6-C93151FBB71B} = {2F902770-51C2-4569-94CB-E759A3239434}
 		{FE7DBE15-8FFA-4C74-8F45-C8EAA129B857} = {67D7DD13-3F26-40EF-8E6A-E4F54689B576}
+		{AE28F4B0-788D-419B-93E9-ED5D800D64F4} = {E32D03E9-3A8B-4EAA-98A8-9A398245DD86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6EE37FBC-59BC-4DE0-A3CB-2E04E1D56D21}
