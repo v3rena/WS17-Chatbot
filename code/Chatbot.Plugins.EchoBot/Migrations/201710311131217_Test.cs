@@ -1,0 +1,26 @@
+namespace Chatbot.Plugins.EchoBot.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class Test : DbMigration
+    {
+        public override void Up()
+        {
+            CreateTable(
+                "Test.Tests",
+                c => new
+                    {
+                        TestID = c.Int(nullable: false, identity: true),
+                        TestName = c.String(),
+                    })
+                .PrimaryKey(t => t.TestID);
+            
+        }
+        
+        public override void Down()
+        {
+            DropTable("Test.Tests");
+        }
+    }
+}

@@ -5,6 +5,7 @@ using System.Web;
 using Chatbot.Interfaces;
 using Chatbot.Interfaces.Models;
 using Chatbot.Models;
+using System.Data.Entity;
 
 namespace Chatbot.Plugins.EchoBot
 {
@@ -20,6 +21,7 @@ namespace Chatbot.Plugins.EchoBot
        
         public IMessage Handle(IMessage message)
         {
+            Database.SetInitializer<TestContext>(new MigrateDatabaseToLatestVersion<TestContext, Migrations.Configuration>());
             return new Message("Echo: " + message.Content);
         }
     }

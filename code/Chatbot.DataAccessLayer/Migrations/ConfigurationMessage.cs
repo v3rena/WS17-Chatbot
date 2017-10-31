@@ -1,18 +1,18 @@
-namespace Chatbot.Migrations
+namespace Chatbot.DataAccessLayer.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Chatbot.TestContext>
+    internal sealed class ConfigurationMessage : DbMigrationsConfiguration<Chatbot.DataAccessLayer.Context.MessageContext>
     {
-        public Configuration()
+        public ConfigurationMessage()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Chatbot.TestContext context)
+        protected override void Seed(Chatbot.DataAccessLayer.Context.MessageContext context)
         {
             //  This method will be called after migrating to the latest version.
 

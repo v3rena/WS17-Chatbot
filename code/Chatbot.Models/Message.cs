@@ -9,6 +9,7 @@ namespace Chatbot.Models
 {
     public class Message : IMessage
     {
+        public int MessageID { get; set; }
         public string Content { get; set; }
 
         public Message()

@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace Chatbot.Context
+namespace Chatbot.DataAccessLayer.Context
 {
     public class MessageContext : DbContext
     {
@@ -15,6 +15,13 @@ namespace Chatbot.Context
         }
 
         public DbSet<Message> Message { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Message");
+
+            // Fluent API configuration
+        }
 
     }
 }

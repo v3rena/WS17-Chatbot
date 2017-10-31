@@ -6,16 +6,25 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
-
+using Chatbot.Interfaces;
+using Chatbot.DataAccessLayer.Context;
 
 namespace Chatbot.DataAccessLayer
 {
-    public class DAL : IDataAccessLayer<Test>
+    public class DAL : IDataAccessLayer
     {
         public DAL()
         {
-            Database.SetInitializer<TestContext>(new MigrateDatabaseToLatestVersion<TestContext, Migrations.Configuration>());
+            // TODO: Add after migration
+            Database.SetInitializer<MessageContext>(new MigrateDatabaseToLatestVersion<MessageContext, Migrations.ConfigurationMessage>());
+            using (var context = new MessageContext())
+            {
+                context.Database.Initialize(false);
+            }
+
         }
+
+        public string Name => GetName();
 
         public string GetName()
         {
@@ -24,40 +33,40 @@ namespace Chatbot.DataAccessLayer
 
         public string GetTest(int id)
         {
-            Test result;
-            using (var context = new TestContext())
+            Message result = null;
+            using (var context = new MessageContext())
             {
-                result = context.Test.FirstOrDefault();
+                //result = context.Message.FirstOrDefault();
             }
-            return result.TestName;
+            return result?.Content;
         }
 
-        public int Insert(Test item)
+        public int Insert(Message item)
         {
-            using (var context = new TestContext())
+            using (var context = new MessageContext())
             {
-                context.Test.Add(item);
+                context.Message.Add(item);
                 return context.SaveChanges();
             }
         }
 
-        public IEnumerable<Test> Select(Func<Test, bool> condition)
+        public IEnumerable<Message> Select(Func<Test, bool> condition)
         {
-            IEnumerable<Test> result = null;
-            using (var context = new TestContext())
+            IEnumerable<Message> result = null;
+            using (var context = new MessageContext())
             {
                 result = context
-                    .Test
-                    .Where(condition)
+                    .Message
+                    //.Where(condition)
                     .ToList();
             }
             return result;
         }
-
+        /*
         public Test SelectFirst(Func<Test, bool> condition)
         {
             return Select(condition).FirstOrDefault();
-        }
+        }*/
 
         public class Module : Autofac.Module
         {
@@ -66,7 +75,7 @@ namespace Chatbot.DataAccessLayer
                 //base.Load(builder);
                 builder
                     .Register(component => new DAL())
-                    .As<IDataAccessLayer<Test>>()
+                    .As<IDataAccessLayer>()
                     .InstancePerLifetimeScope();
 
                 /*

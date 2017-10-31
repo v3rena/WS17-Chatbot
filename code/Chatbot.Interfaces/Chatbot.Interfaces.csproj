@@ -42,9 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBusinessLayer.cs" />
-    <Compile Include="IBusinessLayerGen.cs" />
     <Compile Include="IDataAccessLayer.cs" />
-    <Compile Include="IDataAccessLayerGen.cs" />
     <Compile Include="IPlugin.cs" />
     <Compile Include="IPluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
