@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Chatbot.Interfaces;
-using Chatbot.Interfaces.Models;
 using Chatbot.Models;
 
 namespace Chatbot.Plugins.EchoBot
@@ -12,13 +11,13 @@ namespace Chatbot.Plugins.EchoBot
     {
         public string Name => "EchoBot";
 
-        public float CanHandle(IMessage message)
+        public float CanHandle(Message message)
         {
             return 0.2f;
         }
 
        
-        public IMessage Handle(IMessage message)
+        public Message Handle(Message message)
         {
             return new Message("Echo: " + message.Content);
         }

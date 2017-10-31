@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Chatbot.Interfaces;
-using Chatbot.Interfaces.Models;
 using System.Web;
+using Chatbot.Models;
 
 namespace Chatbot.PluginManager
 {
@@ -53,7 +53,7 @@ namespace Chatbot.PluginManager
             _plugins.Clear();
         }
 
-        public IPlugin ChoosePlugin(IMessage message)
+        public IPlugin ChoosePlugin(Message message)
         {
             return _plugins.OrderByDescending(p => p.CanHandle(message)).First();
         }
