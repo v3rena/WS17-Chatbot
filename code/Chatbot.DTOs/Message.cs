@@ -1,8 +1,6 @@
-﻿using Chatbot.Interfaces.DTOs;
-
-namespace Chatbot.DTOs
+﻿namespace Chatbot.DTOs
 {
-    public class Message : IMessage
+    public class Message
     {
         public string Content { get; set; }
 

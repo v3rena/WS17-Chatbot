@@ -1,5 +1,5 @@
 ﻿using Chatbot.Interfaces;
-using Chatbot.Interfaces.Models;
+using Chatbot.Models;
 
 namespace Chatbot.BusinessLayer
 {
@@ -14,7 +14,7 @@ namespace Chatbot.BusinessLayer
             _pluginManager = pluginManager;
         }
 
-        public IMessage ProcessMessage(IMessage message)
+        public Message ProcessMessage(Message message)
         {
             IPlugin chosenPlugin = _pluginManager.ChoosePlugin(message);
             return chosenPlugin.Handle(message);

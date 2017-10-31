@@ -1,4 +1,4 @@
-﻿using Chatbot.Interfaces.Models;
+﻿using Chatbot.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +9,8 @@ namespace Chatbot.Interfaces
     {
         string Name { get; }
 
-        float CanHandle(IMessage message);
+        float CanHandle(Message message);
 
-        IMessage Handle(IMessage message);
+        Message Handle(Message message);
     }
 }

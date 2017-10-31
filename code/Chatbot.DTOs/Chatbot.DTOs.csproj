@@ -44,12 +44,5 @@
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
-      <Project>{CEA872AC-27C7-4770-9649-169771BB736E}</Project>
-      <Name>Chatbot.Interfaces.DTOs</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

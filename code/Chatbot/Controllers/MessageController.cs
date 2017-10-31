@@ -21,10 +21,10 @@ namespace Chatbot.Controllers
         // { "Content" : "" }
         [HttpPost]
         [Route("")]
-        [ResponseType(typeof(Interfaces.DTOs.IMessage))]
-        public Interfaces.DTOs.IMessage PostMessage([FromBody]DTOs.Message message)
+        [ResponseType(typeof(DTOs.Message))]
+        public DTOs.Message PostMessage([FromBody]DTOs.Message message)
         {
-            return _mapper.Map<Interfaces.DTOs.IMessage>(_bl.ProcessMessage(_mapper.Map<Interfaces.Models.IMessage>(message)));
+            return _mapper.Map<DTOs.Message>(_bl.ProcessMessage(_mapper.Map<Models.Message>(message)));
         }
     }
 }

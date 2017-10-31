@@ -229,16 +229,6 @@
       <Project>{5249E6F8-05CF-47B6-95BE-4776F003093F}</Project>
       <Name>Chatbot.DTOs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
-      <Project>{cea872ac-27c7-4770-9649-169771bb736e}</Project>
-      <Name>Chatbot.Interfaces.DTOs</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Interfaces.Models\Chatbot.Interfaces.Models.csproj">
-      <Project>{0ec4528f-3c24-4609-b66c-658010ca81ed}</Project>
-      <Name>Chatbot.Interfaces.Models</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
       <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
       <Name>Chatbot.Interfaces</Name>
