@@ -13,11 +13,14 @@ namespace Chatbot.Controllers
 
         public ActionResult Index()
         {
-            var request = HttpContext.Request;
-            var baseUrl = string.Format("{0}://{1}{2}", request.Url.Scheme, request.Url.Authority, HttpRuntime.AppDomainAppVirtualPath == "/" ? "" : HttpRuntime.AppDomainAppVirtualPath);
-            ViewBag.BasePath = baseUrl;
+#if STAGING
+            System.Web.Optimization.Scripts.DefaultTagFormat = "<script src=\".{0}\"></script>";
+            System.Web.Optimization.Styles.DefaultTagFormat = "<link href=\".{0}\" rel=\"stylesheet\"/>";
 
-            ViewBag.Title = "ChatBot";
+            ViewBag.BasePath = "/staging/";
+#else
+            ViewBag.BasePath = "/";
+#endif
 
             return View();
         }
