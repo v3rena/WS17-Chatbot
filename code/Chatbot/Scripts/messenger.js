@@ -1,13 +1,15 @@
 var url = "/api/message/";
 var guid;
 
+$(document).ready(ensureSession);
+
 $("#messageForm").submit(function (event) {
     event.preventDefault();
 
     var m = $("#message").val();
     $("#message").val("");
 
-    var message = { Content : m };
+    var message = { Content: m, Guid: guid };
 
     var posting = $.ajax({
         url: url,
@@ -45,28 +47,31 @@ function addMessage(message, error, me = null) {
     }
 
     $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message.Content + "</span>");
+    $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
 }
 
-$(document).ready(ensureSession);
-
 function ensureSession() {
-    console.log("hello");
     if (typeof (Storage) !== "undefined") {
         var _guid = localStorage.getItem("guid");
         if (_guid === "undefined" || _guid == null) {
-            $.getJSON("api/session", function (json) {
-                console.log("s");
-                if (json.guid !== "undefined") {
-                    guid = json.guid;
-                    localStorage.setItem("guid", guid);
-                    console.log(guid);
-                } else {
+            $.ajax({
+                type: "get",
+                url: "api/session",
+                datatype: "json",
+                success: function (json, text) {
+                    if (json.guid !== "undefined") {
+                        guid = json.guid;
+                        localStorage.setItem("guid", guid);
+                    } else {
+                        alert("Es konnte keine Session gestartet werden!");
+                    }
+                },
+                error: function (request, status, error) {
                     alert("Es konnte keine Session gestartet werden!");
                 }
-            });
+            })
         } else {
             guid = _guid;
-            console.log(guid);
         }
     } else {
         alert("Sorry! No Web Storage support ...");

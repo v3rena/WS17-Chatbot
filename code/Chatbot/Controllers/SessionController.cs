@@ -18,7 +18,7 @@ namespace Chatbot.Controllers
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
-                    String.Format("{{ guid : \"{0}\" }}", Guid.NewGuid().ToString()),
+                    String.Format("{{ \"guid\" : \"{0}\" }}", Guid.NewGuid().ToString()),
                     Encoding.UTF8,
                     "application/json"
                 )
