@@ -5,7 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>@ViewBag.Title</title>
+    <base href="@ViewBag.BasePath" />
+    <title>ChatBot</title>
     @Styles.Render("~/Content/css")
 </head>
 <body>
@@ -28,7 +29,6 @@
             <p>&copy; @DateTime.Now.Year Awesome BIF-SWE3 Team</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/messenger")

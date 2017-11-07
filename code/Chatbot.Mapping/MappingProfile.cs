@@ -6,8 +6,8 @@ namespace Chatbot.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Interfaces.DTOs.IMessage, Interfaces.Models.IMessage>().As<Models.Message>();
-            CreateMap<Interfaces.DTOs.IMessage, Interfaces.Models.IMessage>().ReverseMap().As<DTOs.Message>();
+            CreateMap<DTOs.Message, Models.Message>();
+            CreateMap<DTOs.Message, Models.Message>().ReverseMap();
         }
     }
 }
