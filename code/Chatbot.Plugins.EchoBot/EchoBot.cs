@@ -16,7 +16,12 @@ namespace Chatbot.Plugins.EchoBot
             return 0.2f;
         }
 
-       
+        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        {
+            //No configuration necessary
+            return configuration;
+        }
+
         public Message Handle(Message message)
         {
             return new Message("Echo: " + message.Content);

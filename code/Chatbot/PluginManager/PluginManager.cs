@@ -76,7 +76,12 @@ namespace Chatbot.PluginManager
                     {
                         if (type.GetInterface("IPlugin") == typeof(IPlugin))
                         {
-                            Add((IPlugin)Activator.CreateInstance(type));
+                            IPlugin p = (IPlugin)Activator.CreateInstance(type);
+
+                            //TODO load configuration from DAL
+                            p.EnsureDefaultConfiguration(new Dictionary<string, string>());
+
+                            Add(p);
                         }
                     }
                 }
