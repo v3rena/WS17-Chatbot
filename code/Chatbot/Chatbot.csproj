@@ -171,6 +171,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -308,13 +309,13 @@
     <Copy SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
     <Copy SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
     <Copy SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
-	<Delete Files="@(PluginLibs)" />
-	<Delete Files="@(ModelLibs)" />
-	<Delete Files="@(MappingLibs)" />
-	<Delete Files="@(DALLibs)" />
-	<Delete Files="@(DTOLibs)" />
-	<Delete Files="@(InterfaceLibs)" />
-	<Delete Files="@(ThirdPartyLibs)" />
+    <Delete Files="@(PluginLibs)" />
+    <Delete Files="@(ModelLibs)" />
+    <Delete Files="@(MappingLibs)" />
+    <Delete Files="@(DALLibs)" />
+    <Delete Files="@(DTOLibs)" />
+    <Delete Files="@(InterfaceLibs)" />
+    <Delete Files="@(ThirdPartyLibs)" />
     <RemoveDir Directories="$(OutputPath)de" />
   </Target>
 </Project>
