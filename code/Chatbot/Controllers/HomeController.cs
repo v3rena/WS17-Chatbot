@@ -1,7 +1,4 @@
-﻿using Chatbot.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Chatbot.Interfaces;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,16 +6,21 @@ namespace Chatbot.Controllers
 {
     public class HomeController : Controller
     {
-        private IBusinessLayer _bl;
-
-        public HomeController(IBusinessLayer bl)
+        public HomeController()
         {
-            _bl = bl;
+
         }
 
         public ActionResult Index()
         {
-            ViewBag.Title = _bl.GetName();
+#if STAGING
+            System.Web.Optimization.Scripts.DefaultTagFormat = "<script src=\".{0}\"></script>";
+            System.Web.Optimization.Styles.DefaultTagFormat = "<link href=\".{0}\" rel=\"stylesheet\"/>";
+
+            ViewBag.BasePath = "/staging/";
+#else
+            ViewBag.BasePath = "/";
+#endif
 
             return View();
         }

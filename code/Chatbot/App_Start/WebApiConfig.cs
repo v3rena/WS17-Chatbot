@@ -14,11 +14,12 @@ namespace Chatbot
             // Web-API-Routen
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            //config.Routes.MapHttpRoute(
+            //    name: "MessageApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { action = "PostMessage", id = RouteParameter.Optional },
+            //    constraints: new { id = @"^[0-9]*$" }
+            //);
         }
     }
 }
