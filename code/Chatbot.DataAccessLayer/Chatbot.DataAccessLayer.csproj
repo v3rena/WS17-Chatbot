@@ -86,9 +86,9 @@
   <ItemGroup>
     <Compile Include="Context\MessageContext.cs" />
     <Compile Include="DAL.cs" />
-    <Compile Include="Migrations\201710311154149_Initial.cs" />
-    <Compile Include="Migrations\201710311154149_Initial.Designer.cs">
-      <DependentUpon>201710311154149_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201711071222439_Initial.cs" />
+    <Compile Include="Migrations\201711071222439_Initial.Designer.cs">
+      <DependentUpon>201711071222439_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigurationMessage.cs" />
     <Compile Include="MockDAL.cs" />
@@ -110,8 +110,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201710311154149_Initial.resx">
-      <DependentUpon>201710311154149_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711071222439_Initial.resx">
+      <DependentUpon>201711071222439_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

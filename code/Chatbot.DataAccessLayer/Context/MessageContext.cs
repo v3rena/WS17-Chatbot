@@ -18,7 +18,7 @@ namespace Chatbot.DataAccessLayer.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Message");
+            modelBuilder.HasDefaultSchema("chatbot");
 
             // Fluent API configuration
         }

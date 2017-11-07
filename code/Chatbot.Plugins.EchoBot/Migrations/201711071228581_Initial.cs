@@ -1,4 +1,4 @@
-namespace Chatbot.DataAccessLayer.Migrations
+namespace Chatbot.Plugins.EchoBot.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -7,21 +7,20 @@ namespace Chatbot.DataAccessLayer.Migrations
     {
         public override void Up()
         {
-            Sql("create schema \"Mesage\";");
             CreateTable(
-                "Message.Messages",
+                "Test.Tests",
                 c => new
                     {
-                        MessageID = c.Int(nullable: false, identity: true),
-                        Content = c.String(),
+                        TestID = c.Int(nullable: false, identity: true),
+                        TestName = c.String(),
                     })
-                .PrimaryKey(t => t.MessageID);
+                .PrimaryKey(t => t.TestID);
             
         }
         
         public override void Down()
         {
-            DropTable("Message.Messages");
+            DropTable("Test.Tests");
         }
     }
 }

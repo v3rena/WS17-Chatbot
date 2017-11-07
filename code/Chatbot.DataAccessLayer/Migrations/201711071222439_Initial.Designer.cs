@@ -13,7 +13,7 @@ namespace Chatbot.DataAccessLayer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201710311154149_Initial"; }
+            get { return "201711071222439_Initial"; }
         }
         
         string IMigrationMetadata.Source
