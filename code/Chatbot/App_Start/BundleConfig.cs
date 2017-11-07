@@ -8,14 +8,8 @@ namespace Chatbot
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-<<<<<<< HEAD
-            // @TODO set to true for production
-            BundleTable.EnableOptimizations = false;
-
-=======
             BundleTable.EnableOptimizations = true;
-            
->>>>>>> develop
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-3.2.1.js"));
 

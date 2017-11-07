@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
+﻿using AutoMapper;
+using Chatbot.Interfaces;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace Chatbot.Controllers
 {
     [RoutePrefix("api/session")]
     public class SessionController : ApiController
     {
+        private readonly IBusinessLayer _bl;
+        private readonly IMapper _mapper;
+
+        public SessionController(IBusinessLayer bl, IMapper mapper)
+        {
+            _bl = bl;
+            _mapper = mapper;
+        }
+
         [HttpGet]
         [Route("")]
-        public HttpResponseMessage Get()
+        [ResponseType(typeof(DTOs.SessionKey))]
+        public DTOs.SessionKey GetSessionKey()
         {
-            return new HttpResponseMessage()
-            {
-                Content = new StringContent(
-                    String.Format("{{ \"guid\" : \"{0}\" }}", Guid.NewGuid().ToString()),
-                    Encoding.UTF8,
-                    "application/json"
-                )
-            };
+            return _mapper.Map<DTOs.SessionKey>(_bl.GenerateSession());
         }
     }
 }

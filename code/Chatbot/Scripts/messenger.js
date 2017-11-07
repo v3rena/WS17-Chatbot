@@ -1,5 +1,5 @@
 var url = "/api/message/";
-var guid;
+var key;
 
 $(document).ready(ensureSession);
 
@@ -9,7 +9,7 @@ $("#messageForm").submit(function (event) {
     var m = $("#message").val();
     $("#message").val("");
 
-    var message = { Content: m, Guid: guid };
+    var message = { Content: m, SessionKey: key };
 
     var posting = $.ajax({
         url: url,
@@ -23,7 +23,7 @@ $("#messageForm").submit(function (event) {
             addMessage(message, false, true);
         },
         error: function (data) {
-            addMessage("something went wrong", true);
+            addErrorMessage("something went wrong", true);
         }
     });
 });
@@ -50,30 +50,34 @@ function addMessage(message, error, me = null) {
     $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
 }
 
+function addErrorMessage(errorMessage) {
+    addMessage({ Content: errorMessage }, true);
+}
+
 function ensureSession() {
     if (typeof (Storage) !== "undefined") {
-        var _guid = localStorage.getItem("guid");
-        if (_guid === "undefined" || _guid == null) {
+        var _sessionKey = localStorage.getItem("sessionKey");
+        if (_sessionKey === "undefined" || _sessionKey == null) {
             $.ajax({
-                type: "get",
-                url: "api/session",
+                type: "GET",
+                url: "api/session/",
                 datatype: "json",
-                success: function (json, text) {
-                    if (json.guid !== "undefined") {
-                        guid = json.guid;
-                        localStorage.setItem("guid", guid);
+                success: function (data) {
+                    if (data !== "undefined" && data != null) {
+                        key = JSON.stringify(data);
+                        localStorage.setItem("sessionKey", key);
                     } else {
-                        alert("Es konnte keine Session gestartet werden!");
+                        addErrorMessage("Unable to start session", true);
                     }
                 },
                 error: function (request, status, error) {
-                    alert("Es konnte keine Session gestartet werden!");
+                    addErrorMessage("Unable to start session", true);
                 }
             })
         } else {
-            guid = _guid;
+            key = _sessionKey;
         }
     } else {
-        alert("Sorry! No Web Storage support ...");
+        addErrorMessage("Sorry! No Web Storage support.", true);
     }
 }

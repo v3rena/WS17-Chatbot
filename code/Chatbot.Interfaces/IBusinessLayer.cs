@@ -5,5 +5,7 @@ namespace Chatbot.Interfaces
     public interface IBusinessLayer
     {
         Message ProcessMessage(Message message);
+
+        SessionKey GenerateSession();
     }
 }

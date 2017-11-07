@@ -9,11 +9,11 @@ namespace Chatbot.Models
     public class Message 
     {
         public string Content { get; set; }
-        public string SessionKey { get; set; }
+
+        public SessionKey SessionKey { get; set; }
 
         public Message()
         {
-
         }
 
         public Message(string content)
@@ -21,7 +21,7 @@ namespace Chatbot.Models
             Content = content;
         }
 
-        public Message(string content, string sessionKey)
+        public Message(string content, SessionKey sessionKey)
         {
             Content = content;
             SessionKey = sessionKey;
