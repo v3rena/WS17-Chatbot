@@ -12,7 +12,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
     {
         public string Name => throw new NotImplementedException();
 
-        public float CanHandle(Interfaces.Models.IMessage message)
+        public float CanHandle(Message message)
         {
             float handle = 0.0f;
             if(contains(message, "route"))
@@ -26,12 +26,12 @@ namespace Chatbot.Plugins.RoutePlannerBot
             return handle;
         }
 
-        public bool contains(Interfaces.Models.IMessage message, string str2)
+        public bool contains(Message message, string str2)
         {
             return message.Content.ToLower().Contains(str2);
         }
 
-        public Interfaces.Models.IMessage Handle(Interfaces.Models.IMessage message)
+        public Message Handle(Message message)
         {
             string messageStr = "error";
             string[] parts = message.Content.Split(new string[] { "von", "nach" }, StringSplitOptions.RemoveEmptyEntries);
@@ -42,6 +42,11 @@ namespace Chatbot.Plugins.RoutePlannerBot
                 messageStr = DirectionsResponseConverter.GetHumanReadableDirections(jsonResponse);
             }
             return new Message(messageStr);
+        }
+
+        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        {
+            return configuration;
         }
     }
 }
