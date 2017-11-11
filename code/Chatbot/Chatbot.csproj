@@ -31,7 +31,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -92,8 +92,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -179,6 +179,8 @@
     <Compile Include="BusinessLayer\BusinessLayer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -192,12 +194,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
     <Content Include="Scripts\messenger.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -214,7 +227,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -231,16 +245,6 @@
     <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
       <Project>{5249E6F8-05CF-47B6-95BE-4776F003093F}</Project>
       <Name>Chatbot.DTOs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Interfaces.DTOs\Chatbot.Interfaces.DTOs.csproj">
-      <Project>{cea872ac-27c7-4770-9649-169771bb736e}</Project>
-      <Name>Chatbot.Interfaces.DTOs</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Interfaces.Models\Chatbot.Interfaces.Models.csproj">
-      <Project>{0ec4528f-3c24-4609-b66c-658010ca81ed}</Project>
-      <Name>Chatbot.Interfaces.Models</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
       <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
@@ -275,7 +279,7 @@
           <DevelopmentServerPort>65118</DevelopmentServerPort>
           <DevelopmentServerVPath>
           </DevelopmentServerVPath>
-          <IISUrl>http://localhost:65118/</IISUrl>
+          <IISUrl>http://localhost:65118</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -308,13 +312,13 @@
     <Copy SourceFiles="@(InterfaceLibs)" DestinationFolder="$(OutputPath)interfaces" />
     <Copy SourceFiles="@(ThirdPartyLibs)" DestinationFolder="$(OutputPath)libs" />
     <Copy SourceFiles="@(LocalizedThirdPartyLibs)" DestinationFolder="$(OutputPath)libs\de" />
-	<Delete Files="@(PluginLibs)" />
-	<Delete Files="@(ModelLibs)" />
-	<Delete Files="@(MappingLibs)" />
-	<Delete Files="@(DALLibs)" />
-	<Delete Files="@(DTOLibs)" />
-	<Delete Files="@(InterfaceLibs)" />
-	<Delete Files="@(ThirdPartyLibs)" />
+    <Delete Files="@(PluginLibs)" />
+    <Delete Files="@(ModelLibs)" />
+    <Delete Files="@(MappingLibs)" />
+    <Delete Files="@(DALLibs)" />
+    <Delete Files="@(DTOLibs)" />
+    <Delete Files="@(InterfaceLibs)" />
+    <Delete Files="@(ThirdPartyLibs)" />
     <RemoveDir Directories="$(OutputPath)de" />
   </Target>
 </Project>
