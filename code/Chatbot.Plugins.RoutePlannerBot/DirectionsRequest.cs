@@ -1,19 +1,21 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
-using System.Configuration;
-using System.Collections.Specialized;
 
 namespace Chatbot.Plugins.RoutePlannerBot
 {
     class DirectionsRequest
     {
-        private string apiKey;
+        // TODO read API key from config file
+        private string apiKey = "AIzaSyA-lYBx2cblAh7I4tID_Db2lornpVyjNWU";
         private string origin, destination;
 
-        public DirectionsRequest() {
-            apiKey = ConfigurationManager.AppSettings.Get("googleApiKey");
-        }
+        public DirectionsRequest() { }
 
         public DirectionsRequest(string origin, string destination)
         {
