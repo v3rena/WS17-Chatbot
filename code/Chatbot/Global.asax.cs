@@ -9,8 +9,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Chatbot.DataAccessLayer;
 using AutoMapper;
-using System.Collections.Generic;
-using System;
 using Chatbot.Mapping;
 
 namespace Chatbot

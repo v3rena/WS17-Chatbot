@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Chatbot.Interfaces;
-using Chatbot.Interfaces.Models;
 using System.Web;
+using Chatbot.Models;
 
 namespace Chatbot.PluginManager
 {
@@ -53,7 +53,7 @@ namespace Chatbot.PluginManager
             _plugins.Clear();
         }
 
-        public IPlugin ChoosePlugin(IMessage message)
+        public IPlugin ChoosePlugin(Message message)
         {
             return _plugins.OrderByDescending(p => p.CanHandle(message)).First();
         }
@@ -76,7 +76,12 @@ namespace Chatbot.PluginManager
                     {
                         if (type.GetInterface("IPlugin") == typeof(IPlugin))
                         {
-                            Add((IPlugin)Activator.CreateInstance(type));
+                            IPlugin p = (IPlugin)Activator.CreateInstance(type);
+
+                            //TODO load configuration from DAL
+                            p.EnsureDefaultConfiguration(new Dictionary<string, string>());
+
+                            Add(p);
                         }
                     }
                 }

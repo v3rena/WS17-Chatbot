@@ -1,9 +1,9 @@
-﻿using Chatbot.Interfaces.Models;
+﻿using Chatbot.Models;
 
 namespace Chatbot.Interfaces
 {
     public interface IBusinessLayer
     {
-        IMessage ProcessMessage(IMessage message);
+        Message ProcessMessage(Message message);
     }
 }
