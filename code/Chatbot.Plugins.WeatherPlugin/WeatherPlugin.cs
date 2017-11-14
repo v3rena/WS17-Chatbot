@@ -1,6 +1,7 @@
 ﻿using Chatbot.Interfaces;
 using Chatbot.Models;
 using Chatbot.Plugins.WeatherPlugin.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,65 +16,107 @@ namespace Chatbot.Plugins.WeatherPlugin
     {
         public string Name => "WeatherPlugin";
 
-        private static List<string> stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
-        public string Location { get; set; }
-        public string ApiKey { get; }
+        #region Private Members
 
-        static HttpClient client = new HttpClient();
+        private static List<string> stringLibrary;
+        private IDictionary<string, WeatherInformation> storedWeatherInformations;
+        private bool CurrentWeatherinformationOfCityIsCached => City != null && storedWeatherInformations.ContainsKey(City) ? !WeatherinformationIsOutDated : false;
+
+        private bool WeatherinformationIsOutDated
+        {
+            get
+            {
+                WeatherInformation weatherInformation = storedWeatherInformations[City];
+                bool isOutdated = DateTime.Now.AddMinutes(-10) > weatherInformation.CreationDate;
+                if (isOutdated)
+                {
+                    storedWeatherInformations.Remove(City);
+                }
+                return isOutdated;
+            }
+        }
+
+        private string apiKey;
+        private string defaultCity;
+        private string city;
+
+        private static HttpClient client;
+
+        #endregion
+
+        public string City
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(city) ? city : defaultCity;
+            }
+            set
+            {
+                city = value;
+            }
+        }
 
         public WeatherPlugin()
         {
-            ApiKey = ConfigurationManager.AppSettings["OpenWeatherMapAPIKey"];
+            //TODO save values in config file 
+            apiKey = "664f03abf48459c28bd6ddfea499f069";
+            defaultCity = "Vienna";
+            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
+            storedWeatherInformations = new Dictionary<string, WeatherInformation>();
+            client = new HttpClient();
         }
 
         public float CanHandle(Message message)
         {
-            message.Content.ToLower();
-
-            if (stringLibrary.Any(s => message.Content.Contains(s)))
+            if (stringLibrary.Any(s => message.Content.ToLower().Contains(s)))
                 return 1;
             else
-                return 0;   
+                return 0;
         }
 
         public Message Handle(Message message)
         {
-            // api.openweathermap.org/data/2.5/weather?q=London
 
-            RunAsync().Wait();
+            if (!CurrentWeatherinformationOfCityIsCached)
+            {
+                RunAsync().Wait();
+            }
 
-            return null;
+            WeatherInformation result = storedWeatherInformations[City];
+
+            return new Message($"Die Temperatur in {City} beträgt " + result.Main.Temperature + "°C.");
         }
 
-        async Task RunAsync()
+        private async Task RunAsync()
         {
-            client.BaseAddress = new Uri($"api.openweathermap.org/data/2.5/forecast?q=London?id={ApiKey}");
+            string url = $"https://api.openweathermap.org/data/2.5/weather?APPID={apiKey}&q={City}&units=metric";
+            client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             try
             {
-                // Get the product
+                // Get the weatherInformation
                 WeatherInformation weatherInformation = await GetWeatherInfromationAsync(client.BaseAddress);
-
+                storedWeatherInformations.Add(City, weatherInformation);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                throw e;
             }
-
-            Console.ReadLine();
         }
 
-        async Task<WeatherInformation> GetWeatherInfromationAsync(Uri baseAddress)
+        private async Task<WeatherInformation> GetWeatherInfromationAsync(Uri baseAddress)
         {
-            WeatherInformation weatherInfromation = null;
             HttpResponseMessage response = await client.GetAsync(baseAddress);
             if (response.IsSuccessStatusCode)
             {
-                weatherInfromation = await response.Content.ReadAsAsync<WeatherInformation>();
+                var jsonString = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<WeatherInformation>(jsonString);
             }
-            return weatherInfromation;
+            else
+                throw new ApplicationException();
+
         }
 
         public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
