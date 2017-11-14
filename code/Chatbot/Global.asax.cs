@@ -13,14 +13,20 @@ using System.Web.Routing;
 using AutoMapper;
 using Chatbot.Mapping;
 using Chatbot.DataAccessLayer;
+using log4net;
+using log4net.Config;
 
 namespace Chatbot
 {
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(WebApiApplication));
+
         protected void Application_Start()
         {
+            XmlConfigurator.Configure();
+            log.Info("Starting Application");
             GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
             // FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
