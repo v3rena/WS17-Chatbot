@@ -75,5 +75,11 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
             return weatherInfromation;
         }
+
+        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        {
+            //no configuration needed yet
+            return configuration;
+        }
     }
 }

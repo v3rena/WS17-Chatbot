@@ -6,7 +6,6 @@
 
         public Message()
         {
-
         }
 
         public Message(string content)
