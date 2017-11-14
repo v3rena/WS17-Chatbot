@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 
 namespace Chatbot.Mapping
 {
@@ -7,15 +8,18 @@ namespace Chatbot.Mapping
         public MappingProfile()
         {
             CreateMap<DTOs.Message, Models.Message>()
-                .ForMember(destination => destination.GUID,opt => opt.Ignore())
-                .ForMember(destination => destination.Timestamp, opt => opt.Ignore())
-                .ForMember(destination => destination.MessageID, opt => opt.Ignore())
-                .ForMember(destination => destination.Usermessage, opt => opt.Ignore());
+                .ForMember(destination => destination.Id, opt => opt.Ignore())
+                .ForMember(destination => destination.IsUserMessage, opt => opt.Ignore());
             CreateMap<Models.Message, DTOs.Message>()
-                .ForSourceMember(source => source.GUID, opt => opt.Ignore())
-                .ForSourceMember(source => source.Timestamp, opt => opt.Ignore())
-                .ForSourceMember(source => source.MessageID, opt => opt.Ignore())
-                .ForSourceMember(source => source.Usermessage, opt => opt.Ignore());
+                .ForSourceMember(source => source.Id, opt => opt.Ignore())
+                .ForSourceMember(source => source.IsUserMessage, opt => opt.Ignore());
+
+            CreateMap<DTOs.SessionKey, Models.SessionKey>()
+                .ForMember(destination => destination.Id, opt => opt.Ignore())
+                .ForMember(i => i.Key, opt => opt.MapFrom(k => Guid.Parse(k.Key)));
+            CreateMap<Models.SessionKey, DTOs.SessionKey>()
+                .ForSourceMember(source => source.Id, opt => opt.Ignore())
+                .ForMember(i => i.Key, opt => opt.MapFrom(k => k.Key.ToString()));
         }
     }
 }
