@@ -10,6 +10,8 @@ namespace Chatbot.Plugins.RoutePlannerBot
 {
     public class RoutePlannerBot : IPlugin
     {
+
+        private string apiKey = "AIzaSyA-lYBx2cblAh7I4tID_Db2lornpVyjNWU";
         public string Name => throw new NotImplementedException();
 
         public float CanHandle(Message message)
@@ -37,7 +39,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
             string[] parts = message.Content.Split(new string[] { "von", "nach" }, StringSplitOptions.RemoveEmptyEntries);
             if(parts.Length >= 2)
             {
-                DirectionsRequest request = new DirectionsRequest(parts[parts.Length - 2], parts[parts.Length - 1]);
+                DirectionsRequest request = new DirectionsRequest(parts[parts.Length - 2], parts[parts.Length - 1], apiKey);
                 string jsonResponse = request.GetResponse();
                 messageStr = DirectionsResponseConverter.GetHumanReadableDirections(jsonResponse);
             }
@@ -46,6 +48,10 @@ namespace Chatbot.Plugins.RoutePlannerBot
 
         public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
         {
+            if(configuration.ContainsKey("apiKey"))
+            {
+                this.apiKey = configuration["apiKey"];
+            }
             return configuration;
         }
     }

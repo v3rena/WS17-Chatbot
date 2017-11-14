@@ -11,16 +11,15 @@ namespace Chatbot.Plugins.RoutePlannerBot
 {
     class DirectionsRequest
     {
-        // TODO read API key from config file
-        private string apiKey = "AIzaSyA-lYBx2cblAh7I4tID_Db2lornpVyjNWU";
-        private string origin, destination;
+        private string origin, destination, apiKey;
 
         public DirectionsRequest() { }
 
-        public DirectionsRequest(string origin, string destination)
+        public DirectionsRequest(string origin, string destination, string apiKey)
         {
             this.origin = HttpUtility.UrlEncode(origin);
             this.destination = HttpUtility.UrlDecode(destination);
+            this.apiKey = apiKey;
         }
 
         public string GetResponse()
