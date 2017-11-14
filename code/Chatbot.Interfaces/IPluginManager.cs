@@ -1,4 +1,4 @@
-﻿using Chatbot.Interfaces.Models;
+﻿using Chatbot.Models;
 
 namespace Chatbot.Interfaces
 {
@@ -12,6 +12,6 @@ namespace Chatbot.Interfaces
 
         void Clear();
 
-        IPlugin ChoosePlugin(IMessage message);
+        IPlugin ChoosePlugin(Message message);
     }
 }

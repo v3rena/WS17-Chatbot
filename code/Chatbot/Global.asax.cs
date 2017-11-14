@@ -11,8 +11,6 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using AutoMapper;
-using System.Collections.Generic;
-using System;
 using Chatbot.Mapping;
 using Chatbot.DataAccessLayer;
 
