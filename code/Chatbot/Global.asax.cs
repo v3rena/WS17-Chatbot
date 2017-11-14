@@ -1,5 +1,8 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
 using Autofac.Integration.WebApi;
 using Chatbot.Interfaces;
 using System.Reflection;
@@ -7,12 +10,13 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Chatbot.DataAccessLayer;
 using AutoMapper;
 using Chatbot.Mapping;
+using Chatbot.DataAccessLayer;
 
 namespace Chatbot
 {
+
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
@@ -23,7 +27,11 @@ namespace Chatbot
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+
             CreateMasterContainer();
+
+            var dal = new DAL();
+            dal.GetTest(1);
         }
 
         private void CreateMasterContainer()
@@ -71,7 +79,7 @@ namespace Chatbot
 
             builder.RegisterType<PluginManager.PluginManager>().As<IPluginManager>().SingleInstance();
 
-            builder.RegisterModule<MockDAL.Module>();
+            builder.RegisterModule<DAL.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
 
             // Set the dependency resolver to be Autofac.

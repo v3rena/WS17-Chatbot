@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Chatbot.Interfaces;
 using Chatbot.Models;
+using System.Data.Entity;
 
 namespace Chatbot.Plugins.EchoBot
 {
@@ -24,6 +25,7 @@ namespace Chatbot.Plugins.EchoBot
 
         public Message Handle(Message message)
         {
+            Database.SetInitializer<EchoBotContext>(new MigrateDatabaseToLatestVersion<EchoBotContext, Migrations.Configuration>());
             return new Message("Echo: " + message.Content);
         }
     }
