@@ -84,11 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\MessageContext.cs" />
+    <Compile Include="Context\ChatbotContext.cs" />
     <Compile Include="DAL.cs" />
-    <Compile Include="Migrations\201711071222439_Initial.cs" />
-    <Compile Include="Migrations\201711071222439_Initial.Designer.cs">
-      <DependentUpon>201711071222439_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201711141120080_initial.cs" />
+    <Compile Include="Migrations\201711141120080_initial.Designer.cs">
+      <DependentUpon>201711141120080_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigurationMessage.cs" />
     <Compile Include="MockDAL.cs" />
@@ -110,8 +110,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711071222439_Initial.resx">
-      <DependentUpon>201711071222439_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711141120080_initial.resx">
+      <DependentUpon>201711141120080_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

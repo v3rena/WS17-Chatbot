@@ -7,14 +7,14 @@ using System.Web;
 
 namespace Chatbot.DataAccessLayer.Context
 {
-    public class MessageContext : DbContext
+    public class ChatbotContext : DbContext
     {
-        public MessageContext() : base("Chatbot")
+        public ChatbotContext() : base("Chatbot")
         {
 
         }
 
-        public DbSet<Message> Message { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

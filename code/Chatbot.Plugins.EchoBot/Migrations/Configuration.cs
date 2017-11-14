@@ -5,14 +5,14 @@ namespace Chatbot.Plugins.EchoBot.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Chatbot.Plugins.EchoBot.TestContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Chatbot.Plugins.EchoBot.EchoBotContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Chatbot.Plugins.EchoBot.TestContext context)
+        protected override void Seed(Chatbot.Plugins.EchoBot.EchoBotContext context)
         {
             //  This method will be called after migrating to the latest version.
 

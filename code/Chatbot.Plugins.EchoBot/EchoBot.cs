@@ -21,7 +21,7 @@ namespace Chatbot.Plugins.EchoBot
        
         public IMessage Handle(IMessage message)
         {
-            Database.SetInitializer<TestContext>(new MigrateDatabaseToLatestVersion<TestContext, Migrations.Configuration>());
+            Database.SetInitializer<EchoBotContext>(new MigrateDatabaseToLatestVersion<EchoBotContext, Migrations.Configuration>());
             return new Message("Echo: " + message.Content);
         }
     }

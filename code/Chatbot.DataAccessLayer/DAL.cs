@@ -16,8 +16,8 @@ namespace Chatbot.DataAccessLayer
         public DAL()
         {
             // TODO: Add after migration
-            Database.SetInitializer<MessageContext>(new MigrateDatabaseToLatestVersion<MessageContext, Migrations.ConfigurationMessage>());
-            using (var context = new MessageContext())
+            Database.SetInitializer<ChatbotContext>(new MigrateDatabaseToLatestVersion<ChatbotContext, Migrations.ConfigurationMessage>());
+            using (var context = new ChatbotContext())
             {
                 context.Database.Initialize(false);
             }
@@ -34,7 +34,7 @@ namespace Chatbot.DataAccessLayer
         public string GetTest(int id)
         {
             Message result = null;
-            using (var context = new MessageContext())
+            using (var context = new ChatbotContext())
             {
                 //result = context.Message.FirstOrDefault();
             }
@@ -43,20 +43,20 @@ namespace Chatbot.DataAccessLayer
 
         public int Insert(Message item)
         {
-            using (var context = new MessageContext())
+            using (var context = new ChatbotContext())
             {
-                context.Message.Add(item);
+                context.Messages.Add(item);
                 return context.SaveChanges();
             }
         }
 
-        public IEnumerable<Message> Select(Func<Test, bool> condition)
+        public IEnumerable<Message> Select(Func<Message, bool> condition)
         {
             IEnumerable<Message> result = null;
-            using (var context = new MessageContext())
+            using (var context = new ChatbotContext())
             {
                 result = context
-                    .Message
+                    .Messages
                     //.Where(condition)
                     .ToList();
             }
