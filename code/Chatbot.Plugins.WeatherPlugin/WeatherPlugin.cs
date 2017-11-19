@@ -60,7 +60,7 @@ namespace Chatbot.Plugins.WeatherPlugin
         {
             //TODO save values in config file 
             apiKey = "664f03abf48459c28bd6ddfea499f069";
-            defaultCity = "Vienna";
+            defaultCity = "Wien";
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
             client = new HttpClient();
@@ -76,18 +76,12 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public Message Handle(Message message)
         {
-
-            if (!CurrentWeatherinformationOfCityIsCached)
-            {
-                RunAsync().Wait();
-            }
-
-            WeatherInformation result = storedWeatherInformations[City];
+            WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
 
             return new Message($"Die Temperatur in {City} beträgt " + result.Main.Temperature + "°C.");
         }
 
-        private async Task RunAsync()
+        private WeatherInformation CallWeatherApi()
         {
             string url = $"https://api.openweathermap.org/data/2.5/weather?APPID={apiKey}&q={City}&units=metric";
             client.BaseAddress = new Uri(url);
@@ -97,8 +91,9 @@ namespace Chatbot.Plugins.WeatherPlugin
             try
             {
                 // Get the weatherInformation
-                WeatherInformation weatherInformation = await GetWeatherInfromationAsync(client.BaseAddress);
+                WeatherInformation weatherInformation = GetWeatherInformation(client.BaseAddress);
                 storedWeatherInformations.Add(City, weatherInformation);
+                return weatherInformation;
             }
             catch (Exception e)
             {
@@ -106,12 +101,12 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
         }
 
-        private async Task<WeatherInformation> GetWeatherInfromationAsync(Uri baseAddress)
+        private WeatherInformation GetWeatherInformation(Uri baseAddress)
         {
-            HttpResponseMessage response = await client.GetAsync(baseAddress);
+            HttpResponseMessage response = client.GetAsync(baseAddress).Result;
             if (response.IsSuccessStatusCode)
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonString = response.Content.ReadAsStringAsync().Result;
                 return JsonConvert.DeserializeObject<WeatherInformation>(jsonString);
             }
             else
