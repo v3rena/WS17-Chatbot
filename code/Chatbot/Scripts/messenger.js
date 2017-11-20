@@ -3,6 +3,13 @@ var key;
 
 $(document).ready(ensureSession);
 
+$(function () {
+    var href = $("base").attr("href");
+    if (href !== "/" && href !== "") {
+        url = href + url.substr(1);
+    }
+});
+
 $("#messageForm").submit(function (event) {
     event.preventDefault();
 
@@ -19,7 +26,7 @@ $("#messageForm").submit(function (event) {
         success: function (data) {
             addMessage(data, false, false);
         },
-        beforeSend: function() {
+        beforeSend: function () {
             addMessage(message, false, true);
         },
         error: function (data) {
@@ -30,7 +37,7 @@ $("#messageForm").submit(function (event) {
 
 function addMessage(message, error, me = null) {
     var poster;
-    if (me != null) {
+    if (me !== null) {
         if (me) {
             poster = "me";
         } else {
