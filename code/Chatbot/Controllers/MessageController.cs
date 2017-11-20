@@ -24,6 +24,7 @@ namespace Chatbot.Controllers
         [ResponseType(typeof(DTOs.Message))]
         public DTOs.Message PostMessage([FromBody]DTOs.Message message)
         {
+            //TODO check if message is valid (e.g. has SessionKey)
             return _mapper.Map<DTOs.Message>(_bl.ProcessMessage(_mapper.Map<Models.Message>(message)));
         }
     }

@@ -1,4 +1,7 @@
 var url = "/api/message/";
+var key;
+
+$(document).ready(ensureSession);
 
 $("#messageForm").submit(function (event) {
     event.preventDefault();
@@ -6,7 +9,7 @@ $("#messageForm").submit(function (event) {
     var m = $("#message").val();
     $("#message").val("");
 
-    var message = { Content : m };
+    var message = { Content: m, SessionKey: key };
 
     var posting = $.ajax({
         url: url,
@@ -20,7 +23,7 @@ $("#messageForm").submit(function (event) {
             addMessage(message, false, true);
         },
         error: function (data) {
-            addMessage("something went wrong", true);
+            addErrorMessage("something went wrong", true);
         }
     });
 });
@@ -44,4 +47,37 @@ function addMessage(message, error, me = null) {
     }
 
     $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message.Content + "</span>");
+    $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
+}
+
+function addErrorMessage(errorMessage) {
+    addMessage({ Content: errorMessage }, true);
+}
+
+function ensureSession() {
+    if (typeof (Storage) !== "undefined") {
+        var _sessionKey = localStorage.getItem("sessionKey");
+        if (_sessionKey === "undefined" || _sessionKey == null) {
+            $.ajax({
+                type: "GET",
+                url: "api/session/",
+                datatype: "json",
+                success: function (data) {
+                    if (data !== "undefined" && data != null) {
+                        key = JSON.stringify(data);
+                        localStorage.setItem("sessionKey", key);
+                    } else {
+                        addErrorMessage("Unable to start session", true);
+                    }
+                },
+                error: function (request, status, error) {
+                    addErrorMessage("Unable to start session", true);
+                }
+            })
+        } else {
+            key = _sessionKey;
+        }
+    } else {
+        addErrorMessage("Sorry! No Web Storage support.", true);
+    }
 }

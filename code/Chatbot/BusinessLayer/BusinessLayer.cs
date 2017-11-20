@@ -19,5 +19,10 @@ namespace Chatbot.BusinessLayer
             IPlugin chosenPlugin = _pluginManager.ChoosePlugin(message);
             return chosenPlugin.Handle(message);
         }
+
+        public SessionKey GenerateSession()
+        {
+            return new SessionKey();
+        }
     }
 }
