@@ -2,9 +2,6 @@
 using Chatbot.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chatbot.Plugins.RoutePlannerBot
 {
@@ -12,7 +9,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
     {
 
         private string apiKey = "AIzaSyA-lYBx2cblAh7I4tID_Db2lornpVyjNWU";
-        public string Name => throw new NotImplementedException();
+        public string Name => "RoutePlannerBot";
 
         public float CanHandle(Message message)
         {
