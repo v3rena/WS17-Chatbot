@@ -20,6 +20,7 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         private static List<string> stringLibrary;
         private IDictionary<string, WeatherInformation> storedWeatherInformations;
+        private IDictionary<string, string> defaultConfig;
         private bool CurrentWeatherinformationOfCityIsCached => City != null && storedWeatherInformations.ContainsKey(City) ? !WeatherinformationIsOutDated : false;
 
         private bool WeatherinformationIsOutDated
@@ -36,15 +37,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
         }
 
-        private string apiKey;
-        private string defaultCity;
-        private string city;
-
-        private static HttpClient client;
-
-        #endregion
-
-        public string City
+        private string City
         {
             get
             {
@@ -56,14 +49,28 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
         }
 
+        private string apiKey;
+        private string defaultCity;
+        private string city;
+
+        private static HttpClient client;
+
+        #endregion
+
         public WeatherPlugin()
         {
-            //TODO save values in config file 
-            apiKey = "664f03abf48459c28bd6ddfea499f069";
-            defaultCity = "Wien";
-            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
+            stringLibrary = new List<string> { "wetter", "temperatur" };
+            SetDefaultConfig();
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
-            client = new HttpClient();
+        }
+
+        private void SetDefaultConfig()
+        {
+            defaultConfig = new Dictionary<string, string>()
+            {
+                { "ApiKey", "664f03abf48459c28bd6ddfea499f069" },
+                { "DefaultCity", "Wien" }
+            };
         }
 
         public float CanHandle(Message message)
@@ -76,13 +83,34 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public Message Handle(Message message)
         {
+            //TODO replace HelperMethod with textinterpreter
+            HelperMethodReadCity(message);
+
             WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
 
+            //TODO responsive response message
             return new Message($"Die Temperatur in {City} beträgt " + result.Main.Temperature + "°C.");
+        }
+
+        private void HelperMethodReadCity(Message message)
+        {
+            //reset city
+            City = null;
+
+            var split = message.Content.Split(null); //splits by whitespace
+            for (int i = 0; i < split.Count(); i++)
+            {
+                if (split[i] == "in" && i + 1 < split.Count())
+                {
+                    City = split[i + 1];
+                    return;
+                }
+            }
         }
 
         private WeatherInformation CallWeatherApi()
         {
+            client = new HttpClient();
             string url = $"https://api.openweathermap.org/data/2.5/weather?APPID={apiKey}&q={City}&units=metric";
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Clear();
@@ -99,6 +127,10 @@ namespace Chatbot.Plugins.WeatherPlugin
             {
                 throw e;
             }
+            finally
+            {
+                client.Dispose();
+            }
         }
 
         private WeatherInformation GetWeatherInformation(Uri baseAddress)
@@ -111,12 +143,19 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
             else
                 throw new ApplicationException();
-
         }
 
         public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
         {
-            //no configuration needed yet
+            defaultConfig.Keys.ToList().ForEach(e =>
+            {
+                if (!configuration.Keys.ToList().Contains(e))
+                    configuration.Add(e, defaultConfig[e]);
+            });
+
+            apiKey = configuration["ApiKey"];
+            defaultCity = configuration["DefaultCity"];
+
             return configuration;
         }
     }
