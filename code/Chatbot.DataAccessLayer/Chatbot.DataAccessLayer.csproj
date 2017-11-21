@@ -99,7 +99,6 @@
       <DependentUpon>201711141817212_SessionKey introduced.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ConfigurationMessage.cs" />
-    <Compile Include="MockDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chatbot.Models
+﻿namespace Chatbot.Models
 {
     public class PluginConfiguration
     {
-        public Dictionary<string, string> Dictionary { get; set; }
+        public string Name { get; set; }
+
+        public string Key { get; set; }
+
+        public string Value { get; set; }
     }
 }
