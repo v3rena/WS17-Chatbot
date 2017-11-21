@@ -53,7 +53,7 @@ function addMessage(message, error, me = null) {
         status = "";
     }
 
-    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message.Content + "</span>");
+    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\" style=\"white-space: pre-wrap;\">" + message.Content + "</span>");
     $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
 }
 
