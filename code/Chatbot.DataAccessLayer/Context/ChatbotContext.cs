@@ -18,6 +18,8 @@ namespace Chatbot.DataAccessLayer.Context
 
         public DbSet<SessionKey> SessionKeys { get; set; }
 
+        public DbSet<PluginConfiguration> PluginConfigurations { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("chatbot");

@@ -12,10 +12,12 @@ namespace Chatbot.PluginManager
     public class PluginManager : IPluginManager
     {
         private List<IPlugin> _plugins;
+        private IDataAccessLayer _dataAccessLayer;
 
-        public PluginManager()
+        public PluginManager(IDataAccessLayer dataAccessLayer)
         {
-            Initialize();
+            this._dataAccessLayer = dataAccessLayer;
+            LoadAllPlugins();
         }
 
         public IEnumerable<IPlugin> Plugins => _plugins;
@@ -58,7 +60,7 @@ namespace Chatbot.PluginManager
             return _plugins.OrderByDescending(p => p.CanHandle(message)).First();
         }
 
-        private void Initialize()
+        private void LoadAllPlugins()
         {
             _plugins = new List<IPlugin>();
 
@@ -78,8 +80,7 @@ namespace Chatbot.PluginManager
                         {
                             IPlugin p = (IPlugin)Activator.CreateInstance(type);
 
-                            //TODO load configuration from DAL
-                            p.EnsureDefaultConfiguration(new Dictionary<string, string>());
+                            _dataAccessLayer.SavePluginConfiguration(p, p.EnsureDefaultConfiguration(_dataAccessLayer.GetPluginConfiguration(p)));
 
                             Add(p);
                         }

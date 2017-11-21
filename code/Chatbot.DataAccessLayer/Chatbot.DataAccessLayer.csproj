@@ -98,8 +98,11 @@
     <Compile Include="Migrations\201711141817212_SessionKey introduced.Designer.cs">
       <DependentUpon>201711141817212_SessionKey introduced.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711211228324_AddPluginConfiguration.cs" />
+    <Compile Include="Migrations\201711211228324_AddPluginConfiguration.Designer.cs">
+      <DependentUpon>201711211228324_AddPluginConfiguration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\ConfigurationMessage.cs" />
-    <Compile Include="MockDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711141817212_SessionKey introduced.resx">
       <DependentUpon>201711141817212_SessionKey introduced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711211228324_AddPluginConfiguration.resx">
+      <DependentUpon>201711211228324_AddPluginConfiguration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

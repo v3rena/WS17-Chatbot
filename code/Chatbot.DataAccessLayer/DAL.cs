@@ -62,6 +62,30 @@ namespace Chatbot.DataAccessLayer
             }
             return result;
         }
+
+        public Dictionary<string, string> GetPluginConfiguration(IPlugin plugin)
+        {
+            using (var context = new ChatbotContext())
+            {
+                return context.PluginConfigurations
+                    .Where(i => i.Name == plugin.Name)
+                    .Select(i => new { i.Key, i.Value })
+                    //.AsEnumerable()
+                    .ToDictionary(i => i.Key, i => i.Value);
+            }
+        }
+
+        public void SavePluginConfiguration(IPlugin plugin, Dictionary<string, string> configuration)
+        {
+            using (var context = new ChatbotContext())
+            {
+                IEnumerable<PluginConfiguration> newConfig = configuration.Select(i => new PluginConfiguration() { Name = plugin.Name, Key = i.Key, Value = i.Value });
+                context.PluginConfigurations.RemoveRange(context.PluginConfigurations.Where(i => i.Name == plugin.Name));
+                context.PluginConfigurations.AddRange(newConfig);
+                context.SaveChanges();
+            }
+        }
+
         /*
         public Test SelectFirst(Func<Test, bool> condition)
         {
