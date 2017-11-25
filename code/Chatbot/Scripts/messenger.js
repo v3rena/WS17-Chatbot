@@ -90,13 +90,19 @@ function ensureSession() {
 }
 
 
+
 navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
-        rec = new MediaRecorder(stream);
+        var options = {
+            mimeType: 'audio/ogg'
+        }
+        rec = new MediaRecorder(stream, options);
+        //startRecord();
         rec.ondataavailable = e => {
             audioChunks.push(e.data);
             if (rec.state == "inactive") {
-                let blob = new Blob(audioChunks, { type: 'audio/x-mpeg-3' });
+                let blob = new Blob(audioChunks, { type: 'audio/ogg; codecs=opus' });
+                postAudio(blob);
                 recordedAudio.src = URL.createObjectURL(blob);
                 recordedAudio.controls = true;
                 recordedAudio.autoplay = true;
@@ -108,14 +114,45 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     })
     .catch(e => console.log(e));
 
-startRecord.onclick = e => {
+/*$("#startRecord").click(function () {
+
+})*/
+
+
+function postAudio(blob) {
+
+    var fd = new FormData();
+    fd.append('data', blob);
+
+    console.log(fd);
+    console.log(blob);
+
+    $.ajax({
+        url: 'https://speech.platform.bing.com/speech/recognition/dictation/cognitiveservices/v1?language=de-DE&format=detailed',
+        type: 'post',
+        data: blob,
+        headers: {
+            "Ocp-Apim-Subscription-Key": '31993c62e9f146bbaec9f49bf2cdb0b3',
+        },
+        contentType: 'audio/ogg; codecs=opus',
+        processData: false,
+        success: function (data) {
+            console.info(data);
+        }
+    });
+}
+
+
+/*function startRecord()*/startRecord.onclick = e => {
     startRecord.disabled = true;
     stopRecord.disabled = false;
     audioChunks = [];
     rec.start();
 }
+
 stopRecord.onclick = e => {
     startRecord.disabled = false;
     stopRecord.disabled = true;
     rec.stop();
 }
+
