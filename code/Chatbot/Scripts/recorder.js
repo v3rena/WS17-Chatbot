@@ -1,21 +1,18 @@
 ﻿var SDK;
-var key = "31993c62e9f146bbaec9f49bf2cdb0b3";
 var recognizer;
 var recognitionMode = "Dictation", languageOptions = "de-DE", formatOptions = "Simple";
-var startBtn, stopBtn, status, message;
+var startBtn, message;
 
 
 function Setup() {
     if (recognizer != null) {
         RecognizerStop(SDK, recognizer);
     }
-    recognizer = RecognizerSetup(SDK, recognitionMode, languageOptions, SDK.SpeechResultFormat[formatOptions], key);
+    recognizer = RecognizerSetup(SDK, recognitionMode, languageOptions, SDK.SpeechResultFormat[formatOptions], '31993c62e9f146bbaec9f49bf2cdb0b3');
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     startBtn = document.getElementById("startRecord");
-    stopBtn = document.getElementById("stopRecord");
-    status = document.getElementById("status");
     message = document.getElementById("message");
 
     Initialize(function (speechSdk) {
@@ -25,12 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     startBtn.addEventListener("click", function () {
         if (!recognizer) {
-            previousSubscriptionKey = key.value;
             Setup();
         }
         RecognizerStart(SDK, recognizer);
         startBtn.disabled = true;
-        stopBtn.disabled = false;
     });
 });
 
@@ -74,20 +69,16 @@ function RecognizerStart(SDK, recognizer) {
                 break;
             case "SpeechStartDetectedEvent":
                 UpdateStatus("Listening_DetectedSpeech_Recognizing");
-                console.log(JSON.stringify(event.Result)); // check console for other information in result
                 break;
             case "SpeechHypothesisEvent":
                 UpdateRecognizedHypothesis(event.Result.Text, false);
-                console.log(JSON.stringify(event.Result)); // check console for other information in result
                 break;
             case "SpeechFragmentEvent":
                 UpdateRecognizedHypothesis(event.Result.Text, true);
-                console.log(JSON.stringify(event.Result)); // check console for other information in result
                 break;
             case "SpeechEndDetectedEvent":
                 OnSpeechEndDetected();
                 UpdateStatus("Processing_Adding_Final_Touches");
-                console.log(JSON.stringify(event.Result)); // check console for other information in result
                 break;
             case "SpeechSimplePhraseEvent":
                 UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
@@ -98,7 +89,6 @@ function RecognizerStart(SDK, recognizer) {
             case "RecognitionEndedEvent":
                 OnComplete();
                 UpdateStatus("Idle");
-                console.log(JSON.stringify(event)); // Debug information
                 break;
             default:
                 console.log(JSON.stringify(event)); // Debug information
@@ -118,7 +108,7 @@ function RecognizerStop(SDK, recognizer) {
 }
 
 function UpdateStatus(status) {
-    message.value = status;
+    
 }
 
 function UpdateRecognizedHypothesis(text, append) {
@@ -133,14 +123,17 @@ function UpdateRecognizedHypothesis(text, append) {
 }
 
 function OnSpeechEndDetected() {
-    stopBtn.disabled = true;
+  
 }
 
 function UpdateRecognizedPhrase(json) {
-    message.value += json + "\n";
+    json = JSON.parse(json);
+    if (json.RecognitionStatus === "Success") {
+        message.value = json.DisplayText;
+    }
+    $("#messageForm").submit();
 }
 
 function OnComplete() {
     startBtn.disabled = false;
-    stopBtn.disabled = true;
 }

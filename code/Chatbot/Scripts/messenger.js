@@ -1,5 +1,5 @@
 var url = "/api/message/";
-var key;
+var apiSubKey;
 
 $(document).ready(ensureSession);
 
@@ -16,7 +16,7 @@ $("#messageForm").submit(function (event) {
     var m = $("#message").val();
     $("#message").val("");
 
-    var message = { Content: m, SessionKey: key };
+    var message = { Content: m, SessionKey: apiSubKey };
 
     var posting = $.ajax({
         url: url,
@@ -71,8 +71,8 @@ function ensureSession() {
                 datatype: "json",
                 success: function (data) {
                     if (data !== "undefined" && data != null) {
-                        key = JSON.stringify(data);
-                        localStorage.setItem("sessionKey", key);
+                        apiSubKey = JSON.stringify(data);
+                        localStorage.setItem("sessionKey", apiSubKey);
                     } else {
                         addErrorMessage("Unable to start session", true);
                     }
@@ -82,7 +82,7 @@ function ensureSession() {
                 }
             })
         } else {
-            key = _sessionKey;
+            apiSubKey = _sessionKey;
         }
     } else {
         addErrorMessage("Sorry! No Web Storage support.", true);
