@@ -30,7 +30,7 @@ namespace Chatbot.Plugins.NewsBot
 			}
 			else if (message.Content.ToLower().Contains("neues"))
 			{
-				return 0.5f;
+				return 0.3f;
 			}
 			else
 			{
@@ -64,7 +64,7 @@ namespace Chatbot.Plugins.NewsBot
 						answer = QueryByCategory(entity);
 						if (string.IsNullOrWhiteSpace(answer))
 						{
-							answer = $"Es wurden keine News zu {entity.entity} gefunden. ";
+							answer = $"Es wurden keine News zu \"{entity.entity}\" gefunden. ";
 							answer += QueryGeneralNews();
 						}
 					}
@@ -73,7 +73,7 @@ namespace Chatbot.Plugins.NewsBot
 						answer = QueryByKeyword(entity);
 						if (string.IsNullOrWhiteSpace(answer))
 						{
-							answer = $"Es wurden keine News zu {entity.entity} gefunden. ";
+							answer = $"Es wurden keine News zu \"{entity.entity}\" gefunden. ";
 							answer += QueryGeneralNews();
 						}
 					}
