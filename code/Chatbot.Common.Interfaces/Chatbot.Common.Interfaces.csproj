@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE7DBE15-8FFA-4C74-8F45-C8EAA129B857}</ProjectGuid>
+    <ProjectGuid>{D988E757-4EE0-4FBA-B843-6AADBD942281}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chatbot.Mapping</RootNamespace>
-    <AssemblyName>Chatbot.Mapping</AssemblyName>
+    <RootNamespace>Chatbot.Common.Interfaces</RootNamespace>
+    <AssemblyName>Chatbot.Common.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,25 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessDataAccessMappingProfile.cs" />
-    <Compile Include="ServiceBusinessMappingProfile.cs" />
+    <Compile Include="IPlugin.cs" />
+    <Compile Include="IPluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Chatbot.BusinessLayer.Models\Chatbot.BusinessLayer.Models.csproj">
-      <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
+      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
       <Name>Chatbot.BusinessLayer.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.DataAccessLayer.Entities\Chatbot.DataAccessLayer.Entities.csproj">
-      <Project>{404732f6-b3fb-451f-b63c-ea1875e79390}</Project>
-      <Name>Chatbot.DataAccessLayer.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.ServiceLayer.DTOs\Chatbot.ServiceLayer.DTOs.csproj">
-      <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
-      <Name>Chatbot.ServiceLayer.DTOs</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
