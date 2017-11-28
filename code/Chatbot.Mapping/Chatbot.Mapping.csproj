@@ -48,9 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
       <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
       <Name>Chatbot.DTOs</Name>
@@ -59,6 +56,9 @@
       <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
       <Name>Chatbot.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

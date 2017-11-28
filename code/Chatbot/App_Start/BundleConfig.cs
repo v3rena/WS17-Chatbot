@@ -9,7 +9,7 @@ namespace Chatbot
         public static void RegisterBundles(BundleCollection bundles)
         {
             BundleTable.EnableOptimizations = true;
-            
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-3.2.1.js"));
 

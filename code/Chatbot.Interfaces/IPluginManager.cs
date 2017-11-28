@@ -1,10 +1,11 @@
 ﻿using Chatbot.Models;
+using System.Collections.Generic;
 
 namespace Chatbot.Interfaces
 {
     public interface IPluginManager
     {
-        System.Collections.Generic.IEnumerable<IPlugin> Plugins { get; }
+        IEnumerable<IPlugin> Plugins { get; }
 
         void Add(IPlugin plugin);
 
