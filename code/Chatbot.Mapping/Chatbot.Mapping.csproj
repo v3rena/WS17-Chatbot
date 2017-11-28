@@ -60,6 +60,10 @@
       <Project>{404732f6-b3fb-451f-b63c-ea1875e79390}</Project>
       <Name>Chatbot.DataAccessLayer.Entities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chatbot.DataAccessLayer.Interfaces\Chatbot.DataAccessLayer.Interfaces.csproj">
+      <Project>{004e2679-196b-4685-8e92-8fec5a01fed9}</Project>
+      <Name>Chatbot.DataAccessLayer.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chatbot.ServiceLayer.DTOs\Chatbot.ServiceLayer.DTOs.csproj">
       <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
       <Name>Chatbot.ServiceLayer.DTOs</Name>

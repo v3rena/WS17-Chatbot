@@ -13,9 +13,9 @@ namespace Chatbot.Mapping
                 .ForSourceMember(source => source.IsUserMessage, opt => opt.Ignore());
 
             CreateMap<ServiceLayer.DTOs.SessionKey, BusinessLayer.Models.SessionKey>()
-                .ForMember(i => i.Key, opt => opt.MapFrom(k => Guid.Parse(k.Key)));
+                .ForMember(destination => destination.Key, opt => opt.MapFrom(k => Guid.Parse(k.Key)));
             CreateMap<BusinessLayer.Models.SessionKey, ServiceLayer.DTOs.SessionKey>()
-                .ForMember(i => i.Key, opt => opt.MapFrom(k => k.Key.ToString()));
+                .ForMember(destination => destination.Key, opt => opt.MapFrom(k => k.Key.ToString()));
         }
     }
 }
