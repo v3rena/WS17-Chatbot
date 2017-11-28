@@ -65,17 +65,21 @@
     <Compile Include="SourceSelector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
+      <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
+      <Name>Chatbot.DTOs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
-      <Project>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</Project>
+      <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
       <Name>Chatbot.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
-      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
+      <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
       <Name>Chatbot.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
