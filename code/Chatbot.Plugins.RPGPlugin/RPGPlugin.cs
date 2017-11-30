@@ -43,7 +43,7 @@ namespace Chatbot.Plugins.RPGPlugin
         public Message Handle(Message message)
         {
             SessionKey userId = message.SessionKey;
-            List<string> tokens = message.Content.Split(' ').Where(t => t.Length > 0).ToList();
+            List<string> tokens = message.Content.ToLower().Split(' ').Where(t => t.Length > 0).ToList();
 
             return HandleTokens(userId, tokens);
 
@@ -67,7 +67,14 @@ namespace Chatbot.Plugins.RPGPlugin
             if (games.TryGetValue(session.Key, out game))
             {
                 //message = string.Format("Game loaded for Session {0}", session.Key);
-                message = game.ShowPlayerActions();
+                if (tokens.Count == 1)
+                {
+                    message = game.RoomFeelings();
+                }
+                else
+                {
+                    message = game.PlayerAction(tokens);
+                }
             }
             else
             {

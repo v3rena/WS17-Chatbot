@@ -11,41 +11,196 @@ namespace Chatbot.Plugins.RPGPlugin
 {
     public class RPGGame
     {
-        int level = 1;
+        int depth;
+        RPGRoom currentRoom;
+        RPGPlayer player;
 
-        public string ShowPlayerActions()
+        public RPGGame()
         {
-            /*string result = string.Format("You are standing {0}, the monster being {1} steps behind you.", "in a dark hallway", 500);
-            result += string.Format("<br/>In the north, you see {0}. The room smells of {1}. It seems like there's {2} magic present.", "a faint shimmer of red", "rotten plants", "no");
-            result += string.Format("<br/>In the west, you make out {0}. The room smells of {1}. The temperature seems to be {2}.", "a violet shimmer", "incense", "above average");
-            result += string.Format("<br/>In the east, you notice {0}. The room smells of {1}. You can hear {2}.", "green shapes", "fish", "cackling voices");*/
+            depth = 0;
+            player = new RPGPlayer();
+            currentRoom = new RPGRoom();
+            currentRoom.CreateRooms(depth);
+        }
 
+        public string RoomFeelings()
+        {
+            string result = string.Format("You are {0} meters inside the temple.", depth * 20);
 
+            result += RoomItems();
 
-            RPGRoom r1 = RPGRoomFactory.CreateRoom(level);
-            RPGRoom r2 = RPGRoomFactory.CreateRoom(level);
-            RPGRoom r3 = RPGRoomFactory.CreateRoom(level);
+            result += string.Format("<br/>The room in the north: {0}", currentRoom.r1.GetPlayerFeeling(5));
+            result += string.Format("<br/>The room in the west: {0}", currentRoom.r2.GetPlayerFeeling(5));
+            result += string.Format("<br/>The room in the east: {0}", currentRoom.r3.GetPlayerFeeling(5));
 
-            string result = string.Format("You are {0} meters inside the temple.", level * 50);
-
-            result += string.Format("<br/>The room in the north: {0}", r1.GetPlayerFeeling(5));
-            result += string.Format("<br/>The room in the west: {0}", r2.GetPlayerFeeling(5));
-            result += string.Format("<br/>The room in the east: {0}", r3.GetPlayerFeeling(5));
-
-            level++;
             return result;
+        }
 
+        public string PlayerAction(List<string> tokens)
+        {
+            switch (tokens[1])
+            {
+                case "n":
+                case "north":
+                case "1":
+                    return RoomCleared(1);
+                case "2":
+                case "w":
+                case "west":
+                    return RoomCleared(2);
+                case "3":
+                case "e":
+                case "east":
+                    return RoomCleared(3);
+                case "look":
+                case "inspect":
+                    return RoomFeelings();
+                case "take":
+                case "grab":
+                case "get":
+                case "t":
+                    if (tokens.Count > 2)
+                        return TakeRoomItemByToken(tokens[2]);
+                    else
+                        return "What do you want to take?"+RoomItems();
+                case "takeall":
+                    return TakeAllRoomItems();
+                case "i":
+                case "inventory":
+                    return player.PlayerInventoryInfo();
+                case "help":
+                default:
+                    return "You can control your character through the following commands:<br/>" +
+                        "Walk north: n, north, 1<br/>" +
+                        "Walk west: w, west, 2<br/>"+
+                        "Walk east: e, east, 3<br/>" +
+                        "Inspect the room: look, inspect<br/>" +
+                        "Take an item X: take X, grab X, get X, t X<br/>" +
+                        "Take all items: takeAll<br/>" +
+                        "Check inventory: i, inventory<br/>" +
+                        "Open help: help";
+            }
+        }
 
+        public string TakeRoomItemByToken(string item)
+        {
+            var items = currentRoom.items.Where(i => i.GetName().ToLower().Contains(item.ToLower())).ToList();
+            if (items.Count > 0)
+            {
+                player.inventory.Add(new RPGItem(items.FirstOrDefault()));
+                currentRoom.items.Remove(items.FirstOrDefault());
+                return "You take the " + items.FirstOrDefault().GetName()+ ".";
+            }
+            return "You cannot take the " + item + "!";
+        }
+
+        public string TakeAllRoomItems()
+        {
+            var items = currentRoom.items;
+            if(items.Count == 0)
+            {
+                return "You don't see any items...";
+            }
+            string result = "";
+            for(int i = items.Count-1; i >= 0; i--)
+            {
+                IRPGItem item = items[i];
+                result += "<br/>1 " + item.GetName();
+                player.inventory.Add(new RPGItem(item));
+                currentRoom.items.Remove(item);
+            }
+            return "You take the following items:" + result;
+            
+        }
+
+        public string RoomCleared(int walkTo)
+        {
+            depth++;
+            switch (walkTo)
+            {
+                case 1:
+                    currentRoom = currentRoom.r1;
+                    break;
+                case 2:
+                    currentRoom = currentRoom.r2;
+                    break;
+                case 3:
+                    currentRoom = currentRoom.r3;
+                    break;
+            }
+            currentRoom.CreateRooms(depth);
+
+            return RoomFeelings();
+        }
+
+        public string RoomItems()
+        {
+            string result = "";
+            if (currentRoom.items.Count > 0)
+            {
+                result += "<br/>On the floor, you see the following objects: ";
+
+                for (int i = 0; i < currentRoom.items.Count; i++)
+                {
+                    var item = currentRoom.items[i];
+                    result += "<u>"+item.GetName()+"</u>";
+                    if (i < currentRoom.items.Count - 1)
+                    {
+                        result += ", ";
+                    }
+                }
+            }
+            return result;
+        }
+    }
+
+    public class RPGPlayer
+    {
+        public IList<IRPGItem> inventory = new List<IRPGItem>();
+
+        public string PlayerInventoryInfo()
+        {
+            string result = "";
+            if (inventory.Count == 0)
+            {
+                result += "You don't have any items";
+            }
+            else if (inventory.Count == 1)
+            {
+                result += "You have 1 " + inventory[0].GetName();
+            }
+            else
+            {
+                result += "You carry " + inventory.Count + " items: ";
+                foreach (IRPGItem item in inventory)
+                {
+                    result += "<br/>" + item.GetName();
+                }
+            }
+            return result;
         }
     }
 
     public class RPGRoom
     {
-        public IList<IRPGTrap> traps;
-        public IList<IRPGMonster> monsters;
-        public IList<IRPGItem> items;
+        public IList<IRPGTrap> traps = new List<IRPGTrap>();
+        public IList<IRPGMonster> monsters = new List<IRPGMonster>();
+        public IList<IRPGItem> items = new List<IRPGItem>();
 
-        public IList<IRPGObject> objects;
+        public IList<IRPGObject> objects = new List<IRPGObject>();
+
+        public RPGRoom r1, r2, r3;
+
+        public RPGRoom()
+        {
+        }
+
+        public void CreateRooms(int depth)
+        {
+            r1 = RPGRoomFactory.CreateRoom(depth);
+            r2 = RPGRoomFactory.CreateRoom(depth);
+            r3 = RPGRoomFactory.CreateRoom(depth);
+        }
 
         public string GetPlayerFeeling(int perception)
         {
@@ -98,11 +253,11 @@ namespace Chatbot.Plugins.RPGPlugin
                 result += "The temperature is unsual. ";
             }
 
-            foreach (RPGItem item in objects)
+            /*foreach (RPGItem item in objects)
             {
-                result += "<br/>"+item.GetName();
+                result += "<br/>" + item.GetName();
             }
-
+            */
             return result;
         }
 
@@ -149,23 +304,27 @@ namespace Chatbot.Plugins.RPGPlugin
 
     public class RPGRoomFactory
     {
-        public static RPGRoom CreateRoom(int level)
+        public static RPGRoom CreateRoom(int depth)
         {
             RPGRoom result = new RPGRoom();
 
-            result.traps = CreateTraps(level);
-            result.monsters = CreateMonsters(level);
-            result.items = CreateItems(level);
+            result.traps = CreateTraps(depth);
+            result.monsters = CreateMonsters(depth);
+            result.items = CreateItems(depth);
 
             return result;
         }
 
-        private static IList<IRPGItem> CreateItems(int level)
+        private static IList<IRPGItem> CreateItems(int depth)
         {
             IList<IRPGItem> result = new List<IRPGItem>();
 
-            result.Add(RPGItemFactory.GetItemForDepth(level));
-            result.Add(RPGItemFactory.GetItemForDepth(level));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
+            result.Add(RPGItemFactory.GetItemForDepth(depth));
 
             return result;
         }
