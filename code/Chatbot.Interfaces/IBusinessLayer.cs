@@ -7,5 +7,7 @@ namespace Chatbot.Interfaces
         Message ProcessMessage(Message message);
 
         SessionKey GenerateSession();
+
+        string GetSpeechAPIToken();
     }
 }

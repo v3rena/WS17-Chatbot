@@ -49,7 +49,30 @@ function RecognizerSetup(SDK, recognitionMode, language, format, subscriptionKey
         format); // SDK.SpeechResultFormat.Simple (Options - Simple/Detailed)
 
     // Alternatively use SDK.CognitiveTokenAuthentication(fetchCallback, fetchOnExpiryCallback) for token auth
-    let authentication = new SDK.CognitiveSubscriptionKeyAuthentication(subscriptionKey);
+    //let authentication = new SDK.CognitiveSubscriptionKeyAuthentication(subscriptionKey);
+
+    var authentication = function () {
+        var callback = function () {
+            var tokenDeferral = new SDK.Deferred();
+            try {
+                var xhr = new (XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
+                xhr.open('GET', '/api/token', 1);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        tokenDeferral.Resolve(xhr.responseText);
+                    } else {
+                        tokenDeferral.Reject('Issue token request failed.');
+                    }
+                };
+                xhr.send();
+            } catch (e) {
+                window.console && console.log(e);
+                tokenDeferral.Reject(e.message);
+            }
+            return tokenDeferral.Promise();
+        }
+        return new SDK.CognitiveTokenAuthentication(callback, callback);
+    }();
 
     return SDK.CreateRecognizer(recognizerConfig, authentication);
 }

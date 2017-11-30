@@ -50,10 +50,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Interfaces.Models\Chatbot.Interfaces.Models.csproj">
-      <Project>{0EC4528F-3C24-4609-B66C-658010CA81ED}</Project>
-      <Name>Chatbot.Interfaces.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
       <Project>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</Project>
       <Name>Chatbot.Interfaces</Name>
