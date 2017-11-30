@@ -1,7 +1,7 @@
 ﻿var SDK;
 var recognizer;
 var recognitionMode = "Dictation", languageOptions = "de-DE", formatOptions = "Simple";
-var startBtn, message;
+var startBtn, message, status;
 
 
 function Setup() {
@@ -14,6 +14,7 @@ function Setup() {
 document.addEventListener("DOMContentLoaded", function () {
     startBtn = document.getElementById("startRecord");
     message = document.getElementById("message");
+    status = document.getElementById("status");
 
     Initialize(function (speechSdk) {
         SDK = speechSdk;
@@ -59,13 +60,13 @@ function RecognizerStart(SDK, recognizer) {
     recognizer.Recognize((event) => {
         switch (event.Name) {
             case "RecognitionTriggeredEvent":
-                UpdateStatus("Initializing");
+                //UpdateStatus("Initializing");
                 break;
             case "ListeningStartedEvent":
-                UpdateStatus("Listening");
+                UpdateStatus("Recording...");
                 break;
             case "RecognitionStartedEvent":
-                UpdateStatus("Listening_Recognizing");
+                UpdateStatus("Recognizing...");
                 break;
             case "SpeechStartDetectedEvent":
                 UpdateStatus("Listening_DetectedSpeech_Recognizing");
@@ -78,7 +79,7 @@ function RecognizerStart(SDK, recognizer) {
                 break;
             case "SpeechEndDetectedEvent":
                 OnSpeechEndDetected();
-                UpdateStatus("Processing_Adding_Final_Touches");
+                //UpdateStatus("Processing_Adding_Final_Touches");
                 break;
             case "SpeechSimplePhraseEvent":
                 UpdateRecognizedPhrase(JSON.stringify(event.Result, null, 3));
@@ -88,7 +89,7 @@ function RecognizerStart(SDK, recognizer) {
                 break;
             case "RecognitionEndedEvent":
                 OnComplete();
-                UpdateStatus("Idle");
+                UpdateStatus("");
                 break;
             default:
                 console.log(JSON.stringify(event)); // Debug information
@@ -108,7 +109,9 @@ function RecognizerStop(SDK, recognizer) {
 }
 
 function UpdateStatus(status) {
-    
+    console.log("update:" + status);
+    document.getElementById("status").innerHTML = status;
+    //status.innerHTML = status;
 }
 
 function UpdateRecognizedHypothesis(text, append) {
@@ -131,7 +134,9 @@ function UpdateRecognizedPhrase(json) {
     if (json.RecognitionStatus === "Success") {
         message.value = json.DisplayText;
     }
-    $("#messageForm").submit();
+    if (message.value !== "") {
+        $("#messageForm").submit();
+    }
 }
 
 function OnComplete() {
