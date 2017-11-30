@@ -59,7 +59,7 @@ function RecognizerSetup(SDK, recognitionMode, language, format, subscriptionKey
                 xhr.open('GET', '/api/token', 1);
                 xhr.onload = function () {
                     if (xhr.status === 200) {
-                        tokenDeferral.Resolve(xhr.responseText);
+                        tokenDeferral.Resolve("Bearer " + xhr.responseText.slice(1,-1));
                     } else {
                         tokenDeferral.Reject('Issue token request failed.');
                     }
@@ -115,7 +115,7 @@ function RecognizerStart(SDK, recognizer) {
                 UpdateStatus("");
                 break;
             default:
-                console.log(JSON.stringify(event)); // Debug information
+                //console.log(JSON.stringify(event)); // Debug information
         }
     })
         .On(() => {
@@ -132,7 +132,6 @@ function RecognizerStop(SDK, recognizer) {
 }
 
 function UpdateStatus(status) {
-    console.log("update:" + status);
     document.getElementById("status").innerHTML = status;
     //status.innerHTML = status;
 }

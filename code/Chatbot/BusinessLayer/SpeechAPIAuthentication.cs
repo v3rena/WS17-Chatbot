@@ -32,7 +32,7 @@ public class SpeechAPIAuthentication
             UriBuilder uriBuilder = new UriBuilder(fetchUri);
             uriBuilder.Path += "/issueToken";
 
-            var result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null); // TODO this line never finishes
+            var result = await client.PostAsync(uriBuilder.Uri.AbsoluteUri, null).ConfigureAwait(false);
             log.Debug("Token Uri: " + uriBuilder.Uri.AbsoluteUri);
             return await result.Content.ReadAsStringAsync();
         }
