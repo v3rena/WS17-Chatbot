@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBusinessLayer.cs" />
     <Compile Include="IMessagingLogic.cs" />
     <Compile Include="IPluginConfigurationLogic.cs" />
     <Compile Include="ISessionLogic.cs" />

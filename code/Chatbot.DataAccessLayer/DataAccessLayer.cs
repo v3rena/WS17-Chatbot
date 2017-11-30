@@ -12,7 +12,9 @@ namespace Chatbot.DataAccessLayer
 {
     public class DataAccessLayer : IDataAccessLayer
     {
-        public DataAccessLayer()
+        private readonly IList<IBaseRepository> repositories = new List<IBaseRepository>();
+
+        public DataAccessLayer(IRepository<Message> messageRepository, IRepository<PluginConfiguration> pluginConfigurationRepository, IRepository<SessionKey> sessionKeyRepository)
         {
             // TODO: Add after migration
             Database.SetInitializer<ChatbotContext>(new MigrateDatabaseToLatestVersion<ChatbotContext, Migrations.ConfigurationMessage>());
@@ -21,69 +23,77 @@ namespace Chatbot.DataAccessLayer
                 context.Database.Initialize(false);
             }
 
+            repositories.Add(messageRepository);
+            repositories.Add(pluginConfigurationRepository);
+            repositories.Add(sessionKeyRepository);
         }
 
-        public string Name => GetName();
-
-        public string GetName()
+        public IRepository<T> GetRepository<T>() where T: IEntity
         {
-            return "DataAccessLayer";
+            return (IRepository<T>)repositories.Where(i => i.GetType().GenericTypeArguments.Contains(typeof(T))).Single();
         }
 
-        public string GetTest(int id)
-        {
-            Message result = null;
-            using (var context = new ChatbotContext())
-            {
-                //result = context.Message.FirstOrDefault();
-            }
-            return result?.Content;
-        }
+        //public string Name => GetName();
 
-        public int Insert(Message item)
-        {
-            using (var context = new ChatbotContext())
-            {
-                context.Messages.Add(item);
-                return context.SaveChanges();
-            }
-        }
+        //public string GetName()
+        //{
+        //    return "DataAccessLayer";
+        //}
 
-        public IEnumerable<Message> Select(Func<Message, bool> condition)
-        {
-            IEnumerable<Message> result = null;
-            using (var context = new ChatbotContext())
-            {
-                result = context
-                    .Messages
-                    //.Where(condition)
-                    .ToList();
-            }
-            return result;
-        }
+        //public string GetTest(int id)
+        //{
+        //    Message result = null;
+        //    using (var context = new ChatbotContext())
+        //    {
+        //        //result = context.Message.FirstOrDefault();
+        //    }
+        //    return result?.Content;
+        //}
 
-        public Dictionary<string, string> GetPluginConfiguration(IPlugin plugin)
-        {
-            using (var context = new ChatbotContext())
-            {
-                return context.PluginConfigurations
-                    .Where(i => i.Name == plugin.Name)
-                    .Select(i => new { i.Key, i.Value })
-                    //.AsEnumerable()
-                    .ToDictionary(i => i.Key, i => i.Value);
-            }
-        }
+        //public int Insert(Message item)
+        //{
+        //    using (var context = new ChatbotContext())
+        //    {
+        //        context.Messages.Add(item);
+        //        return context.SaveChanges();
+        //    }
+        //}
 
-        public void SavePluginConfiguration(IPlugin plugin, Dictionary<string, string> configuration)
-        {
-            using (var context = new ChatbotContext())
-            {
-                IEnumerable<PluginConfiguration> newConfig = configuration.Select(i => new PluginConfiguration() { Name = plugin.Name, Key = i.Key, Value = i.Value });
-                context.PluginConfigurations.RemoveRange(context.PluginConfigurations.Where(i => i.Name == plugin.Name));
-                context.PluginConfigurations.AddRange(newConfig);
-                context.SaveChanges();
-            }
-        }
+        //public IEnumerable<Message> Select(Func<Message, bool> condition)
+        //{
+        //    IEnumerable<Message> result = null;
+        //    using (var context = new ChatbotContext())
+        //    {
+        //        result = context
+        //            .Messages
+        //            //.Where(condition)
+        //            .ToList();
+        //    }
+        //    return result;
+        //}
+
+        //public Dictionary<string, string> GetPluginConfiguration(IPlugin plugin)
+        //{
+        //    using (var context = new ChatbotContext())
+        //    {
+        //        return context.PluginConfigurations
+        //            .Where(i => i.Name == plugin.Name)
+        //            .Select(i => new { i.Key, i.Value })
+        //            //.AsEnumerable()
+        //            .ToDictionary(i => i.Key, i => i.Value);
+        //    }
+        //}
+
+        //public void SavePluginConfiguration(IPlugin plugin, Dictionary<string, string> configuration)
+        //{
+        //    using (var context = new ChatbotContext())
+        //    {
+        //        IEnumerable<PluginConfiguration> newConfig = configuration.Select(i => new PluginConfiguration() { Name = plugin.Name, Key = i.Key, Value = i.Value });
+        //        context.PluginConfigurations.RemoveRange(context.PluginConfigurations.Where(i => i.Name == plugin.Name));
+        //        context.PluginConfigurations.AddRange(newConfig);
+        //        context.SaveChanges();
+        //    }
+        //}
 
         /*
         public Test SelectFirst(Func<Test, bool> condition)
@@ -91,23 +101,23 @@ namespace Chatbot.DataAccessLayer
             return Select(condition).FirstOrDefault();
         }*/
 
-        public class Module : Autofac.Module
-        {
-            protected override void Load(ContainerBuilder builder)
-            {
-                //base.Load(builder);
-                builder
-                    .Register(component => new DataAccessLayer())
-                    .As<IDataAccessLayer>()
-                    .InstancePerLifetimeScope();
+        //public class Module : Autofac.Module
+        //{
+        //    protected override void Load(ContainerBuilder builder)
+        //    {
+        //        //base.Load(builder);
+        //        builder
+        //            .Register(component => new DataAccessLayer())
+        //            .As<IDataAccessLayer>()
+        //            .InstancePerLifetimeScope();
 
-                /*
-                 builder.Register(c => new ValuesService(c.Resolve<ILogger<ValuesService>>()))
-                        .As<IValuesService>()
-                    .InstancePerLifetimeScope();
-                 */
-            }
-        }
+        //        /*
+        //         builder.Register(c => new ValuesService(c.Resolve<ILogger<ValuesService>>()))
+        //                .As<IValuesService>()
+        //            .InstancePerLifetimeScope();
+        //         */
+        //    }
+        //}
 
     }
 }

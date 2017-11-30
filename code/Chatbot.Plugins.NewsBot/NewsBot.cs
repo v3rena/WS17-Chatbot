@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
+using Chatbot.Plugins.NewsBot.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Chatbot.Interfaces;
-using Chatbot.Models;
 using System.Text;
-using Chatbot.Plugins.NewsBot.Models;
 
 namespace Chatbot.Plugins.NewsBot
 {
-	public class NewsBot : IPlugin
+    public class NewsBot : IPlugin
 	{
 		public string Name => "NewsBot";
 		private static readonly string Category = "Category";
@@ -38,7 +37,7 @@ namespace Chatbot.Plugins.NewsBot
 			}
 		}
 
-		public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+		public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
 		{
 			//TODO: Read Api key from config
 			return configuration;

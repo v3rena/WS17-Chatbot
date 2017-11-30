@@ -21,5 +21,7 @@ namespace Chatbot.BusinessLayer.Interfaces
         PluginConfiguration GetPluginConfiguration(string name, string key);
 
         void SavePluginConfiguration(PluginConfiguration pluginConfiguration);
+
+        void SavePluginConfigurations(IEnumerable<PluginConfiguration> pluginConfigurations);
     }
 }

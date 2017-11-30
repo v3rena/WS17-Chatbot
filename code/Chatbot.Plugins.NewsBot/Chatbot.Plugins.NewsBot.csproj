@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Chatbot\bin\debug\plugins\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Chatbot\bin\release\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -68,15 +68,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chatbot.DTOs\Chatbot.DTOs.csproj">
+    <ProjectReference Include="..\Chatbot.Common.Interfaces\Chatbot.Common.Interfaces.csproj">
+      <Project>{D988E757-4EE0-4FBA-B843-6AADBD942281}</Project>
+      <Name>Chatbot.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.ServiceLayer.DTOs\Chatbot.ServiceLayer.DTOs.csproj">
       <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
       <Name>Chatbot.DTOs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
+    <ProjectReference Include="..\Chatbot.Common.PluginManager\Chatbot.Common.PluginManager.csproj">
       <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
       <Name>Chatbot.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
+    <ProjectReference Include="..\Chatbot.BusinessLayer.Models\Chatbot.BusinessLayer.Models.csproj">
       <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
       <Name>Chatbot.Models</Name>
     </ProjectReference>

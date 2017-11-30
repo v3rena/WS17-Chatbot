@@ -57,7 +57,15 @@ namespace Chatbot.BusinessLayer
 
         public void SavePluginConfiguration(PluginConfiguration pluginConfiguration)
         {
-            pluginConfigurationRepository.Update(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
+            pluginConfigurationRepository.Save(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
+        }
+
+        public void SavePluginConfigurations(IEnumerable<PluginConfiguration> pluginConfigurations)
+        {
+            foreach(PluginConfiguration p in pluginConfigurations)
+            {
+                SavePluginConfiguration(p);
+            }
         }
     }
 }

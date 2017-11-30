@@ -17,7 +17,7 @@ namespace Chatbot.Plugins.EchoBot
             return 0.2f;
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
         {
             //No configuration necessary
             return configuration;

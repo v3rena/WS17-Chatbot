@@ -11,17 +11,17 @@ namespace Chatbot.Controllers
     [RoutePrefix("plugin-configuration")]
     public class PluginConfigurationController : Controller
     {
-        private readonly IBusinessLayer businessLayer;
+        private readonly IPluginConfigurationLogic pluginConfigurationLogic;
 
-        public PluginConfigurationController(IBusinessLayer businessLayer)
+        public PluginConfigurationController(IPluginConfigurationLogic pluginConfigurationLogic)
         {
-            this.businessLayer = businessLayer;
+            this.pluginConfigurationLogic = pluginConfigurationLogic;
         }
 
         // GET: PluginConfigurations
         public ActionResult Index()
         {
-            return View(businessLayer.GetPluginConfigurations());
+            return View(pluginConfigurationLogic.GetPluginConfigurations());
         }
 
         // GET: PluginConfigurations/Details/EchoBot/ConfigSetting
@@ -31,7 +31,7 @@ namespace Chatbot.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PluginConfiguration pluginConfiguration = businessLayer.GetPluginConfiguration(name, key);
+            PluginConfiguration pluginConfiguration = pluginConfigurationLogic.GetPluginConfiguration(name, key);
             if (pluginConfiguration == null)
             {
                 return HttpNotFound();
@@ -52,7 +52,7 @@ namespace Chatbot.Controllers
         {
             if (ModelState.IsValid)
             {
-                businessLayer.AddPluginConfiguration(pluginConfiguration);
+                pluginConfigurationLogic.AddPluginConfiguration(pluginConfiguration);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +66,7 @@ namespace Chatbot.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PluginConfiguration pluginConfiguration = businessLayer.GetPluginConfiguration(name, key);
+            PluginConfiguration pluginConfiguration = pluginConfigurationLogic.GetPluginConfiguration(name, key);
             if (pluginConfiguration == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace Chatbot.Controllers
         {
             if (ModelState.IsValid)
             {
-                businessLayer.SavePluginConfiguration(pluginConfiguration);
+                pluginConfigurationLogic.SavePluginConfiguration(pluginConfiguration);
                 return RedirectToAction("Index");
             }
             return View(pluginConfiguration);
@@ -94,7 +94,7 @@ namespace Chatbot.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PluginConfiguration pluginConfiguration = businessLayer.GetPluginConfiguration(name, key);
+            PluginConfiguration pluginConfiguration = pluginConfigurationLogic.GetPluginConfiguration(name, key);
             if (pluginConfiguration == null)
             {
                 return HttpNotFound();
@@ -107,7 +107,7 @@ namespace Chatbot.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string name, string key)
         {
-            businessLayer.DeletePluginConfiguration(name, key);
+            pluginConfigurationLogic.DeletePluginConfiguration(name, key);
             return RedirectToAction("Index");
         }
     }

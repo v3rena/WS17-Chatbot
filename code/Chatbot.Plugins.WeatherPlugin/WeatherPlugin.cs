@@ -112,7 +112,7 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
         {
             //no configuration needed yet
             return configuration;

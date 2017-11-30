@@ -9,13 +9,13 @@ namespace Chatbot.Controllers
     [RoutePrefix("api/message")]
     public class MessageController : ApiController
     {
-        private readonly IBusinessLayer _bl;
-        private readonly IMapper _mapper;
+        private readonly IMessagingLogic messagingLogic;
+        private readonly IMapper mapper;
 
-        public MessageController(IBusinessLayer bl, IMapper mapper)
+        public MessageController(IMessagingLogic messagingLogic, IMapper mapper)
         {
-            _bl = bl;
-            _mapper = mapper;
+            this.messagingLogic = messagingLogic;
+            this.mapper = mapper;
         }
 
         // POST api/message/
@@ -25,8 +25,9 @@ namespace Chatbot.Controllers
         [ResponseType(typeof(Message))]
         public Message PostMessage([FromBody]Message message)
         {
+            int i = 4;
             //TODO check if message is valid (e.g. has SessionKey)
-            return _mapper.Map<Message>(_bl.ProcessMessage(_mapper.Map<BusinessLayer.Models.Message>(message)));
+            return mapper.Map<Message>(messagingLogic.ProcessMessage(mapper.Map<BusinessLayer.Models.Message>(message)));
         }
     }
 }

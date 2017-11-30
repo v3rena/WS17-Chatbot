@@ -16,6 +16,6 @@ namespace Chatbot.Common.Interfaces
         /// </summary>
         /// <param name="configuration">The current configuration.</param>
         /// <returns>The updated configuration.</returns>
-        Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration);
+        IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration);
     }
 }

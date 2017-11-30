@@ -41,7 +41,8 @@ namespace Chatbot.DataAccessLayer.Repositories
 
         public override void Delete(Func<Message, bool> condition)
         {
-            dbContext.Messages.RemoveRange(dbContext.Messages.Where(condition).ToList());
+            dbContext.Messages.RemoveRange(dbContext.Messages.Where(condition));
+            dbContext.SaveChanges();
         }
     }
 }

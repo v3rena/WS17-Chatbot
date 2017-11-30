@@ -1,14 +1,17 @@
 ﻿using Chatbot.Common.Interfaces;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace Chatbot.DataAccessLayer.Interfaces
 {
     public interface IDataAccessLayer
     {
-        string Name { get; }
+        IRepository<T> GetRepository<T>() where T : IEntity;
 
-        Dictionary<string, string> GetPluginConfiguration(IPlugin plugin);
+        //string Name { get; }
 
-        void SavePluginConfiguration(IPlugin plugin, Dictionary<string, string> configuration);
+        //Dictionary<string, string> GetPluginConfiguration(IPlugin plugin);
+
+        //void SavePluginConfiguration(IPlugin plugin, Dictionary<string, string> configuration);
     }
 }

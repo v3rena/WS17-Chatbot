@@ -1,20 +1,13 @@
-﻿using Chatbot.Models;
-using Chatbot.Plugins.NewsBot.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Chatbot.Plugins.NewsBot.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chatbot.Plugins.NewsBot
 {
-	public class SourceSelector
+    public class SourceSelector
 	{
 		private string apiKey = "de01ffd9808244fcbbfa65d675ee6fd0";
 

@@ -2,6 +2,8 @@
 {
     public class Message
     {
+        public int Id { get; set; }
+
         public string Content { get; set; }
 
         public SessionKey SessionKey { get; set; }

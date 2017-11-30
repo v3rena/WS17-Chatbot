@@ -39,9 +39,6 @@ namespace Chatbot
 
 
             CreateMasterContainer();
-
-            var dal = new DataAccessLayer.DataAccessLayer();
-            dal.GetTest(1);
         }
 
         private void CreateMasterContainer()
@@ -89,20 +86,22 @@ namespace Chatbot
             #endregion
 
             // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
-            builder.RegisterType<BusinessLayer.BusinessLayer>().As<IBusinessLayer>().InstancePerRequest();
 
             builder.RegisterType<BusinessLayer.MessagingLogic>().As<IMessagingLogic>().InstancePerRequest();
             builder.RegisterType<BusinessLayer.SessionLogic>().As<ISessionLogic>().InstancePerRequest();
             builder.RegisterType<BusinessLayer.PluginConfigurationLogic>().As<IPluginConfigurationLogic>().InstancePerRequest();
 
-            builder.RegisterType<DataAccessLayer.Repositories.MessageRepository>().As<IRepository<DataAccessLayer.Entities.Message>>();
-            builder.RegisterType<DataAccessLayer.Repositories.PluginConfigurationRepository>().As<IRepository<DataAccessLayer.Entities.PluginConfiguration>>();
+            builder.RegisterType<DataAccessLayer.Repositories.MessageRepository>().As<IRepository<DataAccessLayer.Entities.Message>>().InstancePerRequest();
+            builder.RegisterType<DataAccessLayer.Repositories.SessionKeyRepository>().As<IRepository<DataAccessLayer.Entities.SessionKey>>().InstancePerRequest();
+            builder.RegisterType<DataAccessLayer.Repositories.PluginConfigurationRepository>().As<IRepository<DataAccessLayer.Entities.PluginConfiguration>>().InstancePerRequest();
 
-            builder.RegisterType<PluginManager>().As<IPluginManager>().SingleInstance();
+            builder.RegisterType<PluginManager>().As<IPluginManager>().InstancePerRequest();
 
             builder.RegisterType<ChatbotContext>().InstancePerRequest();
 
-            builder.RegisterModule<DataAccessLayer.DataAccessLayer.Module>();
+            builder.RegisterType<DataAccessLayer.DataAccessLayer>().As<IDataAccessLayer>().InstancePerRequest();
+
+            //builder.RegisterModule<DataAccessLayer.DataAccessLayer.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
 
             // Set the dependency resolver to be Autofac.

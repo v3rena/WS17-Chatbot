@@ -27,18 +27,9 @@ namespace Chatbot.DataAccessLayer.Repositories
 
         public override void Update(PluginConfiguration pluginConfiguration)
         {
-            if (dbContext.PluginConfigurations.Where(i => i.Id == pluginConfiguration.Id).SingleOrDefault() != null)
-            {
-                dbContext.PluginConfigurations.Attach(pluginConfiguration);
-                dbContext.Entry(pluginConfiguration).State = EntityState.Modified;
-                dbContext.SaveChanges();
-            }
-            else
-            {
-                //TODO delete old version (id gets discarded when mapping to business model)
-                Delete(i => i.Name == pluginConfiguration.Name && i.Key == pluginConfiguration.Key);
-                Create(pluginConfiguration);
-            }
+            dbContext.PluginConfigurations.Attach(pluginConfiguration);
+            dbContext.Entry(pluginConfiguration).State = EntityState.Modified;
+            dbContext.SaveChanges();
         }
 
         public override void Delete(PluginConfiguration pluginConfiguration)

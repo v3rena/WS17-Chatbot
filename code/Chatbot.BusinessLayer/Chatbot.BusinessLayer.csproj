@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLayer.cs" />
     <Compile Include="MessagingLogic.cs" />
     <Compile Include="PluginConfigurationLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,13 +9,13 @@ namespace Chatbot.Controllers
     [RoutePrefix("api/session")]
     public class SessionController : ApiController
     {
-        private readonly IBusinessLayer _bl;
-        private readonly IMapper _mapper;
+        private readonly ISessionLogic sessionLogic;
+        private readonly IMapper mapper;
 
-        public SessionController(IBusinessLayer bl, IMapper mapper)
+        public SessionController(ISessionLogic sessionLogic, IMapper mapper)
         {
-            _bl = bl;
-            _mapper = mapper;
+            this.sessionLogic = sessionLogic;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +23,7 @@ namespace Chatbot.Controllers
         [ResponseType(typeof(SessionKey))]
         public SessionKey GetSessionKey()
         {
-            return _mapper.Map<SessionKey>(_bl.GenerateSession());
+            return mapper.Map<SessionKey>(sessionLogic.GenerateSession());
         }
     }
 }

@@ -2,6 +2,7 @@
 using Chatbot.Common.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chatbot.Plugins.RoutePlannerBot
 {
@@ -43,11 +44,12 @@ namespace Chatbot.Plugins.RoutePlannerBot
             return new Message(messageStr);
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
         {
-            if(configuration.ContainsKey("apiKey"))
+            PluginConfiguration apiKeyConfig = configuration.Where(i => i.Key == "apiKey").SingleOrDefault();
+            if (apiKeyConfig != null)
             {
-                this.apiKey = configuration["apiKey"];
+                this.apiKey = apiKeyConfig.Key;
             }
             return configuration;
         }

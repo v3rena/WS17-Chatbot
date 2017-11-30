@@ -1,27 +1,32 @@
 ﻿using Chatbot.BusinessLayer.Models;
 using Chatbot.Common.Interfaces;
 using Chatbot.DataAccessLayer.Interfaces;
+using Chatbot.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using Chatbot.BusinessLayer;
+using Chatbot.BusinessLayer.Interfaces;
 
 namespace Chatbot.Common.PluginManager
 {
     public class PluginManager : IPluginManager
     {
-        private List<IPlugin> _plugins;
-        private IDataAccessLayer _dataAccessLayer;
+        private List<IPlugin> plugins;
+        private IDataAccessLayer dataAccessLayer;
+        private readonly IPluginConfigurationLogic pluginConfigurationLogic;
 
-        public PluginManager(IDataAccessLayer dataAccessLayer)
+        public PluginManager(IDataAccessLayer dataAccessLayer, IPluginConfigurationLogic pluginConfigurationLogic)
         {
-            this._dataAccessLayer = dataAccessLayer;
+            this.dataAccessLayer = dataAccessLayer;
+            this.pluginConfigurationLogic = pluginConfigurationLogic;
             LoadAllPlugins();
         }
 
-        public IEnumerable<IPlugin> Plugins => _plugins;
+        public IEnumerable<IPlugin> Plugins => plugins;
 
         public void Add(string plugin)
         {
@@ -45,25 +50,25 @@ namespace Chatbot.Common.PluginManager
 
         public void Add(IPlugin plugin)
         {
-            if (!_plugins.Contains(plugin))
+            if (!plugins.Contains(plugin))
             {
-                _plugins.Add(plugin);
+                plugins.Add(plugin);
             }
         }
 
         public void Clear()
         {
-            _plugins.Clear();
+            plugins.Clear();
         }
 
         public IPlugin ChoosePlugin(Message message)
         {
-            return _plugins.OrderByDescending(p => p.CanHandle(message)).First();
+            return plugins.OrderByDescending(p => p.CanHandle(message)).First();
         }
 
         private void LoadAllPlugins()
         {
-            _plugins = new List<IPlugin>();
+            plugins = new List<IPlugin>();
 
 #if DEBUG
             string path = HttpContext.Current.Server.MapPath("~") + @"bin\debug\plugins";
@@ -80,9 +85,7 @@ namespace Chatbot.Common.PluginManager
                         if (type.GetInterface("IPlugin") == typeof(IPlugin))
                         {
                             IPlugin p = (IPlugin)Activator.CreateInstance(type);
-
-                            _dataAccessLayer.SavePluginConfiguration(p, p.EnsureDefaultConfiguration(_dataAccessLayer.GetPluginConfiguration(p)));
-
+                            pluginConfigurationLogic.SavePluginConfigurations(p.EnsureDefaultConfiguration(pluginConfigurationLogic.GetPluginConfigurations(p)));
                             Add(p);
                         }
                     }
