@@ -1,14 +1,12 @@
-﻿using Chatbot.Interfaces;
-using Chatbot.Models;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace Chatbot.Plugins.WeatherPlugin
 {

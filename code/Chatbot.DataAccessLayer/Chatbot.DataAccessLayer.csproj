@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Chatbot\bin\debug\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Chatbot\bin\release\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -89,7 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ChatbotContext.cs" />
-    <Compile Include="DAL.cs" />
+    <Compile Include="DataAccessLayer.cs" />
+    <Compile Include="Repositories\MessageRepository.cs" />
     <Compile Include="Migrations\201711141120080_initial.cs" />
     <Compile Include="Migrations\201711141120080_initial.Designer.cs">
       <DependentUpon>201711141120080_initial.cs</DependentUpon>
@@ -104,17 +105,7 @@
     </Compile>
     <Compile Include="Migrations\ConfigurationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
-      <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
-      <Name>Chatbot.Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
-      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
-      <Name>Chatbot.Models</Name>
-    </ProjectReference>
+    <Compile Include="Repositories\PluginConfigurationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -130,6 +121,20 @@
     <EmbeddedResource Include="Migrations\201711211228324_AddPluginConfiguration.resx">
       <DependentUpon>201711211228324_AddPluginConfiguration.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.Common.Interfaces\Chatbot.Common.Interfaces.csproj">
+      <Project>{D988E757-4EE0-4FBA-B843-6AADBD942281}</Project>
+      <Name>Chatbot.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.DataAccessLayer.Entities\Chatbot.DataAccessLayer.Entities.csproj">
+      <Project>{404732f6-b3fb-451f-b63c-ea1875e79390}</Project>
+      <Name>Chatbot.DataAccessLayer.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.DataAccessLayer.Interfaces\Chatbot.DataAccessLayer.Interfaces.csproj">
+      <Project>{004E2679-196B-4685-8E92-8FEC5A01FED9}</Project>
+      <Name>Chatbot.DataAccessLayer.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

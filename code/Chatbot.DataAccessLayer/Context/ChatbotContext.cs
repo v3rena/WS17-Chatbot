@@ -1,9 +1,5 @@
-﻿using Chatbot.Models;
-using System;
-using System.Collections.Generic;
+﻿using Chatbot.DataAccessLayer.Entities;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace Chatbot.DataAccessLayer.Context
 {

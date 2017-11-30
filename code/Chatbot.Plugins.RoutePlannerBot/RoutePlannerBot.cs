@@ -1,5 +1,5 @@
-﻿using Chatbot.Interfaces;
-using Chatbot.Models;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 
