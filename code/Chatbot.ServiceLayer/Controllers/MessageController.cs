@@ -25,7 +25,6 @@ namespace Chatbot.Controllers
         [ResponseType(typeof(Message))]
         public Message PostMessage([FromBody]Message message)
         {
-            int i = 4;
             //TODO check if message is valid (e.g. has SessionKey)
             return mapper.Map<Message>(messagingLogic.ProcessMessage(mapper.Map<BusinessLayer.Models.Message>(message)));
         }
