@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Chatbot.DataAccessLayer.Interfaces
 {
@@ -9,9 +10,9 @@ namespace Chatbot.DataAccessLayer.Interfaces
 
         void Delete(T entity);
 
-        void Delete(Func<T, bool> condition);
+        void Delete(Expression<Func<T, bool>> condition);
 
-        IEnumerable<T> Read(Func<T, bool> condition);
+        IEnumerable<T> Read(Expression<Func<T, bool>> condition);
 
         void Update(T entity);
 

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Chatbot.DataAccessLayer.Repositories
 {
@@ -21,15 +22,15 @@ namespace Chatbot.DataAccessLayer.Repositories
             dbContext.SaveChanges();
         }
 
-        public override IEnumerable<Message> Read(Func<Message, bool> condition)
+        public override IEnumerable<Message> Read(Expression<Func<Message, bool>> condition)
         {
-            return dbContext.Messages.Where(condition).ToList();
+            return dbContext.Messages.Where(condition);
         }
 
         public override void Update(Message message)
         {
-            dbContext.Messages.Attach(message);
-            dbContext.Entry(message).State = EntityState.Modified;
+            var original = dbContext.ChangeTracker.Entries<Message>().Single(i => i.Entity.Id == message.Id);
+            original.CurrentValues.SetValues(message);
             dbContext.SaveChanges();
         }
 
@@ -39,7 +40,7 @@ namespace Chatbot.DataAccessLayer.Repositories
             dbContext.SaveChanges();
         }
 
-        public override void Delete(Func<Message, bool> condition)
+        public override void Delete(Expression<Func<Message, bool>> condition)
         {
             dbContext.Messages.RemoveRange(dbContext.Messages.Where(condition));
             dbContext.SaveChanges();

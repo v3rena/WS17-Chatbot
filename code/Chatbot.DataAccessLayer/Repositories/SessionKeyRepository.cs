@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,31 +18,31 @@ namespace Chatbot.DataAccessLayer.Repositories
 
         }
 
-        public override void Create(SessionKey entity)
+        public override void Create(SessionKey sessionKey)
         {
-            dbContext.SessionKeys.Add(entity);
+            dbContext.SessionKeys.Add(sessionKey);
             dbContext.SaveChanges();
         }
 
-        public override IEnumerable<SessionKey> Read(Func<SessionKey, bool> condition)
+        public override IEnumerable<SessionKey> Read(Expression<Func<SessionKey, bool>> condition)
         {
             return dbContext.SessionKeys.Where(condition);
         }
 
-        public override void Update(SessionKey entity)
+        public override void Update(SessionKey sessionKey)
         {
-            dbContext.SessionKeys.Attach(entity);
-            dbContext.Entry(entity).State = EntityState.Modified;
+            var original = dbContext.ChangeTracker.Entries<SessionKey>().Single(i => i.Entity.Id == sessionKey.Id);
+            original.CurrentValues.SetValues(sessionKey);
             dbContext.SaveChanges();
         }
 
-        public override void Delete(SessionKey entity)
+        public override void Delete(SessionKey sessionKey)
         {
-            dbContext.SessionKeys.Remove(entity);
+            dbContext.SessionKeys.Remove(sessionKey);
             dbContext.SaveChanges();
         }
 
-        public override void Delete(Func<SessionKey, bool> condition)
+        public override void Delete(Expression<Func<SessionKey, bool>> condition)
         {
             dbContext.SessionKeys.RemoveRange(dbContext.SessionKeys.Where(condition));
             dbContext.SaveChanges();

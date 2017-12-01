@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Chatbot.DataAccessLayer.Repositories
 {
@@ -20,7 +21,7 @@ namespace Chatbot.DataAccessLayer.Repositories
             dbContext.PluginConfigurations.Add(pluginConfiguration);
             dbContext.SaveChanges();
         }
-        public override IEnumerable<PluginConfiguration> Read(Func<PluginConfiguration, bool> condition)
+        public override IEnumerable<PluginConfiguration> Read(Expression<Func<PluginConfiguration, bool>> condition)
         {
             return dbContext.PluginConfigurations.Where(condition);
         }
@@ -38,9 +39,9 @@ namespace Chatbot.DataAccessLayer.Repositories
             dbContext.SaveChanges();
         }
 
-        public override void Delete(Func<PluginConfiguration, bool> condition)
+        public override void Delete(Expression<Func<PluginConfiguration, bool>> condition)
         {
-            dbContext.PluginConfigurations.RemoveRange(dbContext.PluginConfigurations.Where(condition).ToList());
+            dbContext.PluginConfigurations.RemoveRange(dbContext.PluginConfigurations.Where(condition));
             dbContext.SaveChanges();
         }
     }
