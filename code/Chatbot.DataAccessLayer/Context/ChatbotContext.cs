@@ -9,7 +9,7 @@ namespace Chatbot.DataAccessLayer.Context
     {
         public ChatbotContext() : base("Chatbot")
         {
-
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChatbotContext, Migrations.ConfigurationMessage>());
         }
 
         public DbSet<Message> Messages { get; set; }

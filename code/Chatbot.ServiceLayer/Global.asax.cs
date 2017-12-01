@@ -99,7 +99,7 @@ namespace Chatbot
 
             builder.RegisterType<ChatbotContext>().SingleInstance();
 
-            builder.RegisterType<DataAccessLayer.DataAccessLayer>().As<IDataAccessLayer>().SingleInstance();
+            //builder.RegisterType<DataAccessLayer.DataAccessLayer>().As<IDataAccessLayer>().SingleInstance();
 
             //builder.RegisterModule<DataAccessLayer.DataAccessLayer.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));

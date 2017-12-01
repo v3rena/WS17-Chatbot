@@ -16,12 +16,10 @@ namespace Chatbot.Common.PluginManager
     public class PluginManager : IPluginManager
     {
         private List<IPlugin> plugins;
-        private IDataAccessLayer dataAccessLayer;
         private readonly IPluginConfigurationLogic pluginConfigurationLogic;
 
-        public PluginManager(IDataAccessLayer dataAccessLayer, IPluginConfigurationLogic pluginConfigurationLogic)
+        public PluginManager(IPluginConfigurationLogic pluginConfigurationLogic)
         {
-            this.dataAccessLayer = dataAccessLayer;
             this.pluginConfigurationLogic = pluginConfigurationLogic;
             LoadAllPlugins();
         }
