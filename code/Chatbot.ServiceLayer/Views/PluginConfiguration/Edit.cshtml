@@ -5,7 +5,7 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Bearbeiten</h2>
 
 
 @using (Html.BeginForm())
@@ -14,7 +14,7 @@
     @Html.HiddenFor(model => model.Id)
     
     <div class="form-horizontal">
-        <h4>PluginConfiguration</h4>
+        <h4>Plugin-Konfigurations-Eintrag</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -51,7 +51,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Zurück zur Übersicht", "Index")
 </div>
 
 @section Scripts {

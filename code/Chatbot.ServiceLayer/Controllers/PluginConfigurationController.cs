@@ -18,34 +18,19 @@ namespace Chatbot.Controllers
             this.pluginConfigurationLogic = pluginConfigurationLogic;
         }
 
-        // GET: PluginConfigurations
+        // GET: PluginConfiguration
         public ActionResult Index()
         {
             return View(pluginConfigurationLogic.GetPluginConfigurations());
         }
 
-        // GET: PluginConfigurations/Details/EchoBot/ConfigSetting
-        public ActionResult Details(string name, string key)
-        {
-            if (name == null || key == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PluginConfiguration pluginConfiguration = pluginConfigurationLogic.GetPluginConfiguration(name, key);
-            if (pluginConfiguration == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pluginConfiguration);
-        }
-
-        // GET: Hospitals/Create
+        // GET: PluginConfiguration/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: PluginConfigurations/Create
+        // POST: PluginConfiguration/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name,Key,Value")] PluginConfiguration pluginConfiguration)
@@ -59,7 +44,7 @@ namespace Chatbot.Controllers
             return View(pluginConfiguration);
         }
 
-        // GET: PluginConfigurations/Edit/EchoBot/ConfigSetting
+        // GET: PluginConfiguration/Edit/EchoBot/TestConfig
         public ActionResult Edit(string name, string key)
         {
             if (name == null || key == null)
@@ -74,7 +59,7 @@ namespace Chatbot.Controllers
             return View(pluginConfiguration);
         }
 
-        // POST: PluginConfigurations/Edit/EchoBot/ConfigSetting
+        // POST: PluginConfiguration/Edit/EchoBot/TestConfig
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Key,Value")] PluginConfiguration pluginConfiguration)
@@ -87,7 +72,7 @@ namespace Chatbot.Controllers
             return View(pluginConfiguration);
         }
 
-        // GET: PluginConfigurations/Delete/EchoBot/ConfigSetting
+        // GET: PluginConfiguration/Delete/EchoBot/TestConfig
         public ActionResult Delete(string name, string key)
         {
             if (name == null || key == null)
@@ -102,7 +87,7 @@ namespace Chatbot.Controllers
             return View(pluginConfiguration);
         }
 
-        // POST: PluginConfigurations/Delete/EchoBot/ConfigSetting
+        // POST: PluginConfiguration/Delete/EchoBot/TestConfig
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string name, string key)

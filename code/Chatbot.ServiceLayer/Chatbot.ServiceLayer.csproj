@@ -253,7 +253,6 @@
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Views\PluginConfiguration\Create.cshtml" />
     <Content Include="Views\PluginConfiguration\Delete.cshtml" />
-    <Content Include="Views\PluginConfiguration\Details.cshtml" />
     <Content Include="Views\PluginConfiguration\Edit.cshtml" />
     <Content Include="Views\PluginConfiguration\Index.cshtml" />
   </ItemGroup>

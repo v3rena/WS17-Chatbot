@@ -5,7 +5,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Plugin-Konfiguration - Übersicht</h2>
 
 <p>
     @Html.ActionLink("Eintrag hinzufügen", "Create")
@@ -37,7 +37,7 @@
         </td>
         <td>
             @Html.ActionLink("Bearbeiten", "Edit", new { name=item.Name, key=item.Key }) |
-            @Html.ActionLink("Details", "Details", new { name = item.Name, key = item.Key }) |
+            @*@Html.ActionLink("Details", "Details", new { name = item.Name, key = item.Key }) |*@
             @Html.ActionLink("Löschen", "Delete", new { name = item.Name, key = item.Key })
         </td>
     </tr>
