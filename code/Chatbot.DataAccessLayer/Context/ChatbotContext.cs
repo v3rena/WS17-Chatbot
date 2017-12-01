@@ -1,9 +1,7 @@
-﻿using Chatbot.Models;
+﻿using Chatbot.DataAccessLayer.Entities;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using System.IO;
 
 namespace Chatbot.DataAccessLayer.Context
 {
@@ -11,12 +9,14 @@ namespace Chatbot.DataAccessLayer.Context
     {
         public ChatbotContext() : base("Chatbot")
         {
-
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChatbotContext, Migrations.ConfigurationMessage>());
         }
 
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<SessionKey> SessionKeys { get; set; }
+
+        public DbSet<PluginConfiguration> PluginConfigurations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -1,14 +1,12 @@
-﻿using Chatbot.Interfaces;
-using Chatbot.Models;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace Chatbot.Plugins.WeatherPlugin
 {
@@ -145,7 +143,7 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new ApplicationException();
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
         {
             defaultConfig.Keys.ToList().ForEach(e =>
             {

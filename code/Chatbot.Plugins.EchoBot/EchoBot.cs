@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Chatbot.Interfaces;
-using Chatbot.Models;
 using System.Data.Entity;
+using Chatbot.Common.Interfaces;
+using Chatbot.BusinessLayer.Models;
 
 namespace Chatbot.Plugins.EchoBot
 {
@@ -17,7 +17,7 @@ namespace Chatbot.Plugins.EchoBot
             return 0.2f;
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
         {
             //No configuration necessary
             return configuration;
