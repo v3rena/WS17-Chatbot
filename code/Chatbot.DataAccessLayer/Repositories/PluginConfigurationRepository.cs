@@ -22,13 +22,13 @@ namespace Chatbot.DataAccessLayer.Repositories
         }
         public override IEnumerable<PluginConfiguration> Read(Func<PluginConfiguration, bool> condition)
         {
-            return dbContext.PluginConfigurations.Where(condition).ToList();
+            return dbContext.PluginConfigurations.Where(condition);
         }
 
         public override void Update(PluginConfiguration pluginConfiguration)
         {
-            dbContext.PluginConfigurations.Attach(pluginConfiguration);
-            dbContext.Entry(pluginConfiguration).State = EntityState.Modified;
+            var original = dbContext.ChangeTracker.Entries<PluginConfiguration>().Single(i => i.Entity.Id == pluginConfiguration.Id);
+            original.CurrentValues.SetValues(pluginConfiguration);
             dbContext.SaveChanges();
         }
 

@@ -1,5 +1,7 @@
 ﻿using Chatbot.DataAccessLayer.Entities;
+using System;
 using System.Data.Entity;
+using System.IO;
 
 namespace Chatbot.DataAccessLayer.Context
 {

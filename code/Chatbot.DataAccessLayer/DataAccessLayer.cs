@@ -21,6 +21,7 @@ namespace Chatbot.DataAccessLayer
             using (var context = new ChatbotContext())
             {
                 context.Database.Initialize(false);
+                
             }
 
             repositories.Add(messageRepository);

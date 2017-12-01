@@ -77,7 +77,7 @@ namespace Chatbot.Controllers
         // POST: PluginConfigurations/Edit/EchoBot/ConfigSetting
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name,Key,Value")] PluginConfiguration pluginConfiguration)
+        public ActionResult Edit([Bind(Include = "Id,Name,Key,Value")] PluginConfiguration pluginConfiguration)
         {
             if (ModelState.IsValid)
             {

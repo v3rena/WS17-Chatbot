@@ -87,19 +87,19 @@ namespace Chatbot
 
             // or: builder.RegisterType<BusinessLayer>().AsImplementedInterfaces().InstancePerRequest();
 
-            builder.RegisterType<BusinessLayer.MessagingLogic>().As<IMessagingLogic>().InstancePerRequest();
-            builder.RegisterType<BusinessLayer.SessionLogic>().As<ISessionLogic>().InstancePerRequest();
-            builder.RegisterType<BusinessLayer.PluginConfigurationLogic>().As<IPluginConfigurationLogic>().InstancePerRequest();
+            builder.RegisterType<BusinessLayer.MessagingLogic>().As<IMessagingLogic>().SingleInstance();
+            builder.RegisterType<BusinessLayer.SessionLogic>().As<ISessionLogic>().SingleInstance();
+            builder.RegisterType<BusinessLayer.PluginConfigurationLogic>().As<IPluginConfigurationLogic>().SingleInstance();
 
-            builder.RegisterType<DataAccessLayer.Repositories.MessageRepository>().As<IRepository<DataAccessLayer.Entities.Message>>().InstancePerRequest();
-            builder.RegisterType<DataAccessLayer.Repositories.SessionKeyRepository>().As<IRepository<DataAccessLayer.Entities.SessionKey>>().InstancePerRequest();
-            builder.RegisterType<DataAccessLayer.Repositories.PluginConfigurationRepository>().As<IRepository<DataAccessLayer.Entities.PluginConfiguration>>().InstancePerRequest();
+            builder.RegisterType<DataAccessLayer.Repositories.MessageRepository>().As<IRepository<DataAccessLayer.Entities.Message>>().SingleInstance();
+            builder.RegisterType<DataAccessLayer.Repositories.SessionKeyRepository>().As<IRepository<DataAccessLayer.Entities.SessionKey>>().SingleInstance();
+            builder.RegisterType<DataAccessLayer.Repositories.PluginConfigurationRepository>().As<IRepository<DataAccessLayer.Entities.PluginConfiguration>>().SingleInstance();
 
-            builder.RegisterType<PluginManager>().As<IPluginManager>().InstancePerRequest();
+            builder.RegisterType<PluginManager>().As<IPluginManager>().SingleInstance();
 
-            builder.RegisterType<ChatbotContext>().InstancePerRequest();
+            builder.RegisterType<ChatbotContext>().SingleInstance();
 
-            builder.RegisterType<DataAccessLayer.DataAccessLayer>().As<IDataAccessLayer>().InstancePerRequest();
+            builder.RegisterType<DataAccessLayer.DataAccessLayer>().As<IDataAccessLayer>().SingleInstance();
 
             //builder.RegisterModule<DataAccessLayer.DataAccessLayer.Module>();
             //builder.RegisterModule((IModule) Activator.CreateInstance(Type.GetType("Chatbot.DataAccessLayer.MockDAL+Module")));
