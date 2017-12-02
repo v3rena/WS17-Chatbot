@@ -37,7 +37,7 @@ namespace Chatbot.Plugins.NewsBot
 			}
 		}
 
-		public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
+		public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
 		{
 			//TODO: Read Api key from config
 			return configuration;
