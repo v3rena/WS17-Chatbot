@@ -83,7 +83,7 @@ namespace Chatbot.Common.PluginManager
                         if (type.GetInterface("IPlugin") == typeof(IPlugin))
                         {
                             IPlugin p = (IPlugin)Activator.CreateInstance(type);
-                            pluginConfigurationLogic.SavePluginConfigurations(p.EnsureDefaultConfiguration(pluginConfigurationLogic.GetPluginConfigurations(p)));
+                            pluginConfigurationLogic.SavePluginConfigurations(p.EnsureDefaultConfiguration(pluginConfigurationLogic.GetPluginConfigurations(p).ToList()));
                             Add(p);
                         }
                     }
