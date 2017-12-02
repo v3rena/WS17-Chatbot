@@ -145,14 +145,15 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
+            //TODO change IEnumerable to List - otherwise no one can insert configs
             defaultConfig.Keys.ToList().ForEach(e =>
             {
-                if (!configuration.Keys.ToList().Contains(e))
-                    configuration.Add(e, defaultConfig[e]);
+                if (configuration.Where(i => i.Key == e).SingleOrDefault() == null)
+                    configuration.Add(new PluginConfiguration() { Name = "WeatherPlugin", Key = e, Value = defaultConfig[e] });
             });
 
-            apiKey = configuration["ApiKey"];
-            defaultCity = configuration["DefaultCity"];
+            apiKey = configuration.Where(i => i.Key == "ApiKey").Single().Value;
+            defaultCity = configuration.Where(i => i.Key == "DefaultCity").Single().Value;
 
             return configuration;
         }
