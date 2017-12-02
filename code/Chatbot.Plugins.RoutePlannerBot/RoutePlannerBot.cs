@@ -44,7 +44,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
             return new Message(messageStr);
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
             PluginConfiguration apiKeyConfig = configuration.Where(i => i.Key == "apiKey").SingleOrDefault();
             if (apiKeyConfig != null)

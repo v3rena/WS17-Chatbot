@@ -143,7 +143,7 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new ApplicationException();
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IEnumerable<PluginConfiguration> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
             defaultConfig.Keys.ToList().ForEach(e =>
             {
