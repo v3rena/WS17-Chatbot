@@ -18,7 +18,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
         public string GetInformation(WeatherInformation weatherInformation)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Temperatur: {weatherInformation.Main.Temperature}°C.");
+            stringBuilder.AppendLine($"Temperatur: {weatherInformation.Main.Temperature}°C");
 
             if (showDetails)
             {

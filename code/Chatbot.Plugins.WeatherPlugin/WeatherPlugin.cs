@@ -38,7 +38,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
         }
 
-        private List<ICommand> requestStates;
+        private List<ICommand> commands;
 
         private string apiKey;
         private string defaultCity;
@@ -67,7 +67,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
-            requestStates = new List<ICommand>();
+            commands = new List<ICommand>();
             client = new HttpClient();
         }
 
@@ -96,10 +96,9 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public Message Handle(Message message)
         {
-            //TODO replace HelperMethod with textinterpreter
+            //TODO use Textinterpreter instead of HelperMethod + use Textinterpreter in SetStates
             HelperMethodReadCity(message);
-
-            SetRequestStates(message);
+            SetCommands(message);
 
             WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
 
@@ -108,33 +107,33 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         private Message CreateResponseMessage(WeatherInformation weatherInformation)
         {
-            StringBuilder stringBuilder = new StringBuilder($"Wetter in {City}:\n");
+            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName}:\n");
 
-            requestStates.ForEach(rs => stringBuilder.AppendLine($"\t{rs.GetInformation(weatherInformation)}"));
+            commands.ForEach(rs => stringBuilder.AppendLine($"\t{rs.GetInformation(weatherInformation)}"));
 
             return new Message(stringBuilder.ToString());
         }
 
-        private void SetRequestStates(Message message)
+        private void SetCommands(Message message)
         {
-            requestStates.Clear();
+            commands.Clear();
             string content = message.Content.ToLower();
 
             if (content.Contains("detail"))
             {
-                requestStates.Add(new GetAllCommand());
+                commands.Add(new GetAllCommand());
                 return;
             }
 
             if (content.Contains("temperatur") || content.Contains("warm") || content.Contains("kalt") || content.Contains("wie"))
-                requestStates.Add(new GetTemperatureCommand(content.Contains("max") || content.Contains("min")));
+                commands.Add(new GetTemperatureCommand(content.Contains("max") || content.Contains("min")));
             if (content.Contains("wetter") || content.Contains("wie") || content.Contains("schön") || content.Contains("wolke") || content.Contains("regen") ||
                 content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") || content.Contains("nebel"))
-                requestStates.Add(new GetWeatherDescriptionCommand());
+                commands.Add(new GetWeatherDescriptionCommand());
             if (content.Contains("feucht") || content.Contains("humid") || content.Contains("nebel"))
-                requestStates.Add(new GetHumidityCommand());
+                commands.Add(new GetHumidityCommand());
             if (content.Contains("wind") || content.Contains("sturm") || content.Contains("böhe"))
-                requestStates.Add(new GetWindCommand());
+                commands.Add(new GetWindCommand());
         }
 
         private void HelperMethodReadCity(Message message)
@@ -144,6 +143,21 @@ namespace Chatbot.Plugins.WeatherPlugin
             {
                 if (split[i] == "in" && i + 1 < split.Count())
                 {
+                    if (split[i + 1].StartsWith("'"))
+                    {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int j = i + 1; j < split.Count(); j++)
+                        {
+                            stringBuilder.AppendFormat(split[j]);
+                            if (split[j].EndsWith("'"))
+                            {
+                                City = stringBuilder.ToString(1, stringBuilder.Length - 2);
+                                return;
+                            }
+                            stringBuilder.AppendFormat(" ");
+                        }
+                    }
+
                     City = split[i + 1];
                     return;
                 }
@@ -165,7 +179,7 @@ namespace Chatbot.Plugins.WeatherPlugin
                 storedWeatherInformations.Add(City, weatherInformation);
                 return weatherInformation;
             }
-            catch (Exception e)
+            catch (ApplicationException e)
             {
                 throw e;
             }
