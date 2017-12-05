@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Chatbot\bin\debug\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Chatbot\bin\release\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,18 +69,6 @@
     <Compile Include="EchoBotTable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
-      <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
-      <Name>Chatbot.Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
-      <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
-      <Name>Chatbot.Models</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -88,6 +76,16 @@
     <EmbeddedResource Include="Migrations\201711141128020_initial.resx">
       <DependentUpon>201711141128020_initial.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.BusinessLayer.Models\Chatbot.BusinessLayer.Models.csproj">
+      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
+      <Name>Chatbot.BusinessLayer.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Common.Interfaces\Chatbot.Common.Interfaces.csproj">
+      <Project>{D988E757-4EE0-4FBA-B843-6AADBD942281}</Project>
+      <Name>Chatbot.Common.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

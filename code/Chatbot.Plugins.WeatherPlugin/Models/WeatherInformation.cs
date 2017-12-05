@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Chatbot.Plugins.WeatherPlugin.Models
 {
-    public class WeatherInformation
+    class WeatherInformation
     {
         public WeatherInformation()
         {
