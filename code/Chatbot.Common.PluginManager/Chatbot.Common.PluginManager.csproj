@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</ProjectGuid>
+    <ProjectGuid>{FFD171F5-6EF2-49AB-9687-ECB781D1917E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chatbot.Common.PluginManager</RootNamespace>

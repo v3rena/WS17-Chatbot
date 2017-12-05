@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{45918D97-CC52-48D5-B34A-3343B3E5F1C0}</ProjectGuid>
+    <ProjectGuid>{B111528B-E2AC-4329-9F3D-7E1E7ED34C7D}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -280,7 +280,7 @@
       <Name>Chatbot.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.Common.PluginManager\Chatbot.Common.PluginManager.csproj">
-      <Project>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</Project>
+      <Project>{FFD171F5-6EF2-49AB-9687-ECB781D1917E}</Project>
       <Name>Chatbot.Common.PluginManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.DataAccessLayer.Entities\Chatbot.DataAccessLayer.Entities.csproj">

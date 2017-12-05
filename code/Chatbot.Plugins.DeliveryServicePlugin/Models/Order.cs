@@ -1,7 +1,7 @@
 ﻿
 using System.Data.Entity;
 
-namespace Chatbot.Plugins.DeliveryServicePlugin.Models
+namespace Chatbot.Plugins.DeliveryService.Models
 {
     class Order
     {

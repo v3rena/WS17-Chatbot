@@ -17,8 +17,8 @@ using log4net.Config;
 using Chatbot.DataAccessLayer.Context;
 using Chatbot.BusinessLayer.Interfaces;
 using Chatbot.Common.Interfaces;
-using Chatbot.Common.PluginManager;
 using Chatbot.DataAccessLayer.Interfaces;
+using Chatbot.Common.PluginManager;
 
 namespace Chatbot
 {

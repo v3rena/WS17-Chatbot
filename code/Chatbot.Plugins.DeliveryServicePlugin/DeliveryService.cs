@@ -1,13 +1,12 @@
-﻿using Chatbot.Interfaces;
-using Chatbot.Models;
-using System;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
 using System.Collections.Generic;
 
-namespace Chatbot.Plugins.DeliveryServicePlugin
+namespace Chatbot.Plugins.DeliveryService
 {
-    public class DeliveryServicePlugin : IPlugin
+    public class DeliveryService : IPlugin
     {
-        public string Name => "DeliveryServicePlugin";
+        public string Name => "DeliveryService";
 
         public float CanHandle(Message message)
         {
@@ -18,7 +17,7 @@ namespace Chatbot.Plugins.DeliveryServicePlugin
             return 0.0f;
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
             return configuration;
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chatbot.Plugins.DeliveryServicePlugin.Models
+namespace Chatbot.Plugins.DeliveryService.Models
 {
     class OrderPosition
     {
