@@ -9,11 +9,12 @@ using Chatbot.Plugins.RPGPlugin.Enumerations;
 namespace Chatbot.Plugins.RPGPlugin.RPGObjects
 {
 
-    public class RPGMonsterFactory{
+    public class RPGMonsterFactory
+    {
         public static Random rand = new Random();
         public static List<RPGMonster> ItemCatalogue = new List<RPGMonster>()
         {
-            new RPGMonster(){MonsterName = "spider", MonsterColor ="black", BaseDef=1, BaseDmg=1, Noise = new PlayerSense("scuttling",1), Depth=1, Rarity=0.2f, Effect=MagicEffect.POISON }
+            new RPGMonster(){MonsterName = "Spinne", MonsterColor ="schwarz", BaseDef=1, BaseDmg=1, Noise = new PlayerSense("krabbelnd",1), Depth=1, Rarity=0.2f, Effect=MagicEffect.POISON }
         };
     }
     public class RPGMonster : IRPGMonster
@@ -59,7 +60,7 @@ namespace Chatbot.Plugins.RPGPlugin.RPGObjects
                 case PlayerSenseType.SMELL:
                     return Smell;
                 default:
-                    throw new NotImplementedException("RoomSense " + sense + " not found!");
+                    throw new NotImplementedException("PlayerSenseType " + sense + " undefiniert!");
             }
         }
 

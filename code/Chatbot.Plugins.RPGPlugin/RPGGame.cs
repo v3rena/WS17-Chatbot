@@ -38,47 +38,63 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public string PlayerAction(List<string> tokens)
         {
-            switch (tokens[1])
+            switch (tokens[0])
             {
+                case "ende":
+                case "quit":
+                case "q":
+                case "exit":
+                    return "";
+                case "1":
                 case "n":
                 case "north":
-                case "1":
+                case "norden":
                     return RoomCleared(1);
                 case "2":
                 case "w":
                 case "west":
+                case "westen":
                     return RoomCleared(2);
                 case "3":
                 case "e":
+                case "o":
                 case "east":
+                case "osten":
                     return RoomCleared(3);
                 case "look":
                 case "inspect":
+                case "schau":
                     return RoomFeelings();
+                case "nimm":
+                case "hebe":
                 case "take":
                 case "grab":
                 case "get":
                 case "t":
-                    if (tokens.Count > 2)
-                        return TakeRoomItemByToken(tokens[2]);
+                    if (tokens.Count > 1)
+                        return TakeRoomItemByToken(tokens[1]);
                     else
-                        return "What do you want to take?"+RoomItems();
+                        return "Welche Gegenstände willst du mitnehmen?" + RoomItems();
                 case "takeall":
+                case "nimmalles":
                     return TakeAllRoomItems();
                 case "i":
+                case "inventar":
                 case "inventory":
                     return player.PlayerInventoryInfo();
                 case "help":
+                case "hilfe":
                 default:
-                    return "You can control your character through the following commands:<br/>" +
-                        "Walk north: n, north, 1<br/>" +
-                        "Walk west: w, west, 2<br/>"+
-                        "Walk east: e, east, 3<br/>" +
-                        "Inspect the room: look, inspect<br/>" +
-                        "Take an item X: take X, grab X, get X, t X<br/>" +
-                        "Take all items: takeAll<br/>" +
-                        "Check inventory: i, inventory<br/>" +
-                        "Open help: help";
+                    return "Es gibt folgende Kommandos (nicht case-sensitive), um den Verlauf des Spiels zu steuern:<br/>" +
+                        "Gehe nach Norden: n, norden, north, 1<br/>" +
+                        "Gehe nach Westen: w, westen, west, 2<br/>" +
+                        "Gehe nach Osten:  o, osten, e, east, 3<br/>" +
+                        "Schau dich um:    schau, look, inspect<br/>" +
+                        "Nimm Gegenstand X:nimm X, hebe X, take X, grab X, get X, t X<br/>" +
+                        "Nimm alles:       nimmAlles, takeAll<br/>" +
+                        "Inventar:         inventar, i, inventory<br/>" +
+                        "Zeige Hilfeseite: hilfe, help<br/>" +
+                        "Spiel beenden:    ende, quit, q, exit";
             }
         }
 
@@ -89,28 +105,28 @@ namespace Chatbot.Plugins.RPGPlugin
             {
                 player.inventory.Add(new RPGItem(items.FirstOrDefault()));
                 currentRoom.items.Remove(items.FirstOrDefault());
-                return "You take the " + items.FirstOrDefault().GetName()+ ".";
+                return "Du nimmst ein/e " + items.FirstOrDefault().GetName() + ".";
             }
-            return "You cannot take the " + item + "!";
+            return "Du kannst kein " + item + " sehen!";
         }
 
         public string TakeAllRoomItems()
         {
             var items = currentRoom.items;
-            if(items.Count == 0)
+            if (items.Count == 0)
             {
-                return "You don't see any items...";
+                return "Du kannst keine Gegenstände sehen.";
             }
             string result = "";
-            for(int i = items.Count-1; i >= 0; i--)
+            for (int i = items.Count - 1; i >= 0; i--)
             {
                 IRPGItem item = items[i];
                 result += "<br/>1 " + item.GetName();
                 player.inventory.Add(new RPGItem(item));
                 currentRoom.items.Remove(item);
             }
-            return "You take the following items:" + result;
-            
+            return "Du nimmst die folgenden Gegenstände:<br/>" + result;
+
         }
 
         public string RoomCleared(int walkTo)
@@ -138,12 +154,12 @@ namespace Chatbot.Plugins.RPGPlugin
             string result = "";
             if (currentRoom.items.Count > 0)
             {
-                result += "<br/>On the floor, you see the following objects: ";
+                result += "<br/>Es liegen hier einige Gegenstände herum: ";
 
                 for (int i = 0; i < currentRoom.items.Count; i++)
                 {
                     var item = currentRoom.items[i];
-                    result += "<u>"+item.GetName()+"</u>";
+                    result += "<u>" + item.GetName() + "</u>";
                     if (i < currentRoom.items.Count - 1)
                     {
                         result += ", ";
@@ -163,15 +179,15 @@ namespace Chatbot.Plugins.RPGPlugin
             string result = "";
             if (inventory.Count == 0)
             {
-                result += "You don't have any items";
+                result += "Du trägst keine Gegenstände";
             }
             else if (inventory.Count == 1)
             {
-                result += "You have 1 " + inventory[0].GetName();
+                result += "Du hast 1 " + inventory[0].GetName();
             }
             else
             {
-                result += "You carry " + inventory.Count + " items: ";
+                result += "Du trägst " + inventory.Count + " Gegenstände: ";
                 foreach (IRPGItem item in inventory)
                 {
                     result += "<br/>" + item.GetName();
@@ -223,7 +239,7 @@ namespace Chatbot.Plugins.RPGPlugin
 
             if (linesRemaining > 0)
             {
-                result += string.Format("{0} {1} tint. ", "You notice a", GetRoomColor());
+                result += string.Format("{0} {1}es Licht getaucht. ", "Der Raum ist in", GetRoomColor());
                 linesRemaining--;
             }
 
@@ -231,26 +247,27 @@ namespace Chatbot.Plugins.RPGPlugin
             if (linesRemaining > 0 && noise.Potency > 0)
             {
                 linesRemaining--;
-                result += string.Format("{0} {1} noise. ", "You hear a", noise.Description);
+                result += string.Format("{0} {1} Geräusche. ", "Du hörst", noise.Description);
             }
 
             var smell = GetRoomSense(PlayerSenseType.SMELL);
             if (linesRemaining > 0 && smell.Potency > 0)
             {
                 linesRemaining--;
-                result += string.Format("{0} {1}. ", "The air smells", smell.Description);
+                result += string.Format("{0} {1}er Luftzug zieht vorbei. ", "Ein", smell.Description);
             }
 
             var magic = GetRoomSense(PlayerSenseType.MAGIC);
             if (linesRemaining > 0 && magic.Potency > 0)
             {
-                result += string.Format("You feel the {0} magical power inside. ", magic.Description);
+                result += string.Format("Du fühlst die Präsenz von {0}er Magie. ", magic.Description);
             }
 
             if (linesRemaining > 0 && GetRoomTemp() != 0)
             {
                 linesRemaining--;
-                result += "The temperature is unsual. ";
+                result += string.Format("Es scheint dort {0} zu sein...", GetRoomTemp() > 0 ? "wärmer" : "kälter");
+
             }
 
             /*foreach (RPGItem item in objects)
