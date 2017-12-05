@@ -15,7 +15,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
         public float CanHandle(Message message)
         {
             float handle = 0.0f;
-            if(contains(message, "route"))
+            if (contains(message, "route"))
             {
                 handle += 0.4f;
             }
@@ -35,7 +35,7 @@ namespace Chatbot.Plugins.RoutePlannerBot
         {
             string messageStr = "error";
             string[] parts = message.Content.Split(new string[] { "von", "nach" }, StringSplitOptions.RemoveEmptyEntries);
-            if(parts.Length >= 2)
+            if (parts.Length >= 2)
             {
                 DirectionsRequest request = new DirectionsRequest(parts[parts.Length - 2], parts[parts.Length - 1], apiKey);
                 string jsonResponse = request.GetResponse();
@@ -44,14 +44,22 @@ namespace Chatbot.Plugins.RoutePlannerBot
             return new Message(messageStr);
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+        public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
-            PluginConfiguration apiKeyConfig = configuration.Where(i => i.Key == "apiKey").SingleOrDefault();
-            if (apiKeyConfig != null)
+            try
             {
-                this.apiKey = apiKeyConfig.Key;
+                apiKey = configuration["apiKey"];
+            }
+            catch (KeyNotFoundException)
+            {
+                //use default key
             }
             return configuration;
+        }
+
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+
         }
     }
 }
