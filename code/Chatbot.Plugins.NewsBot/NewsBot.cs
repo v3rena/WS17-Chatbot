@@ -37,18 +37,23 @@ namespace Chatbot.Plugins.NewsBot
 			}
 		}
 
-		public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+		public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
 		{
 			//TODO: Read Api key from config
 			return configuration;
-		}
+        }
 
-		/// <summary>
-		/// Processes the request and returns a new message
-		/// </summary>
-		/// <param name="message"></param>
-		/// <returns></returns>
-		public Message Handle(Message message)
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+            
+        }
+
+        /// <summary>
+        /// Processes the request and returns a new message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public Message Handle(Message message)
 		{
 			string answer = "Keine News verfügbar";
 			MessageProcessor msgProcessor = new MessageProcessor();
@@ -201,5 +206,5 @@ namespace Chatbot.Plugins.NewsBot
 			}
 			return builder.ToString();
 		}
-	}
+    }
 }

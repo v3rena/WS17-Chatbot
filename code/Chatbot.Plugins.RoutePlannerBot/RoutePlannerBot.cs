@@ -43,15 +43,16 @@ namespace Chatbot.Plugins.RoutePlannerBot
             }
             return new Message(messageStr);
         }
-
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+        
+        public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
-            PluginConfiguration apiKeyConfig = configuration.Where(i => i.Key == "apiKey").SingleOrDefault();
-            if (apiKeyConfig != null)
-            {
-                this.apiKey = apiKeyConfig.Key;
-            }
+            apiKey = configuration["apiKey"];
             return configuration;
+        }
+
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+            
         }
     }
 }

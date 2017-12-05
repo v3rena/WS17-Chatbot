@@ -35,6 +35,11 @@ namespace Chatbot.BusinessLayer
             pluginConfigurationRepository.Delete(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
         }
 
+        public void DeletePluginConfigurations(IPlugin plugin)
+        {
+            pluginConfigurationRepository.Delete(i => i.Name == plugin.Name);
+        }
+
         public IEnumerable<PluginConfiguration> GetPluginConfigurations()
         {
             return mapper.Map<IEnumerable<PluginConfiguration>>(pluginConfigurationRepository.Read(i => true));

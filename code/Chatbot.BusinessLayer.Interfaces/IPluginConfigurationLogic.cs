@@ -12,6 +12,8 @@ namespace Chatbot.BusinessLayer.Interfaces
 
         void DeletePluginConfiguration(PluginConfiguration pluginConfiguration);
 
+        void DeletePluginConfigurations(IPlugin plugin);
+
         IEnumerable<PluginConfiguration> GetPluginConfigurations();
 
         IEnumerable<PluginConfiguration> GetPluginConfigurations(IPlugin plugin);
