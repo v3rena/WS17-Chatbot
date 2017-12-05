@@ -18,6 +18,8 @@ namespace Chatbot.BusinessLayer.Interfaces
 
         IEnumerable<PluginConfiguration> GetPluginConfigurations(IPlugin plugin);
 
+        IEnumerable<PluginConfiguration> GetPluginConfigurations(string name);
+
         PluginConfiguration GetPluginConfiguration(IPlugin plugin, string key);
 
         PluginConfiguration GetPluginConfiguration(string name, string key);

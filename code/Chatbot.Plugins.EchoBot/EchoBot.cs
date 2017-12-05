@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data.Entity;
+﻿using Chatbot.BusinessLayer.Models;
 using Chatbot.Common.Interfaces;
-using Chatbot.BusinessLayer.Models;
+using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace Chatbot.Plugins.EchoBot
 {
