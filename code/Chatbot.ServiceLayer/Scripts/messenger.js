@@ -21,7 +21,8 @@ $("#messageForm").submit(function (event) {
     var posting = $.ajax({
         url: url,
         type: "POST",
-        data: message,
+        data: JSON.stringify(message),
+        contentType: "application/json",
         dataType: "json",
         success: function (data) {
             addMessage(data, false, false);
@@ -71,8 +72,8 @@ function ensureSession() {
                 datatype: "json",
                 success: function (data) {
                     if (data !== "undefined" && data != null) {
-                        key = JSON.stringify(data);
-                        localStorage.setItem("sessionKey", key);
+                        key = data;
+                        localStorage.setItem("sessionKey", JSON.stringify(key));
                     } else {
                         addErrorMessage("Unable to start session", true);
                     }
@@ -82,7 +83,7 @@ function ensureSession() {
                 }
             })
         } else {
-            key = _sessionKey;
+            key = JSON.parse(_sessionKey);
         }
     } else {
         addErrorMessage("Sorry! No Web Storage support.", true);
