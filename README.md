@@ -27,9 +27,9 @@ If it is not possible to execute that script for any reason, do create a new dat
 * ``/Plugins`` Folder -> AddProject -> .NET Framework Class Library
 * Naming Convention: ``Chatbot.Plugins.[PluginName]``
 * Go to Project Properties -> Build Tab
-* For configuration ``Debug`` set OutputPath to ``..\Chatbot\bin\debug\``
-* For configuration ``Release`` set OutputPath to ``..\Chatbot\bin\release\``
-* Implement ``IPlugin`` interface from ``Chatbot.Interfaces``
+* For configuration ``Debug`` set OutputPath to ``..\Chatbot.ServiceLayer\bin\debug\``
+* For configuration ``Release`` set OutputPath to ``..\Chatbot.ServiceLayer\bin\release\``
+* Implement ``IPlugin`` interface from ``Chatbot.Common.Interfaces``
 
 The ``CanHandle`` method returns a ``float`` value between 0 (not at all) and 1 (perfect match) determining how well the plugin can handle the request.
 

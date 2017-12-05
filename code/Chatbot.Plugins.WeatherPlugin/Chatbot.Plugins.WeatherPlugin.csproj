@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Chatbot\bin\debug\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Chatbot\bin\release\</OutputPath>
+    <OutputPath>..\Chatbot.ServiceLayer\bin\release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,23 +45,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\GetPressureCommand.cs" />
+    <Compile Include="Commands\GetTemperatureCommand.cs" />
+    <Compile Include="Commands\GetWeatherDescriptionCommand.cs" />
+    <Compile Include="Commands\GetAllCommand.cs" />
+    <Compile Include="Commands\GetHumidityCommand.cs" />
+    <Compile Include="Commands\GetWindCommand.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\WeatherInformation.cs" />
     <Compile Include="WeatherPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chatbot.Interfaces\Chatbot.Interfaces.csproj">
-      <Project>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</Project>
-      <Name>Chatbot.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Models\Chatbot.Models.csproj">
-      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
-      <Name>Chatbot.Models</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chatbot.BusinessLayer.Models\Chatbot.BusinessLayer.Models.csproj">
+      <Project>{B295E63E-B685-4686-A4A6-C93151FBB71B}</Project>
+      <Name>Chatbot.BusinessLayer.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.Common.Interfaces\Chatbot.Common.Interfaces.csproj">
+      <Project>{D988E757-4EE0-4FBA-B843-6AADBD942281}</Project>
+      <Name>Chatbot.Common.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
