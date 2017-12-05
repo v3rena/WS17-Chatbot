@@ -31,7 +31,7 @@ namespace Chatbot.Plugins.NewsBot
 
 			HttpClient client = GetClient();
 
-			//If no category is specified, general news are returned
+			//If no category is specified, a source for general news is returned
 			HttpResponseMessage response = client.GetAsync($"?category={category}&country={country}&language=de&apiKey={apiKey}").Result;
 			if (response.IsSuccessStatusCode)
 			{
