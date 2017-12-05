@@ -57,14 +57,14 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
             set
             {
-                city = value;
+                city = value.ToLower();
             }
         }
 
         public WeatherPlugin()
         {
             SetDefaultConfig();
-            
+
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
             commands = new List<ICommand>();
@@ -100,18 +100,15 @@ namespace Chatbot.Plugins.WeatherPlugin
             HelperMethodReadCity(message);
             SetCommands(message);
 
-            WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
-
-            return CreateResponseMessage(result);
-        }
-
-        private Message CreateResponseMessage(WeatherInformation weatherInformation)
-        {
-            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName}:\n");
-
-            commands.ForEach(rs => stringBuilder.AppendLine($"\t{rs.GetInformation(weatherInformation)}"));
-
-            return new Message(stringBuilder.ToString());
+            try
+            {
+                WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
+                return ResponseMessage.Ok(commands, result);
+            }
+            catch (ApplicationException)
+            {
+                return ResponseMessage.CityNotFoundMessage(City);
+            }
         }
 
         private void SetCommands(Message message)
@@ -179,9 +176,9 @@ namespace Chatbot.Plugins.WeatherPlugin
                 storedWeatherInformations.Add(City, weatherInformation);
                 return weatherInformation;
             }
-            catch (ApplicationException e)
+            catch (ApplicationException)
             {
-                throw e;
+                throw;
             }
             finally
             {
@@ -198,20 +195,20 @@ namespace Chatbot.Plugins.WeatherPlugin
                 return JsonConvert.DeserializeObject<WeatherInformation>(jsonString);
             }
             else
+                //TODO differentiate if city not found or api cannot be accessed
                 throw new ApplicationException();
         }
 
         public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
-            //TODO change IEnumerable to List - otherwise no one can insert configs
-            defaultConfig.Keys.ToList().ForEach(e =>
+            defaultConfig.AsParallel().ForAll(element =>
             {
-                if (configuration.Where(i => i.Key == e).SingleOrDefault() == null)
-                    configuration.Add(new PluginConfiguration() { Name = "WeatherPlugin", Key = e, Value = defaultConfig[e] });
+                if (!configuration.Any(i => i.Key == element.Key))
+                    configuration.Add(new PluginConfiguration() { Name = Name, Key = element.Key, Value = element.Value });
             });
 
-            apiKey = configuration.Where(i => i.Key == "ApiKey").Single().Value;
-            defaultCity = configuration.Where(i => i.Key == "DefaultCity").Single().Value;
+            apiKey = configuration.Single(i => i.Key == "ApiKey").Value;
+            defaultCity = configuration.Single(i => i.Key == "DefaultCity").Value;
 
             return configuration;
         }

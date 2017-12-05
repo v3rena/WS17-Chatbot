@@ -53,6 +53,7 @@
     <Compile Include="Commands\GetWindCommand.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\WeatherInformation.cs" />
+    <Compile Include="ResponseMessageCreator.cs" />
     <Compile Include="WeatherPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
