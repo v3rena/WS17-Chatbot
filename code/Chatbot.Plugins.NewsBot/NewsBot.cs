@@ -11,10 +11,8 @@ namespace Chatbot.Plugins.NewsBot
     public class NewsBot : IPlugin
 	{
 		public string Name => "NewsBot";
-		private static readonly string Category = "Category";
 		private static readonly string Keyword = "Keyword";
 		private static readonly string Place = "Ort";
-
 
 		/// <summary>
 		/// Returns 1 if plugin can handle the request and 0 if it cannot
@@ -63,16 +61,7 @@ namespace Chatbot.Plugins.NewsBot
 				Entity entity = GetEntity(list);
 				if (entity!=null)
 				{
-					if(entity.Type==Category)
-					{
-						answer = QueryByCategory(entity);
-						if (string.IsNullOrWhiteSpace(answer))
-						{
-							answer = $"Es wurden keine News zu \"{entity.entity}\" gefunden. ";
-							answer += QueryGeneralNews();
-						}
-					}
-					else if (entity.Type==Keyword)
+					if (entity.Type==Keyword)
 					{
 						answer = QueryByKeyword(entity);
 						if (string.IsNullOrWhiteSpace(answer))
@@ -95,7 +84,7 @@ namespace Chatbot.Plugins.NewsBot
 		}
 
 		/// <summary>
-		/// Returns either a category or a keyword
+		/// Returns a keyword - places are treated as keywords, so they can be queried as well
 		/// </summary>
 		/// <param name="list"></param>
 		/// <returns></returns>
@@ -103,11 +92,7 @@ namespace Chatbot.Plugins.NewsBot
 		{
 			foreach (var item in list)
 			{
-				if (item.Type == Category)
-				{
-					return item;
-				}
-				else if (item.Type == Keyword)
+				if (item.Type == Keyword)
 				{
 					return item;
 				}
@@ -119,31 +104,7 @@ namespace Chatbot.Plugins.NewsBot
 			}
 			return null;
 		}
-
-		/// <summary>
-		/// Searches and returns news by category
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <returns></returns>
-		private string QueryByCategory(Entity entity)
-		{
-			string answer = String.Empty;
-			SourceSelector srcSelector = new SourceSelector();
-			Source src = srcSelector.SelectSource(entity.entity);
-			if (src != null)
-			{
-				NewsSelector newsSelector = new NewsSelector();
-				List<Article> news = newsSelector.SelectNewsBySource(src.Name);
-				if (news != null)
-				{
-					answer = "Es werden Ihnen News aus \"" + src.Name.ToString() + "\" angezeigt:";
-					answer += BuildAnswerString(news);
-
-				}
-			}
-			return answer;
-		}
-
+	
 		/// <summary>
 		/// Searches and returns news by querying a specific keyword
 		/// </summary>
@@ -152,8 +113,8 @@ namespace Chatbot.Plugins.NewsBot
 		private string QueryByKeyword(Entity entity)
 		{
 			string answer = String.Empty;
-			NewsSelector newsSelector = new NewsSelector();
 			string keyword = "";
+			NewsSelector newsSelector = new NewsSelector();
 			if (entity != null)
 			{
 				keyword = entity.entity;
@@ -168,7 +129,7 @@ namespace Chatbot.Plugins.NewsBot
 		}
 
 		/// <summary>
-		/// If no category or keyword is given, general news are returned
+		/// If no keyword is given, general news are returned
 		/// </summary>
 		/// <returns></returns>
 		private string QueryGeneralNews()
@@ -179,19 +140,18 @@ namespace Chatbot.Plugins.NewsBot
 			if (src != null)
 			{
 				NewsSelector newsSelector = new NewsSelector();
-				List<Article> news = newsSelector.SelectNewsBySource(src.Name);
+				List<Article> news = newsSelector.SelectNewsBySource(src.Id);
 				if (news != null)
 				{
 					answer = "Es werden Ihnen allgemeine News aus \"" + src.Name.ToString() + "\" angezeigt:";
 					answer += BuildAnswerString(news);
-
 				}
 			}
 			return answer;
 		}
 
 		/// <summary>
-		/// Constructs an answer from a list of news
+		/// Constructs an answer from a list of news articles
 		/// </summary>
 		/// <param name="news"></param>
 		/// <returns></returns>
