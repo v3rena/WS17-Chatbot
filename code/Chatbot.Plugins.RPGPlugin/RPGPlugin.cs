@@ -1,10 +1,8 @@
-﻿using Chatbot.Interfaces;
-using Chatbot.Models;
+﻿using Chatbot.BusinessLayer.Models;
+using Chatbot.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chatbot.Plugins.RPGPlugin
 {
@@ -34,7 +32,7 @@ namespace Chatbot.Plugins.RPGPlugin
                 return 0f;
         }
 
-        public Dictionary<string, string> EnsureDefaultConfiguration(Dictionary<string, string> configuration)
+        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
         {
             //currently nothing to do
             return configuration;

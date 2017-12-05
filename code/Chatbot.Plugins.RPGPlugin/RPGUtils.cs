@@ -43,13 +43,13 @@ namespace Chatbot.Plugins.RPGPlugin
             new RPGMonster(){MonsterName = "spider", MonsterColor ="black", BaseDef=1, BaseDmg=1, Noise = new PlayerSense("scuttling",1), Depth=1, Rarity=0.2f, Effect=MagicEffect.POISON }
         };
 
-        public static List<RPGGameObject> ItemCatalogue = new List<RPGGameObject>()
+        public static List<RPGItem> ItemCatalogue = new List<RPGItem>()
         {
-            new RPGGameObject("iron dagger", 1, 1, 10, "light grey", 0, MagicEffect.NONE, new PlayerSense(), new PlayerSense(), new PlayerSense("rusty", 1), 1, 1.0f),
-            new RPGGameObject("silver dagger", 1, 1, 10, "silver", 0, MagicEffect.SILVER, new PlayerSense("holy", 1), new PlayerSense("jingling", 1), new PlayerSense(), 1, 0.2f),
-            new RPGGameObject("scroll of fire", 3, 0, 1, "papery", 1, MagicEffect.FIRE, new PlayerSense("burning", 1), new PlayerSense(), new PlayerSense("charred",1),1, 0.5f),
-            new RPGGameObject("scroll of ice", 3, 0, 1, "papery", -1, MagicEffect.ICE, new PlayerSense("chilly", 1), new PlayerSense(), new PlayerSense("icy",1),1,0.2f),
-            new RPGGameObject("small healing potion", -2,0,1,"red", 0, MagicEffect.HEAL, new PlayerSense(), new PlayerSense(), new PlayerSense("of rotten plants",1), 2, 0.5f)
+            new RPGItem("iron dagger", 1, 1, 10, "light grey", 0, MagicEffect.NONE, new PlayerSense(), new PlayerSense(), new PlayerSense("rusty", 1), 1, 1.0f),
+            new RPGItem("silver dagger", 1, 1, 10, "silver", 0, MagicEffect.SILVER, new PlayerSense("holy", 1), new PlayerSense("jingling", 1), new PlayerSense(), 1, 0.2f),
+            new RPGItem("scroll of fire", 3, 0, 1, "papery", 1, MagicEffect.FIRE, new PlayerSense("burning", 1), new PlayerSense(), new PlayerSense("charred",1),1, 0.5f),
+            new RPGItem("scroll of ice", 3, 0, 1, "papery", -1, MagicEffect.ICE, new PlayerSense("chilly", 1), new PlayerSense(), new PlayerSense("icy",1),1,0.2f),
+            new RPGItem("small healing potion", -2,0,1,"red", 0, MagicEffect.HEAL, new PlayerSense(), new PlayerSense(), new PlayerSense("of rotten plants",1), 2, 0.5f)
         };
 
         public static IDictionary<Type, IList<IRPGObject>> RPGGameObjectDict = new Dictionary<Type, IList<IRPGObject>>() {
