@@ -14,7 +14,8 @@
         HEAL,
         DAMAGE,
         ICE,
-        FIRE
+        FIRE,
+        POISON
     }
 
     public enum PlayerSenseType

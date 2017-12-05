@@ -36,8 +36,8 @@ namespace Chatbot
 
             CreateMasterContainer();
 
-            var dal = new DAL();
-            dal.GetTest(1);
+            //var dal = new DAL();
+            //dal.GetTest(1);
         }
 
         private void CreateMasterContainer()

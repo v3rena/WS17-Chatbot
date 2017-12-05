@@ -53,7 +53,7 @@ namespace Chatbot.Plugins.RPGPlugin
         {
             public RPGMessage(string content) : base(MonospacedHTML(content)) { }
 
-            public static string MonospacedHTML(string content)
+            public static string MonospacedHTML(string content) 
             {
                 content = "<p style=\"font-family: Courier, Consolas, Monospace\">" + content + "</p>";
                 return content;

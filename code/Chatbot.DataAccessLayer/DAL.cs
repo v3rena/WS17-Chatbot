@@ -19,7 +19,7 @@ namespace Chatbot.DataAccessLayer
             Database.SetInitializer<ChatbotContext>(new MigrateDatabaseToLatestVersion<ChatbotContext, Migrations.ConfigurationMessage>());
             using (var context = new ChatbotContext())
             {
-                context.Database.Initialize(false);
+                //context.Database.Initialize(false);
             }
 
         }

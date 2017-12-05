@@ -6,59 +6,52 @@ using System.Text;
 using System.Threading.Tasks;
 using Chatbot.Plugins.RPGPlugin.Enumerations;
 
-namespace Chatbot.Plugins.RPGPlugin.RPGItems
+namespace Chatbot.Plugins.RPGPlugin.RPGObjects
 {
 
     public static class RPGItemFactory
     {
         public static Random rand = new Random();
-        public static List<RPGItem> ItemCatalogue = new List<RPGItem>()
+        public static List<RPGGameObject> ItemCatalogue = new List<RPGGameObject>()
         {
-            new RPGItem("iron dagger", 1, 1, 10, "light grey", 0, MagicEffect.NONE, new PlayerSense(), new PlayerSense(), new PlayerSense("rusty", 1), 1, 1.0f),
-            new RPGItem("silver dagger", 1, 1, 10, "silver", 0, MagicEffect.SILVER, new PlayerSense("holy", 1), new PlayerSense("jingling", 1), new PlayerSense(), 1, 0.2f),
-            new RPGItem("scroll of fire", 3, 0, 1, "papery", 1, MagicEffect.FIRE, new PlayerSense("burning", 1), new PlayerSense(), new PlayerSense("charred",1),1, 0.5f),
-            new RPGItem("scroll of ice", 3, 0, 1, "papery", -1, MagicEffect.ICE, new PlayerSense("chilly", 1), new PlayerSense(), new PlayerSense("icy",1),1,0.2f),
+            new RPGGameObject("iron dagger", 1, 1, 10, "light grey", 0, MagicEffect.NONE, new PlayerSense(), new PlayerSense(), new PlayerSense("rusty", 1), 1, 1.0f),
+            new RPGGameObject("silver dagger", 1, 1, 10, "silver", 0, MagicEffect.SILVER, new PlayerSense("holy", 1), new PlayerSense("jingling", 1), new PlayerSense(), 1, 0.2f),
+            new RPGGameObject("scroll of fire", 3, 0, 1, "papery", 1, MagicEffect.FIRE, new PlayerSense("burning", 1), new PlayerSense(), new PlayerSense("charred",1),1, 0.5f),
+            new RPGGameObject("scroll of ice", 3, 0, 1, "papery", -1, MagicEffect.ICE, new PlayerSense("chilly", 1), new PlayerSense(), new PlayerSense("icy",1),1,0.2f),
             /*new RPGItem("super debug thingy", 100, 100, 100, "bright", 3, MagicEffect.FIRE, new PlayerSense("blazing", 3), new PlayerSense("energetic crackling",3), new PlayerSense("like victory", 3),3,0.3f),*/
-            new RPGItem("small healing potion", -2,0,1,"red", 0, MagicEffect.HEAL, new PlayerSense(), new PlayerSense(), new PlayerSense("of rotten plants",1), 2, 0.5f)
+            new RPGGameObject("small healing potion", -2,0,1,"red", 0, MagicEffect.HEAL, new PlayerSense(), new PlayerSense(), new PlayerSense("of rotten plants",1), 2, 0.5f)
         };
 
-        private static float RarityByDepth(RPGItem item, int depth)
-        {
-            int deltaDepth = Math.Abs(depth - item.Depth);
-            if (deltaDepth > 5) return 0;
-            return (float)item.Rarity / (float)Math.Pow(3, deltaDepth);
-        }
-
-        public static RPGItem GetItemForDepth(int depth)
+        public static RPGGameObject GetItemForDepth(int depth)
         {
             //adapted from : https://stackoverflow.com/questions/56692/random-weighted-choice
-            List<RPGItem> items = ItemCatalogue.ToList();
+            List<RPGGameObject> items = ItemCatalogue.ToList();
 
             float totalWeight = 0.0f;
-            foreach (RPGItem item in items)
+            foreach (RPGGameObject item in items)
             {
-                float rarity = RarityByDepth(item, depth);
+                float rarity = RPGUtils.RarityByDepth(item, depth);
                 totalWeight += rarity;
             }
 
             var randomNumber = rand.NextDouble() * totalWeight;
-            RPGItem result = null;
-            foreach (RPGItem item in items)
+            RPGGameObject result = null;
+            foreach (RPGGameObject item in items)
             {
-                if (randomNumber < RarityByDepth(item, depth))
+                if (randomNumber < RPGUtils.RarityByDepth(item, depth))
                 {
                     result = item;
                     break;
                 }
 
-                randomNumber = randomNumber - RarityByDepth(item, depth);
+                randomNumber = randomNumber - RPGUtils.RarityByDepth(item, depth);
             }
 
-            return new RPGItem(result);
+            return new RPGGameObject(result);
         }
     }
 
-    public class RPGItem : IRPGItem
+    public class RPGGameObject : IRPGItem
     {
         public string ItemName;
         public int BaseDmg;
@@ -74,7 +67,7 @@ namespace Chatbot.Plugins.RPGPlugin.RPGItems
         public int Depth;
         public float Rarity;
 
-        public RPGItem(IRPGItem source)
+        public RPGGameObject(IRPGItem source)
         {
             ItemName = source.GetName();
             BaseDmg = source.GetBaseDmg();
@@ -90,7 +83,7 @@ namespace Chatbot.Plugins.RPGPlugin.RPGItems
             Rarity = source.GetRarity();
         }
 
-        public RPGItem(string itemName, int baseDmg, int baseDef, int dur,
+        public RPGGameObject(string itemName, int baseDmg, int baseDef, int dur,
            string itemColor, int temperature, MagicEffect effect,
             PlayerSense magic, PlayerSense noise, PlayerSense smell,
             int depth, float rarity)
@@ -171,4 +164,3 @@ namespace Chatbot.Plugins.RPGPlugin.RPGItems
         }
     }
 }
-

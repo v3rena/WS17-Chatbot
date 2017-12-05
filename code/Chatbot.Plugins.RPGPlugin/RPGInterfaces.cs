@@ -30,7 +30,7 @@ namespace Chatbot.Plugins.RPGPlugin.Interfaces
 
     public interface IRPGMonster : IRPGObject
     {
-        List<MonsterType> Types();
+        List<MonsterType> GetTags();
 
     }
 

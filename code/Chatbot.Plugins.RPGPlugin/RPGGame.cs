@@ -1,6 +1,6 @@
 ﻿using Chatbot.Plugins.RPGPlugin.Enumerations;
 using Chatbot.Plugins.RPGPlugin.Interfaces;
-using Chatbot.Plugins.RPGPlugin.RPGItems;
+using Chatbot.Plugins.RPGPlugin.RPGObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +87,7 @@ namespace Chatbot.Plugins.RPGPlugin
             var items = currentRoom.items.Where(i => i.GetName().ToLower().Contains(item.ToLower())).ToList();
             if (items.Count > 0)
             {
-                player.inventory.Add(new RPGItem(items.FirstOrDefault()));
+                player.inventory.Add(new RPGGameObject(items.FirstOrDefault()));
                 currentRoom.items.Remove(items.FirstOrDefault());
                 return "You take the " + items.FirstOrDefault().GetName()+ ".";
             }
@@ -106,7 +106,7 @@ namespace Chatbot.Plugins.RPGPlugin
             {
                 IRPGItem item = items[i];
                 result += "<br/>1 " + item.GetName();
-                player.inventory.Add(new RPGItem(item));
+                player.inventory.Add(new RPGGameObject(item));
                 currentRoom.items.Remove(item);
             }
             return "You take the following items:" + result;
