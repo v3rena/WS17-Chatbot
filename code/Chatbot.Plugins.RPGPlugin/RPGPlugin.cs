@@ -9,7 +9,7 @@ namespace Chatbot.Plugins.RPGPlugin
 {
     public class RPGPlugin : IPlugin
     {
-        private const int _maxGames = 5;
+        private const int _maxGames = 1;
         private TimeSpan _timeToExpire = new TimeSpan(0, 5, 0);
 
         private string _wordToInit;
@@ -124,7 +124,6 @@ namespace Chatbot.Plugins.RPGPlugin
                     message += "<br/><br/>-----------------------<br/><br/>";
                     message += newGame.RoomFeelings();
                 }
-
             }
             return new RPGMessage(message);
         }

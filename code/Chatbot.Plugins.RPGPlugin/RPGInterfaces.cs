@@ -43,5 +43,6 @@ namespace Chatbot.Plugins.RPGPlugin.Interfaces
 
         IList<IRPGItem> GetItems();
         IRPGRoom GetRoom(int id);
+        bool IsCleared();
     }
 }

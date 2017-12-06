@@ -10,9 +10,23 @@ namespace Chatbot.Plugins.RPGPlugin.Factories
 {
     public class RPGRoomFactory
     {
-        public static RPGBasicRoom CreateBasicRoom(int depth)
+        public static RPGBasicRoom CreateBasicRoom(int depth, int roomId)
         {
             RPGBasicRoom result = new RPGBasicRoom
+            {
+                traps = CreateTraps(depth),
+                monsters = CreateMonsters(depth),
+                items = CreateItems(depth),
+                id = roomId,
+            };
+
+            result.Initialize();
+            return result;
+        }
+
+        public static RPGPuzzleRoom CreateLeverRoom(int depth)
+        {
+            RPGPuzzleRoom result = new RPGPuzzleRoom
             {
                 traps = CreateTraps(depth),
                 monsters = CreateMonsters(depth),
