@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="DAL\RPGTable.cs" />
     <Compile Include="DAL\IRPGTable.cs" />
+    <Compile Include="Factories\RPGRoomFactory.cs" />
+    <Compile Include="German.cs" />
     <Compile Include="Migrations\201712051309060_initial.cs" />
     <Compile Include="Migrations\201712051309060_initial.Designer.cs">
       <DependentUpon>201712051309060_initial.cs</DependentUpon>
@@ -70,6 +72,7 @@
     <Compile Include="RPGGame.cs" />
     <Compile Include="RPGObjects\Items.cs" />
     <Compile Include="RPGObjects\Monsters.cs" />
+    <Compile Include="RPGPlayer.cs" />
     <Compile Include="RPGPlugin.cs" />
     <Compile Include="RPGUtils.cs" />
   </ItemGroup>

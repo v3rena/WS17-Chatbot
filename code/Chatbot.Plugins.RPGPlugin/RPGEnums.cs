@@ -22,18 +22,34 @@
     {
         MAGIC,
         NOISE,
-        SMELL
+        SMELL,
+        COLOR
+    }
+
+    public enum Gender
+    {
+        MALE,
+        FEMALE,
+        NEUTRAL
     }
 
     public class PlayerSense
     {
         public string Description;
-        public int Potency;
+        public float Potency;
 
-        public PlayerSense(string desc = "", int potency = 0)
+        public PlayerSense()
+        {
+            Description = "";
+            Potency = 0;
+        }
+
+        public PlayerSense(string desc, float potency = 0.1f)
         {
             Description = desc;
             Potency = potency;
         }
     }
+
+ 
 }
