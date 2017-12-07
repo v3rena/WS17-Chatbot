@@ -74,6 +74,7 @@
     <Compile Include="RPGObjects\Monsters.cs" />
     <Compile Include="RPGPlayer.cs" />
     <Compile Include="RPGPlugin.cs" />
+    <Compile Include="RPGPuzzle.cs" />
     <Compile Include="RPGUtils.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace Chatbot.Plugins.RPGPlugin
             }
             else
             {
-                result += "Ihr tragt " + inventory.Count + " Gegenstände: ";
+                result += "Ihr tragt " + inventory.Count + " Gegenstände:<br/>";
                 foreach (IRPGItem item in inventory)
                 {
                     result += "<br/>" + item.GetName();

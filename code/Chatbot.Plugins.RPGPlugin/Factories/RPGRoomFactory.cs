@@ -14,6 +14,7 @@ namespace Chatbot.Plugins.RPGPlugin.Factories
         {
             RPGBasicRoom result = new RPGBasicRoom
             {
+                depth = depth,
                 traps = CreateTraps(depth),
                 monsters = CreateMonsters(depth),
                 items = CreateItems(depth),
@@ -24,13 +25,14 @@ namespace Chatbot.Plugins.RPGPlugin.Factories
             return result;
         }
 
-        public static RPGPuzzleRoom CreateLeverRoom(int depth)
+        public static RPGPuzzleRoom CreatePuzzleRoom(int depth)
         {
             RPGPuzzleRoom result = new RPGPuzzleRoom
             {
+                depth = depth,
                 traps = CreateTraps(depth),
                 monsters = CreateMonsters(depth),
-                items = CreateItems(depth)
+                items = CreateItems(depth),
             };
 
             result.Initialize();

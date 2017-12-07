@@ -23,7 +23,7 @@ namespace Chatbot.Plugins.RPGPlugin
         {
             _depth = 0;
             _player = new RPGPlayer();
-            _currentRoom = new RPGBasicRoom();
+            _currentRoom = RPGRoomFactory.CreateBasicRoom(0, 0);
             _currentRoom.CreateFutureRooms(_depth, 1);
             _currentRoom.Initialize();
         }
@@ -34,32 +34,48 @@ namespace Chatbot.Plugins.RPGPlugin
 
             if (_depth == 0)
             {
-                result = "Mit keuchendem Atem beendet Ihr Eure Flucht an einer Felswand. Es gibt kein Entrinnen. Die schweren Schritte Eures Verfolgers kommen näher und näher...<br/><br/>Doch da: eine Menge an mystischen Glyphen und Gravuren deuten auf eine Spalte im Fels. Eine uralte Tempelanlage! Ob die alten Zauberer wohl wirklich so mächtig waren, wie die Legenden erzählen? Uralte Artefakte, Zaubertränke, Waffen... Wenn Ihr nur an den Fallen und Wächtern vorbeikommen könntet, so gäbe es vielleicht doch noch eine Chance zu überleben.<br/>Rasch zwängt Ihr Euch durch die Felsspalte und folgt dem dahinterliegenden Gang, doch schon nach ein paar Schritten teilt sich der Weg. Ihr wisst zwar nicht, was vor Euch liegt, doch eines steht fest - Umkehren steht außer Frage!<br/>";
+                result = "Mit keuchendem Atem beendet Ihr Eure Flucht an einer Felswand. Es gibt kein Entrinnen. Die schweren Schritte Eures Verfolgers kommen näher und näher...<br/><br/>Doch da: eine Menge an mystischen Glyphen und Gravuren deuten auf eine Spalte im Fels. Eine uralte Tempelanlage! Ob die alten Zauberer wohl wirklich so mächtig waren, wie die Legenden erzählen? Uralte Artefakte, Zaubertränke, Waffen... Wenn Ihr nur an den Fallen und Wächtern vorbeikommen könntet, so gäbe es vielleicht doch noch eine Chance zu überleben.<br/>Rasch zwängt Ihr Euch durch die Felsspalte und folgt dem dahinterliegenden Gang. Ihr wisst zwar nicht, was vor Euch liegt, doch eines steht fest - Umkehren steht außer Frage!<br/>";
+            }
+            else if (_currentRoom is RPGPuzzleRoom)
+            {
+                if (!_currentRoom.IsCleared())
+                {
+                    result += "Ihr steht plötzlich vor einem tiefen Abgrund. Es muss doch eine Möglichkeit geben, diesen zu passieren!<br/>";
+                    result += RoomItems();
+                    result += "<br/>An den Wänden sind einige Glyphen und <u title='Um Schalter A zu drücken, muss \"drücke A\" eingegeben werden. Das Rätsel ist gelöst, wenn das Ziel (Z) grün aufleuchtet.\n&, |, ^, ! stehen für die logischen Operatoren AND, OR, XOR, NOT.\nPfeile zeigen den Output der Operatoren an.'>bewegliche Steine</u> zu erkennen. Diese Glyphen haben Euch ja bereits zuvor geholfen. Vielleicht haben die Zauberer einen Hinweis hinterlassen...<br/>Ihr seht genauer hin:<br/><br/>";
+                }
+                else
+                {
+                    result += RoomItems();
+                    result += "Der Weg scheint nun frei zu sein!<br/><br/>";
+                }
+                result += ((RPGPuzzleRoom)_currentRoom).puzzle.PuzzleDisplay();
+
             }
             else
             {
                 result = string.Format("Ihr befindet euch {0} Meter innerhalb des Tempels. Das Gangsystem führt euch tiefer in die Dunkelheit.", (_depth) * 20);
                 result += RoomItems();
-                result += "<br/>";
+                result += "<br/><br/>";
             }
 
-            result += string.Format("<br/><br/>{0}", _currentRoom.GetRoom(0).GetPlayerFeeling(5));
+            result += string.Format("<br/>{0}", _currentRoom.GetRoom(0).GetPlayerFeeling(5, _currentRoom.IsCleared()));
 
             if (_currentRoom.GetRoom(1) == null && _currentRoom.GetRoom(2) == null)
             {
-                result += "Ihr seid sicher, dass dies der einzige Weg ist.";
+                result += " Ihr seid sicher, dass es keine Alternativen gibt.";
             }
             else
             {
                 if (_currentRoom.GetRoom(1) == null)
                     result += "<br/><br/>Ihr wollt sicherlich nicht nach Westen Eurem Verfolger in die Arme laufen.";
                 else
-                    result += string.Format("<br/><br/>{0}", _currentRoom.GetRoom(1).GetPlayerFeeling(5));
+                    result += string.Format("<br/><br/>{0}", _currentRoom.GetRoom(1).GetPlayerFeeling(5, _currentRoom.IsCleared()));
 
                 if (_currentRoom.GetRoom(2) == null)
                     result += "<br/><br/>Ihr wollt sicherlich nicht nach Osten Eurem Verfolger in die Arme laufen.";
                 else
-                    result += string.Format("<br/><br/>{0}", _currentRoom.GetRoom(2).GetPlayerFeeling(5));
+                    result += string.Format("<br/><br/>{0}", _currentRoom.GetRoom(2).GetPlayerFeeling(5, _currentRoom.IsCleared()));
             }
 
             return result;
@@ -74,12 +90,10 @@ namespace Chatbot.Plugins.RPGPlugin
                 case "q":
                 case "exit":
                     return "";
-                case "1":
                 case "n":
                 case "north":
                 case "norden":
                     return TryWalkDir(0);
-                case "2":
                 case "w":
                 case "west":
                 case "westen":
@@ -87,7 +101,6 @@ namespace Chatbot.Plugins.RPGPlugin
                         return TryWalkDir(1);
                     else
                         return "Ihr schüttelt den Kopf. Hierhin wollt Ihr ganz sicher nicht gehen!";
-                case "3":
                 case "e":
                 case "o":
                 case "east":
@@ -106,30 +119,50 @@ namespace Chatbot.Plugins.RPGPlugin
                 case "grab":
                 case "get":
                 case "t":
-                    if (tokens.Count > 1)
-                        return TakeRoomItemByToken(tokens[1]);
+                    if (_currentRoom.IsCleared())
+                    {
+                        if (tokens.Count > 1)
+                            return TakeRoomItemByToken(tokens[1]);
+                        else
+                            return "Welche Gegenstände wollt ihr mitnehmen?" + RoomItems();
+                    }
                     else
-                        return "Welche Gegenstände wollt ihr mitnehmen?" + RoomItems();
+                    {
+                        return "Ihr könnt die Gegenstände nicht erreichen!";
+                    }
                 case "takeall":
                 case "nimmalles":
-                    return TakeAllRoomItems();
+                    if (_currentRoom.IsCleared())
+                        return TakeAllRoomItems();
+                    else
+                        return "Ihr könnt die Gegenstände nicht erreichen!";
                 case "i":
                 case "inventar":
                 case "inventory":
                     return _player.PlayerInventoryInfo();
+                case "drücke":
+                case "aktiviere":
+                case "schalte":
+                    bool puzzleClear;
+                    string result = _currentRoom.HandleCommand(tokens, out puzzleClear);
+                    if (puzzleClear)
+                        return result + RoomFeelings();
+                    else
+                        return result;
                 case "pause":
                     return Pause();
                 case "help":
                 case "hilfe":
                 default:
                     return "Es gibt folgende Kommandos (nicht case-sensitive), um den Verlauf des Spiels zu steuern:<br/>" +
-                        "Gehe nach Norden: <u>n</u>, <u>norden</u>, <u>north</u>, <u>1</u><br/>" +
-                        "Gehe nach Westen: <u>w</u>, <u>westen</u>, <u>west</u>, <u>2</u><br/>" +
-                        "Gehe nach Osten: <u>o</u>, <u>osten</u>, <u>e</u>, <u>east</u>, <u>3</u><br/>" +
+                        "Gehe nach Norden: <u>n</u>, <u>norden</u>, <u>north</u><br/>" +
+                        "Gehe nach Westen: <u>w</u>, <u>westen</u>, <u>west</u><br/>" +
+                        "Gehe nach Osten: <u>o</u>, <u>osten</u>, <u>e</u>, <u>east</u><br/>" +
                         "Schau dich um: <u>schau</u>, <u>look</u>, <u>inspect</u><br/>" +
                         "Nimm Gegenstand X: <u>nimm X</u>, <u>hebe X</u>, <u>take X</u>, <u>grab X</u>, <u>get X</u>, <u>t X</u><br/>" +
                         "Nimm alles: <u>nimmAlles</u>, <u>takeAll</u><br/>" +
                         "Inventar: <u>inventar</u>, <u>i</u>, <u>inventory</u><br/>" +
+                        "Knopf X drücken: <u>drücke X</u>, <u>aktiviere X</u>, <u>schalte X</u><br/>" +
                         "Zeige Hilfeseite: <u>hilfe</u>, <u>help</u><br/>" +
                         "Spiel pausieren: <u>pause</u><br/>" +
                         "Spiel beenden: <u>ende</u>, <u>quit</u>, <u>q</u>, <u>exit</u>";
@@ -178,8 +211,11 @@ namespace Chatbot.Plugins.RPGPlugin
                     _depth++;
                     _currentRoom.CreateFutureRooms(_depth, walkTo);
                 }
+                else
+                {
+                    return "<br/>Der Weg scheint noch <u title='Ein Weg ist dann versperrt, wenn sich noch Monster oder ungelöste Rätsel im Raum befinden.'>versperrt</u> zu sein...";
+                }
             }
-
 
             return RoomFeelings();
         }
@@ -189,7 +225,7 @@ namespace Chatbot.Plugins.RPGPlugin
             string result = "";
             if (_currentRoom.GetItems().Count > 0)
             {
-                result = "<br/>Am Boden vor euch seht ihr folgende Gegenstände: ";
+                result = "<br/>In der Nähe seht ihr folgende Gegenstände: ";
 
                 for (int i = 0; i < _currentRoom.GetItems().Count; i++)
                 {
@@ -215,7 +251,7 @@ namespace Chatbot.Plugins.RPGPlugin
             {
                 result = "<br/>Es sind keine Gegenstände zu sehen.";
             }
-            return result;
+            return result+"<br/>";
         }
 
         public void Unpause()
@@ -232,6 +268,8 @@ namespace Chatbot.Plugins.RPGPlugin
 
     public class RPGPuzzleRoom : IRPGRoom
     {
+        public int depth;
+        public int id;
         public IList<IRPGTrap> traps = new List<IRPGTrap>();
         public IList<IRPGMonster> monsters = new List<IRPGMonster>();
         public IList<IRPGItem> items = new List<IRPGItem>();
@@ -240,11 +278,16 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public IList<IRPGRoom> rooms = new List<IRPGRoom>();
 
+        public RPGPuzzle puzzle;
+
+
         public RPGPuzzleRoom() { }
 
         public void CreateFutureRooms(int depth, int walkDir)
         {
             rooms.Add(RPGRoomFactory.CreateBasicRoom(depth, 0));
+            rooms.Add(RPGRoomFactory.CreateBasicRoom(depth, 1));
+            rooms.Add(RPGRoomFactory.CreateBasicRoom(depth, 2));
         }
 
         public IList<IRPGItem> GetItems()
@@ -252,23 +295,34 @@ namespace Chatbot.Plugins.RPGPlugin
             return items;
         }
 
-        public string GetPlayerFeeling(int perception)
+        public string GetPlayerFeeling(int perception, bool isCleared)
         {
-            string result = "Ihr steht plötzlich vor einem tiefen Abgrund. Es muss doch eine Möglichkeit geben, diesen zu passieren! In der Ferne hört ihr bereits die Schritte eures Verfolgers durch die Gänge hallen. " +
-                 "Die Glyphen an den Wänden haben Euch bereits zuvor geholfen. Vielleicht haben die Zauberer einen Hinweis hinterlassen...<br/><br/>";
-
-            result +=
-                "+------------+<br/>" +
-                "|...C........|<br/>" +
-                "|.D-+--+.....|<br/>" +
-                "|...|..|.....|<br/>" +
-                "|.<font color='red'>X-</font>+<font color='red'>--</font>+<font color='red'>----2</font>|<br/>" +
-                "|...|..|.....|<br/>" +
-                "|.3-+..1.....|<br/>" +
-                "+------------+<br/>" +
-                "<br/><br/>";
+            var result = "Ein rätselhaftes Gebiet liegt vor Euch im <u title='Um in den Norden weiterzugehen, müsst Ihr \"Norden\" eingeben. Weitere Befehle findet Ihr mit \"Hilfe\".'>Norden</u>...";
+            if (!isCleared)
+                result += "<br/>Der Weg scheint noch <u title='Ein Weg ist dann versperrt, wenn sich noch Monster oder ungelöste Rätsel im Raum befinden.'>versperrt</u> zu sein...";
 
             return result;
+        }
+
+        public string ToggleButton(string buttonName)
+        {
+            switch (buttonName)
+            {
+                case "A":
+                case "a":
+                    return puzzle.Toggle(0);
+                case "B":
+                case "b":
+                    return puzzle.Toggle(1);
+                case "C":
+                case "c":
+                    return puzzle.Toggle(2);
+                case "D":
+                case "d":
+                    return puzzle.Toggle(3);
+                default:
+                    return string.Format("Ihr könnt keinen Knopf mit der Bezeichnung '{0}' erkennen.<br/>", buttonName);
+            }
         }
 
         public IRPGRoom GetRoom(int id)
@@ -281,6 +335,8 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public void Initialize()
         {
+            puzzle = new RPGPuzzle(depth);
+
             objects = new List<IRPGObject>();
             foreach (IRPGObject obj in traps)
             {
@@ -298,12 +354,30 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public bool IsCleared()
         {
-            throw new NotImplementedException();
+            return puzzle.IsSolved();
+        }
+
+        public string HandleCommand(IList<string> tokens, out bool solved)
+        {
+            string result = "";
+            for (int i = 1; i < tokens.Count; i++)
+            {
+                result += ToggleButton(tokens[i]);
+            }
+
+            if (!IsCleared())
+                result += "<br/>" + puzzle.PuzzleDisplay();
+
+            solved = IsCleared();
+
+            return result;
         }
     }
 
+
     public class RPGBasicRoom : IRPGRoom
     {
+        public int depth;
         public IList<IRPGTrap> traps = new List<IRPGTrap>();
         public IList<IRPGMonster> monsters = new List<IRPGMonster>();
         public IList<IRPGItem> items = new List<IRPGItem>();
@@ -335,7 +409,7 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public void CreateFutureRooms(int depth, int walkTo)
         {
-            if ((depth - 1) % 5 != 4)
+            if (depth % 5 != 0)
             {
                 rooms.Add(RPGRoomFactory.CreateBasicRoom(depth, 0));
 
@@ -351,13 +425,13 @@ namespace Chatbot.Plugins.RPGPlugin
             }
             else
             {
-                rooms.Add(RPGRoomFactory.CreateLeverRoom(depth));
+                rooms.Add(RPGRoomFactory.CreatePuzzleRoom(depth));
                 rooms.Add(null);
                 rooms.Add(null);
             }
         }
 
-        public string GetPlayerFeeling(int perception)
+        public string GetPlayerFeeling(int perception, bool isCleared)
         {
             int linesRemaining = perception;
             string result = "";
@@ -368,8 +442,14 @@ namespace Chatbot.Plugins.RPGPlugin
             if (linesRemaining > 0 && color.Potency > 0)
             {
 
-
                 result += string.Format("Der Raum in Richtung {0} ist in {1}es Licht getaucht. ", direction, GetRoomColor());
+
+                if (!isCleared)
+                {
+                    result += "<br/>Der Weg scheint noch <u title='Ein Weg ist dann versperrt, wenn sich noch Monster oder ungelöste Rätsel im Raum befinden.'>versperrt</u> zu sein...";
+                    return result;
+                }
+
                 linesRemaining--;
             }
 
@@ -455,6 +535,12 @@ namespace Chatbot.Plugins.RPGPlugin
         public bool IsCleared()
         {
             return (monsters.Count == 0 && traps.Count == 0);
+        }
+
+        public string HandleCommand(IList<string> tokens, out bool isClr)
+        {
+            isClr = IsCleared();
+            return "Hier gibt es keine Schalter, welche man drücken könnte...";
         }
     }
 }

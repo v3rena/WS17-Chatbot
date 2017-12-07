@@ -38,8 +38,9 @@ namespace Chatbot.Plugins.RPGPlugin.Interfaces
     public interface IRPGRoom
     {
         void Initialize();
-        string GetPlayerFeeling(int perception);
+        string GetPlayerFeeling(int perception, bool isCleared);
         void CreateFutureRooms(int depth, int walkDir);
+        string HandleCommand(IList<string> tokens, out bool isCleared);
 
         IList<IRPGItem> GetItems();
         IRPGRoom GetRoom(int id);
