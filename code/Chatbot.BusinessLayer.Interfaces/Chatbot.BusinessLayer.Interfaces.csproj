@@ -44,6 +44,7 @@
     <Compile Include="IMessagingLogic.cs" />
     <Compile Include="IPluginConfigurationLogic.cs" />
     <Compile Include="ISessionLogic.cs" />
+    <Compile Include="ISpeechAPITokenLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

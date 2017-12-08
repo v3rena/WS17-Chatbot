@@ -90,6 +90,7 @@ namespace Chatbot
             builder.RegisterType<BusinessLayer.MessagingLogic>().As<IMessagingLogic>().SingleInstance();
             builder.RegisterType<BusinessLayer.SessionLogic>().As<ISessionLogic>().SingleInstance();
             builder.RegisterType<BusinessLayer.PluginConfigurationLogic>().As<IPluginConfigurationLogic>().SingleInstance();
+            builder.RegisterType<BusinessLayer.SpeechAPITokenLogic>().As<ISpeechAPITokenLogic>().SingleInstance();
 
             builder.RegisterType<DataAccessLayer.Repositories.MessageRepository>().As<IRepository<DataAccessLayer.Entities.Message>>().SingleInstance();
             builder.RegisterType<DataAccessLayer.Repositories.SessionKeyRepository>().As<IRepository<DataAccessLayer.Entities.SessionKey>>().SingleInstance();

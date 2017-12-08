@@ -192,6 +192,7 @@
     <Compile Include="Controllers\PluginConfigurationController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Controllers\SpeechAPITokenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -230,10 +231,13 @@
     <Content Include="Scripts\messenger.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\recorder.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\speech.browser.sdk-min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
