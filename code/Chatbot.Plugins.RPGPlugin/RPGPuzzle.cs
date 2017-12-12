@@ -109,14 +109,15 @@ namespace Chatbot.Plugins.RPGPlugin
                     "#.......x.e......#<br/>" +
                     "#.Bxxxxxx.e......#<br/>" +
                     "#.........e......#<br/>" +
-                    "#.CyyyyFFfGGgggZ.#<br/>" +
+                    "#.CyyyyHHhGGgggZ.#<br/>" +
                     "#......D.........#<br/>" +
                     "##################<br/>";
 
-                    result = result.Replace("f", string.Format("<font color={0}>%</font>", b[2] && b[3] ? "#00ff00" : "ff0000"));
-                    result = result.Replace("FF", string.Format("<font color={0}>&amp;&#8594;</font>", b[2] && b[3] ? "00ff00" : "ff0000"));
-
                     result = result.Replace("a", string.Format("<font color={0}>%</font>", b[0] ? "00ff00" : "ff0000"));
+                    result = result.Replace("h", string.Format("<font color={0}>%</font>", b[2] && b[3] ? "#00ff00" : "ff0000"));
+                    result = result.Replace("HH", string.Format("<font color={0}>&amp;&#8594;</font>", b[2] && b[3] ? "00ff00" : "ff0000"));
+
+                   
                     result = result.Replace("x", string.Format("<font color={0}>%</font>", b[1] ? "00ff00" : "ff0000"));
                     result = result.Replace("y", string.Format("<font color={0}>%</font>", b[2] ? "00ff00" : "ff0000"));
                     result = result.Replace("d", string.Format("<font color={0}>%</font>", b[3] ? "00ff00" : "ff0000"));
@@ -140,15 +141,16 @@ namespace Chatbot.Plugins.RPGPlugin
                     "#.........EEe....#<br/>" +
                     "#..Bxxxxxxx.e....#<br/>" +
                     "#...........GGgZ.#<br/>" +
-                    "#.CYyyyyyyy.f....#<br/>" +
-                    "#.........FFf....#<br/>" +
+                    "#.CYyyyyyyy.h....#<br/>" +
+                    "#.........HHh....#<br/>" +
                     "#...Ddddddd......#<br/>" +
                     "##################<br/>";
 
-                    result = result.Replace("f", string.Format("<font color={0}>%</font>", !b[2] && b[3] ? "00ff00" : "ff0000"));
-                    result = result.Replace("FF", string.Format("<font color={0}>&amp;&#8594;</font>", !b[2] && b[3] ? "00ff00" : "ff0000"));
-
                     result = result.Replace("a", string.Format("<font color={0}>%</font>", b[0] ? "00ff00" : "ff0000"));
+                    result = result.Replace("h", string.Format("<font color={0}>%</font>", !b[2] && b[3] ? "00ff00" : "ff0000"));
+                    result = result.Replace("HH", string.Format("<font color={0}>&amp;&#8594;</font>", !b[2] && b[3] ? "00ff00" : "ff0000"));
+
+         
                     result = result.Replace("x", string.Format("<font color={0}>%</font>", b[1] ? "00ff00" : "ff0000"));
                     result = result.Replace("Y", string.Format("<font color={0}>!</font>", !b[2] ? "00ff00" : "ff0000"));
                     result = result.Replace("y", string.Format("<font color={0}>%</font>", !b[2] ? "00ff00" : "ff0000"));
