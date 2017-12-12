@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{45918D97-CC52-48D5-B34A-3343B3E5F1C0}</ProjectGuid>
+    <ProjectGuid>{B111528B-E2AC-4329-9F3D-7E1E7ED34C7D}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -192,6 +192,7 @@
     <Compile Include="Controllers\PluginConfigurationController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
+    <Compile Include="Controllers\SpeechAPITokenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -230,10 +231,13 @@
     <Content Include="Scripts\messenger.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\recorder.js" />
+    <Content Include="Scripts\require.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\speech.browser.sdk-min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -280,7 +284,7 @@
       <Name>Chatbot.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.Common.PluginManager\Chatbot.Common.PluginManager.csproj">
-      <Project>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</Project>
+      <Project>{FFD171F5-6EF2-49AB-9687-ECB781D1917E}</Project>
       <Name>Chatbot.Common.PluginManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chatbot.DataAccessLayer.Entities\Chatbot.DataAccessLayer.Entities.csproj">

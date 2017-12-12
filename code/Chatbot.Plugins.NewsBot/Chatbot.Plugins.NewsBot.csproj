@@ -76,10 +76,6 @@
       <Project>{5249e6f8-05cf-47b6-95be-4776f003093f}</Project>
       <Name>Chatbot.ServiceLayer.DTOs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Chatbot.Common.PluginManager\Chatbot.Common.PluginManager.csproj">
-      <Project>{15426c84-8da5-4f58-8e68-47fc3674ec31}</Project>
-      <Name>Chatbot.Common.PluginManager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Chatbot.BusinessLayer.Models\Chatbot.BusinessLayer.Models.csproj">
       <Project>{b295e63e-b685-4686-a4a6-c93151fbb71b}</Project>
       <Name>Chatbot.BusinessLayer.Models</Name>

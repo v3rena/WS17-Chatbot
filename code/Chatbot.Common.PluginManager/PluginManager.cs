@@ -1,26 +1,23 @@
 ﻿using Chatbot.BusinessLayer.Models;
 using Chatbot.Common.Interfaces;
 using Chatbot.DataAccessLayer.Interfaces;
-using Chatbot.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
-using Chatbot.BusinessLayer;
-using Chatbot.BusinessLayer.Interfaces;
 
 namespace Chatbot.Common.PluginManager
 {
     public class PluginManager : IPluginManager
     {
         private List<IPlugin> plugins;
-        private readonly IPluginConfigurationLogic pluginConfigurationLogic;
+        private readonly IRepository<DataAccessLayer.Entities.PluginConfiguration> pluginConfigurationRepository;
 
-        public PluginManager(IPluginConfigurationLogic pluginConfigurationLogic)
+        public PluginManager(IRepository<DataAccessLayer.Entities.PluginConfiguration> pluginConfigurationRepository)
         {
-            this.pluginConfigurationLogic = pluginConfigurationLogic;
+            this.pluginConfigurationRepository = pluginConfigurationRepository;
             LoadAllPlugins();
         }
 
@@ -64,6 +61,19 @@ namespace Chatbot.Common.PluginManager
             return plugins.OrderByDescending(p => p.CanHandle(message)).First();
         }
 
+        public void NotifyChanges(IPlugin plugin)
+        {
+            plugin.RefreshConfiguration(pluginConfigurationRepository.Read(i => i.Name == plugin.Name).ToDictionary(i => i.Key, i => i.Value));
+        }
+
+        public void NotifyChanges(string pluginName)
+        {
+            plugins
+                .Where(i => i.Name == pluginName)
+                .Single()
+                .RefreshConfiguration(pluginConfigurationRepository.Read(i => i.Name == pluginName).ToDictionary(i => i.Key, i => i.Value));
+        }
+
         private void LoadAllPlugins()
         {
             plugins = new List<IPlugin>();
@@ -83,7 +93,15 @@ namespace Chatbot.Common.PluginManager
                         if (type.GetInterface("IPlugin") == typeof(IPlugin))
                         {
                             IPlugin p = (IPlugin)Activator.CreateInstance(type);
-                            pluginConfigurationLogic.SavePluginConfigurations(p.EnsureDefaultConfiguration(pluginConfigurationLogic.GetPluginConfigurations(p).ToList()));
+                            var oldConfig = pluginConfigurationRepository.Read(i => i.Name == p.Name).ToDictionary(i => i.Key, i => i.Value);
+                            var newConfig = p.EnsureDefaultConfiguration(oldConfig);
+                            var listConfig = newConfig.Select(i => new DataAccessLayer.Entities.PluginConfiguration() { Name = p.Name, Key = i.Key, Value = i.Value });
+                            pluginConfigurationRepository.Delete(i => i.Name == p.Name);
+                            //TODO do that at once (no new db transaction for every element) 
+                            foreach (DataAccessLayer.Entities.PluginConfiguration pluginConfiguration in listConfig)
+                            {
+                                pluginConfigurationRepository.Save(pluginConfiguration);
+                            }
                             Add(p);
                         }
                     }

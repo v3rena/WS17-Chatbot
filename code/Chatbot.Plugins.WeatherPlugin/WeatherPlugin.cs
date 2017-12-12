@@ -201,19 +201,26 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new ApplicationException();
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+        public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
-            //TODO change IEnumerable to List - otherwise no one can insert configs
-            defaultConfig.Keys.ToList().ForEach(e =>
+            //TODO alternative way of life
+            //configuration = defaultConfig.Concat(configuration).ToDictionary(i => i.Key, i => i.Value);
+
+            defaultConfig.AsParallel().ForAll(element =>
             {
-                if (configuration.Where(i => i.Key == e).SingleOrDefault() == null)
-                    configuration.Add(new PluginConfiguration() { Name = "WeatherPlugin", Key = e, Value = defaultConfig[e] });
+                if (!configuration.Keys.Any(i => i == element.Key))
+                    configuration.Add(element.Key, element.Value);
             });
 
-            apiKey = configuration.Where(i => i.Key == "ApiKey").Single().Value;
-            defaultCity = configuration.Where(i => i.Key == "DefaultCity").Single().Value;
+            apiKey = configuration["ApiKey"];
+            defaultCity = configuration["DefaultCity"];
 
             return configuration;
+        }
+
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+            
         }
     }
 }

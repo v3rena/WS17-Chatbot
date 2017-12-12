@@ -12,27 +12,38 @@ namespace Chatbot.BusinessLayer
     public class PluginConfigurationLogic : IPluginConfigurationLogic
     {
         private readonly IRepository<DataAccessLayer.Entities.PluginConfiguration> pluginConfigurationRepository;
+        private readonly IPluginManager pluginManager;
         private readonly IMapper mapper;
 
-        public PluginConfigurationLogic(IRepository<DataAccessLayer.Entities.PluginConfiguration> pluginConfigurationRepository, IMapper mapper)
+        public PluginConfigurationLogic(IRepository<DataAccessLayer.Entities.PluginConfiguration> pluginConfigurationRepository, IPluginManager pluginManager, IMapper mapper)
         {
             this.pluginConfigurationRepository = pluginConfigurationRepository;
+            this.pluginManager = pluginManager;
             this.mapper = mapper;
         }
 
         public void AddPluginConfiguration(PluginConfiguration pluginConfiguration)
         {
             pluginConfigurationRepository.Create(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
+            NotifyChanges(pluginConfiguration.Name);
         }
 
         public void DeletePluginConfiguration(string name, string key)
         {
             pluginConfigurationRepository.Delete(i => i.Name == name && i.Key == key);
+            NotifyChanges(name);
         }
 
         public void DeletePluginConfiguration(PluginConfiguration pluginConfiguration)
         {
             pluginConfigurationRepository.Delete(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
+            NotifyChanges(pluginConfiguration.Name);
+        }
+
+        public void DeletePluginConfigurations(IPlugin plugin)
+        {
+            pluginConfigurationRepository.Delete(i => i.Name == plugin.Name);
+            NotifyChanges(plugin);
         }
 
         public IEnumerable<PluginConfiguration> GetPluginConfigurations()
@@ -42,7 +53,12 @@ namespace Chatbot.BusinessLayer
 
         public IEnumerable<PluginConfiguration> GetPluginConfigurations(IPlugin plugin)
         {
-            return mapper.Map<IEnumerable<PluginConfiguration>>(pluginConfigurationRepository.Read(i => i.Name == plugin.Name));
+            return GetPluginConfigurations(plugin.Name);
+        }
+
+        public IEnumerable<PluginConfiguration> GetPluginConfigurations(string name)
+        {
+            return mapper.Map<IEnumerable<PluginConfiguration>>(pluginConfigurationRepository.Read(i => i.Name == name));
         }
 
         public PluginConfiguration GetPluginConfiguration(IPlugin plugin, string key)
@@ -58,6 +74,7 @@ namespace Chatbot.BusinessLayer
         public void SavePluginConfiguration(PluginConfiguration pluginConfiguration)
         {
             pluginConfigurationRepository.Save(mapper.Map<DataAccessLayer.Entities.PluginConfiguration>(pluginConfiguration));
+            NotifyChanges(pluginConfiguration.Name);
         }
 
         public void SavePluginConfigurations(IEnumerable<PluginConfiguration> pluginConfigurations)
@@ -66,6 +83,16 @@ namespace Chatbot.BusinessLayer
             {
                 SavePluginConfiguration(p);
             }
+        }
+
+        private void NotifyChanges(IPlugin plugin)
+        {
+            pluginManager.NotifyChanges(plugin);
+        }
+
+        private void NotifyChanges(string pluginName)
+        {
+            pluginManager.NotifyChanges(pluginName);
         }
     }
 }

@@ -14,5 +14,9 @@ namespace Chatbot.Common.Interfaces
         void Clear();
 
         IPlugin ChoosePlugin(Message message);
+
+        void NotifyChanges(IPlugin plugin);
+
+        void NotifyChanges(string pluginName);
     }
 }
