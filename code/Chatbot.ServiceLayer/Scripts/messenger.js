@@ -55,7 +55,8 @@ function addMessage(message, error, me = null) {
     }
 
     $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\" style=\"white-space: pre-wrap;\">" + message.Content + "</span>");
-    $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
+    var objDiv = $("#messageContainer")[0];
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 function addErrorMessage(errorMessage) {
