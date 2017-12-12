@@ -14,7 +14,7 @@ namespace Chatbot.Plugins.DeliveryServicePlugin
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("deliveryService");
+            modelBuilder.HasDefaultSchema("ds");
         }
     }
 }

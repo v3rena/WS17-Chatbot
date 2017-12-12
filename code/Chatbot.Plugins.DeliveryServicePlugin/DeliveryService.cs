@@ -2,17 +2,28 @@
 using Chatbot.Common.Interfaces;
 using Chatbot.Plugins.DeliveryService.Models;
 using Chatbot.Plugins.DeliveryServicePlugin;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Chatbot.Plugins.DeliveryService
 {
     public class DeliveryService : IPlugin
     {
+        private static readonly string HANDLE_PATTERN = @"^.*(?:order something|please order|want to order|delivery service plugin).*$";
+        private static readonly Regex HANDLE_REGEX = new Regex(HANDLE_PATTERN, RegexOptions.IgnoreCase);
+
+        private static readonly string EXTRACT_ORDER_PATTERN = @"^[a-zA-Z\s]*:\s*((?:\d+[a-zA-ZäöüÄÖÜ\s]+(?:\([a-zA-ZäöüÄÖÜ\s]*\))?,\s*)+)\s*to:\s*([a-zA-ZäöüÄÖÜß\-\s]+,[a-zA-Z0-9äöüÄÖÜß\-\s]+,[a-zA-ZäöüÄÖÜ0-9ß\-\s]+)$";
+        private static readonly Regex EXTRACT_ORDER_REGEX = new Regex(EXTRACT_ORDER_PATTERN, RegexOptions.IgnoreCase);
+
+        private static readonly string EXTRACT_POSITION_PATTERN = @"^([\d]+)\s([a-zA-ZäöüÄÖÜ\s]+)\s*\(?([a-zA-ZäöüÄÖÜ,\s]*)\)?$";
+        private static readonly Regex EXTRACT_POSITION_REGEX = new Regex(EXTRACT_POSITION_PATTERN, RegexOptions.IgnoreCase);
+
         public string Name => "DeliveryService";
 
         public float CanHandle(Message message)
         {
-            if (message.Content.Contains("order something"))
+            if (HANDLE_REGEX.IsMatch(message.Content))
             {
                 return 1.0f;
             }
@@ -26,24 +37,61 @@ namespace Chatbot.Plugins.DeliveryService
 
         public Message Handle(Message message)
         {
-            OrderAddress orderAddress = new OrderAddress("Michael Palata", "Musteralee 1/5", "2130 Mistelbach", "0664 123 456 789");
-
-            OrderWrapper order = new OrderWrapper(orderAddress);
-            order.Positions.Add(new OrderPosition("Pizza Salami", 1, "extra Mais und doppelt Käse"));
-            order.Positions.Add(new OrderPosition("Pizza Provenciale", 1));
-            order.Positions.Add(new OrderPosition("Pizza Mageritha", 1, "mit Mais"));
-
-            Order entity = new Order();
-            entity.SetOrder(order);
-
-            DeliveryServiceContext context = new DeliveryServiceContext();
-            DeliveryServiceRepository dal = new DeliveryServiceRepository(context);
-
-            dal.Create(entity);
-
             Message response = new Message();
-            response.Content = "DeliveryService Plugin TRIGGERED!\n*autistic screeching*REEEEEEEEEEEE!!!!\n++++++++++++++++++++++++++++++\n\n" + entity.OrderJsonData;
             response.SessionKey = message.SessionKey;
+
+            if (message.Content.Contains("delivery service plugin"))
+            {
+                response.Content = "Usage of the Delivery Service Plugin:\n\n[...] order: [amount] [product] [|(extras)], [amount] [product] [|(extras)], ..., to: [name], [street], [zip city]";
+                return response;
+            }
+
+            Match match = EXTRACT_ORDER_REGEX.Match(message.Content);
+            string rawOrder = match.Groups[1].Value;
+
+            string rawAddress = match.Groups[2].Value;
+            string[] addressLines = rawAddress.Split(',');
+
+            if (addressLines.Length != 3)
+            {
+                response.Content = "Error";
+                return response;
+            }
+
+            OrderAddress address = new OrderAddress();
+            address.Name = addressLines[0].Trim();
+            address.AddressStreet1 = addressLines[1].Trim();
+            address.AddressStreet2 = addressLines[2].Trim();
+
+            OrderWrapper orderWrapper = new OrderWrapper(address);
+
+            string[] positions = rawOrder.Split(',');
+            Match position;
+            OrderPosition orderPosition;
+            for (int i = 0; i < positions.Length; i++)
+            {
+                positions[i] = positions[i].Trim();
+                if (string.IsNullOrEmpty(positions[i]))
+                {
+                    continue;
+                }
+                position = EXTRACT_POSITION_REGEX.Match(positions[i]);
+                orderPosition = new OrderPosition(position.Groups[2].Value, int.Parse(position.Groups[1].Value));
+                if (position.Groups[3] != null)
+                {
+                    orderPosition.Comment = position.Groups[3].Value;
+                }
+                orderWrapper.Positions.Add(orderPosition);
+            }
+
+            Order order = new Order();
+            order.SetOrder(orderWrapper);
+            
+            DeliveryServiceRepository dal = new DeliveryServiceRepository(new DeliveryServiceContext());
+
+            //dal.Create(entity);
+            
+            response.Content = "DeliveryService Plugin TRIGGERED!\n*autistic screeching*REEEEEEEEEEEE!!!!\n\n++++++++++++++++++++++++++++++\n\n" + order.OrderJsonData;
             return response;
         }
     }

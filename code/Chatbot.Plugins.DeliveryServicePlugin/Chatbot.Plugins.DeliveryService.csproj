@@ -54,9 +54,9 @@
     <Compile Include="DeliveryService.cs" />
     <Compile Include="DeliveryServiceContext.cs" />
     <Compile Include="DeliveryServiceRepository.cs" />
-    <Compile Include="Migrations\201712051315218_initial.cs" />
-    <Compile Include="Migrations\201712051315218_initial.Designer.cs">
-      <DependentUpon>201712051315218_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201712122021198_initial.cs" />
+    <Compile Include="Migrations\201712122021198_initial.Designer.cs">
+      <DependentUpon>201712122021198_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Order.cs" />
@@ -89,8 +89,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712051315218_initial.resx">
-      <DependentUpon>201712051315218_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712122021198_initial.resx">
+      <DependentUpon>201712122021198_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

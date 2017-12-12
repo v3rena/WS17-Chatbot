@@ -8,7 +8,7 @@ namespace Chatbot.Plugins.DeliveryServicePlugin.Migrations
         public override void Up()
         {
             CreateTable(
-                "deliveryService.Orders",
+                "ds.Orders",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -16,12 +16,11 @@ namespace Chatbot.Plugins.DeliveryServicePlugin.Migrations
                         OrderJsonData = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
         
         public override void Down()
         {
-            DropTable("deliveryService.Orders");
+            DropTable("ds.Orders");
         }
     }
 }

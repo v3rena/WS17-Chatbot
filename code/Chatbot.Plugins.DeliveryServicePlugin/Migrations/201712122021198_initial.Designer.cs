@@ -13,7 +13,7 @@ namespace Chatbot.Plugins.DeliveryServicePlugin.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201712051315218_initial"; }
+            get { return "201712122021198_initial"; }
         }
         
         string IMigrationMetadata.Source
