@@ -29,11 +29,12 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year Awesome BIF-SWE3 Team</p>
-        </footer>
     </div>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year Awesome BIF-SWE3 Team</p>
+        </div>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/messenger")
