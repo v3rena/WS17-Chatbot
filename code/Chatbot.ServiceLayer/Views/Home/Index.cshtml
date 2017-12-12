@@ -1,13 +1,13 @@
-﻿<div class="jumbotron">
+﻿<div class="jumbotron hidden-xs">
     <h1>Chatbot</h1>
     <p class="lead">Talk to me.</p>
 </div>
-<div id="messageContainer" class="row">
+<div id="messageContainer">
     <span class="message info">
         @DateTime.Now.ToShortDateString()
     </span>
 </div>
-<div class="messageFormContainer row">
+<div class="messageFormContainer">
     <form method="post" id="messageForm" class="form-inline">
         <div class="input-group">
             <input type="text" id="message" class="form-control" placeholder="Enter some text..." required autocomplete="off"/>
@@ -17,5 +17,4 @@
             </span>
         </div>
     </form>
-    <span class="help-block" id="status"></span>
 </div>
