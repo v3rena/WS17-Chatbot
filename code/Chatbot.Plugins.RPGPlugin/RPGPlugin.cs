@@ -9,7 +9,7 @@ namespace Chatbot.Plugins.RPGPlugin
 {
     public class RPGPlugin : IPlugin
     {
-        private const int _maxGames = 1;
+        private const int _maxGames = 5;
         private TimeSpan _timeToExpire = new TimeSpan(0, 5, 0);
 
         private string _wordToInit;
@@ -41,11 +41,17 @@ namespace Chatbot.Plugins.RPGPlugin
                 return 0f;
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+        public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
             //currently nothing to do
             return configuration;
         }
+
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+            //currently nothing to do
+        }
+
 
         public Message Handle(Message message)
         {
@@ -111,7 +117,10 @@ namespace Chatbot.Plugins.RPGPlugin
                     }
                     else
                     {
-                        _games.TryRemove(expiredGames[0].Key, out RPGGame game);
+                        foreach (var i in expiredGames)
+                        {
+                            _games.TryRemove(i.Key, out RPGGame game);
+                        }
                         hasFreeSlot = true;
                     }
                 }
