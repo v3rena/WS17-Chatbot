@@ -1,18 +1,18 @@
-namespace Chatbot.Plugins.EchoBot.Migrations
+namespace Chatbot.Plugins.RPGPlugin.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Chatbot.Plugins.EchoBot.EchoBotContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Chatbot.Plugins.RPGPlugin.RPGPluginContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Chatbot.Plugins.EchoBot.EchoBotContext context)
+        protected override void Seed(Chatbot.Plugins.RPGPlugin.RPGPluginContext context)
         {
             //  This method will be called after migrating to the latest version.
 
