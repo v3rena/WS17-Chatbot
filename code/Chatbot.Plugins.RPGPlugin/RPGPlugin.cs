@@ -28,7 +28,8 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public float CanHandle(Message message)
         {
-            _games.TryGetValue(message.SessionKey.Key, out RPGGame game);
+            RPGGame game;
+            _games.TryGetValue(message.SessionKey.Key, out game);
             if (game != null && !game.isPaused)
                 return 1f;
             if (message.Content.Split(' ')[0].Equals(_wordToInit.ToLower()))
@@ -119,7 +120,8 @@ namespace Chatbot.Plugins.RPGPlugin
                     {
                         foreach (var i in expiredGames)
                         {
-                            _games.TryRemove(i.Key, out RPGGame game);
+                            RPGGame game;
+                            _games.TryRemove(i.Key, out game);
                         }
                         hasFreeSlot = true;
                     }
