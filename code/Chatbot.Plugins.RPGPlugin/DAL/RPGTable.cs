@@ -12,7 +12,7 @@ namespace Chatbot.Plugins.RPGPlugin.DAL
         {
 
         }
-        int id;
-        string data;
+        //int id;
+        //string data;
     }
 }

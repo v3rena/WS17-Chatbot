@@ -13,13 +13,13 @@ namespace Chatbot.Plugins.RPGPlugin
         private TimeSpan _timeToExpire = new TimeSpan(0, 5, 0);
 
         private string _wordToInit;
-        private string _apiKey;
+        //private string _apiKey;
 
         private ConcurrentDictionary<Guid, RPGGame> _games;
 
         public RPGPlugin()
         {
-            _apiKey = "b013336be8ae44ccb59fa486e6f7e93e";
+            //_apiKey = "b013336be8ae44ccb59fa486e6f7e93e";
             _wordToInit = "-rp";
             _games = new ConcurrentDictionary<Guid, RPGGame>();
         }
@@ -28,7 +28,9 @@ namespace Chatbot.Plugins.RPGPlugin
 
         public float CanHandle(Message message)
         {
+#pragma warning disable IDE0018 // Inlinevariablendeklaration
             RPGGame game;
+#pragma warning restore IDE0018 // Inlinevariablendeklaration
             _games.TryGetValue(message.SessionKey.Key, out game);
             if (game != null && !game.isPaused)
                 return 1f;
@@ -82,7 +84,9 @@ namespace Chatbot.Plugins.RPGPlugin
 
         private Message HandleTokens(SessionKey session, List<string> tokens)
         {
+#pragma warning disable IDE0018 // Inlinevariablendeklaration
             RPGGame newGame;
+#pragma warning restore IDE0018 // Inlinevariablendeklaration
             string message = "";
 
             if (_games.TryGetValue(session.Key, out newGame))
@@ -120,7 +124,9 @@ namespace Chatbot.Plugins.RPGPlugin
                     {
                         foreach (var i in expiredGames)
                         {
+#pragma warning disable IDE0018 // Inlinevariablendeklaration
                             RPGGame game;
+#pragma warning restore IDE0018 // Inlinevariablendeklaration
                             _games.TryRemove(i.Key, out game);
                         }
                         hasFreeSlot = true;
