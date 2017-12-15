@@ -22,8 +22,11 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
 
             if (showDetails)
             {
-                stringBuilder.Append($" (schwankt zwischen {weatherInformation.Main.MinTemperature}");
-                stringBuilder.Append($" und {weatherInformation.Main.MaxTemperature}°C");
+                if (weatherInformation.Main.MinTemperature != weatherInformation.Main.MaxTemperature)
+                {
+                    stringBuilder.Append($" (kann zwischen {weatherInformation.Main.MinTemperature}");
+                    stringBuilder.Append($" und {weatherInformation.Main.MaxTemperature}°C schwanken)");
+                }
 
             }
             return stringBuilder.Append(".").ToString();

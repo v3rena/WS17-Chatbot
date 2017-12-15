@@ -48,9 +48,8 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         private static HttpClient client;
 
-        #endregion
 
-        public string City
+        private string City
         {
             get
             {
@@ -58,14 +57,17 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
             set
             {
-                city = value.ToLower();
+                city = value?.ToLower();
             }
         }
+
+        #endregion
 
         public WeatherPlugin()
         {
             SetDefaultConfig();
 
+            //TODO: update library
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
             commands = new List<ICommand>();
@@ -96,7 +98,7 @@ namespace Chatbot.Plugins.WeatherPlugin
         public Message Handle(Message message)
         {
             //TODO use Textinterpreter instead of HelperMethod + use Textinterpreter in SetStates
-            HelperMethodReadCity(message);
+            City = TextInterpreterHelper.HelperMethodReadCity(message);
             SetCommands(message);
 
             try
@@ -123,41 +125,14 @@ namespace Chatbot.Plugins.WeatherPlugin
 
             if (content.Contains("temperatur") || content.Contains("warm") || content.Contains("kalt") || content.Contains("wie"))
                 commands.Add(new GetTemperatureCommand(content.Contains("max") || content.Contains("min")));
-            if (content.Contains("wetter") || content.Contains("wie") || content.Contains("schön") || content.Contains("wolke") || content.Contains("regen") ||
-                content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") || content.Contains("nebel"))
+            if (content.Contains("wetter") || content.Contains("wie") || content.Contains("schön") || content.Contains("wolke") ||
+                content.Contains("regen") || content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") ||
+                content.Contains("nebel"))
                 commands.Add(new GetWeatherDescriptionCommand());
             if (content.Contains("feucht") || content.Contains("humid") || content.Contains("nebel"))
                 commands.Add(new GetHumidityCommand());
             if (content.Contains("wind") || content.Contains("sturm") || content.Contains("böhe"))
                 commands.Add(new GetWindCommand());
-        }
-
-        private void HelperMethodReadCity(Message message)
-        {
-            var split = message.Content.Split(null); //splits by whitespace
-            for (int i = 0; i < split.Count(); i++)
-            {
-                if (split[i] == "in" && i + 1 < split.Count())
-                {
-                    if (split[i + 1].StartsWith("'"))
-                    {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int j = i + 1; j < split.Count(); j++)
-                        {
-                            stringBuilder.AppendFormat(split[j]);
-                            if (split[j].EndsWith("'"))
-                            {
-                                City = stringBuilder.ToString(1, stringBuilder.Length - 2);
-                                return;
-                            }
-                            stringBuilder.AppendFormat(" ");
-                        }
-                    }
-
-                    City = split[i + 1];
-                    return;
-                }
-            }
         }
 
         private WeatherInformation CallWeatherApi()
@@ -198,6 +173,8 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new ApplicationException();
         }
 
+        #region Configuration
+
         public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
             AddMissingValuesToConfiguration(configuration);
@@ -234,5 +211,7 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new InvalidArgumentException("Key not found.", e);
             }
         }
+
+        #endregion
     }
 }

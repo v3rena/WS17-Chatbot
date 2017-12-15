@@ -16,6 +16,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
                 new GetTemperatureCommand(true),
                 new GetWeatherDescriptionCommand(),
                 new GetHumidityCommand(),
+                new GetPressureCommand(),
                 new GetWindCommand()
             };
         }

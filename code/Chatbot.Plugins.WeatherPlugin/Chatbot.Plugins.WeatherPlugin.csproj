@@ -58,6 +58,7 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\WeatherInformation.cs" />
     <Compile Include="ResponseMessageCreator.cs" />
+    <Compile Include="TextInterpreterHelper.cs" />
     <Compile Include="WeatherPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

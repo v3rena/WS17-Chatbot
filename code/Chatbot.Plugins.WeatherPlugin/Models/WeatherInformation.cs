@@ -81,10 +81,10 @@ namespace Chatbot.Plugins.WeatherPlugin.Models
     public class WeatherInformationWind
     {
         [JsonProperty("speed")]
-        public float Speed { get; set; }
+        public double Speed { get; set; }
 
         [JsonProperty("deg")]
-        public int WindDirectionDegrees { get; set; }
+        public double WindDirectionDegrees { get; set; }
     }
     public class WeatherInformationClouds
     {
