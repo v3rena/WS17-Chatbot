@@ -3,6 +3,7 @@ using Chatbot.Common.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Commands;
 using Chatbot.Plugins.WeatherPlugin.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Models;
+using Microsoft.SqlServer.Management.Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -68,12 +69,10 @@ namespace Chatbot.Plugins.WeatherPlugin
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
             storedWeatherInformations = new Dictionary<string, WeatherInformation>();
             commands = new List<ICommand>();
-            client = new HttpClient();
         }
 
         private void SetDefaultConfig()
         {
-            //TODO save values in config file
             apiKey = "664f03abf48459c28bd6ddfea499f069";
             defaultCity = "Wien";
             language = "de";
@@ -201,24 +200,39 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
-            //TODO alternative way of life
-            //configuration = defaultConfig.Concat(configuration).ToDictionary(i => i.Key, i => i.Value);
-
-            defaultConfig.AsParallel().ForAll(element =>
-            {
-                if (!configuration.Keys.Any(i => i == element.Key))
-                    configuration.Add(element.Key, element.Value);
-            });
-
-            apiKey = configuration["ApiKey"];
-            defaultCity = configuration["DefaultCity"];
+            AddMissingValuesToConfiguration(configuration);
+            SetConfiguration(configuration);
 
             return configuration;
         }
 
         public void RefreshConfiguration(IDictionary<string, string> configuration)
         {
-            
+            SetConfiguration(configuration);
+        }
+
+        private void AddMissingValuesToConfiguration(IDictionary<string, string> configuration)
+        {
+            defaultConfig.AsParallel().ForAll(element =>
+            {
+                if (!configuration.ContainsKey(element.Key))
+                    configuration.Add(element.Key, element.Value);
+                else if (string.IsNullOrWhiteSpace(configuration[element.Key]))
+                    configuration[element.Key] = element.Value;
+            });
+        }
+
+        private void SetConfiguration(IDictionary<string, string> configuration)
+        {
+            try
+            {
+                apiKey = configuration["ApiKey"];
+                defaultCity = configuration["DefaultCity"];
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new InvalidArgumentException("Key not found.", e);
+            }
         }
     }
 }
