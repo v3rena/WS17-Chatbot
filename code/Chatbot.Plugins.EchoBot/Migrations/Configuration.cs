@@ -9,7 +9,7 @@ namespace Chatbot.Plugins.EchoBot.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Chatbot.Plugins.EchoBot.EchoBotContext context)

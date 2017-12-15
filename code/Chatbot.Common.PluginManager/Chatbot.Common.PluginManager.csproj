@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{15426C84-8DA5-4F58-8E68-47FC3674EC31}</ProjectGuid>
+    <ProjectGuid>{FFD171F5-6EF2-49AB-9687-ECB781D1917E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Chatbot.Common.PluginManager</RootNamespace>
@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\Chatbot.DataAccessLayer.Interfaces\Chatbot.DataAccessLayer.Interfaces.csproj">
       <Project>{004E2679-196B-4685-8E92-8FEC5A01FED9}</Project>
       <Name>Chatbot.DataAccessLayer.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chatbot.DataAccessLayer\Chatbot.DataAccessLayer.csproj">
+      <Project>{AC9F74A2-8AEF-4728-88B0-4FE15BEB1BCE}</Project>
+      <Name>Chatbot.DataAccessLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -199,18 +199,26 @@ namespace Chatbot.Plugins.WeatherPlugin
                 throw new ApplicationException();
         }
 
-        public IEnumerable<PluginConfiguration> EnsureDefaultConfiguration(IList<PluginConfiguration> configuration)
+        public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
+            //TODO alternative way of life
+            //configuration = defaultConfig.Concat(configuration).ToDictionary(i => i.Key, i => i.Value);
+
             defaultConfig.AsParallel().ForAll(element =>
             {
-                if (!configuration.Any(i => i.Key == element.Key))
-                    configuration.Add(new PluginConfiguration() { Name = Name, Key = element.Key, Value = element.Value });
+                if (!configuration.Keys.Any(i => i == element.Key))
+                    configuration.Add(element.Key, element.Value);
             });
 
-            apiKey = configuration.Single(i => i.Key == "ApiKey").Value;
-            defaultCity = configuration.Single(i => i.Key == "DefaultCity").Value;
+            apiKey = configuration["ApiKey"];
+            defaultCity = configuration["DefaultCity"];
 
             return configuration;
+        }
+
+        public void RefreshConfiguration(IDictionary<string, string> configuration)
+        {
+            
         }
     }
 }

@@ -21,7 +21,8 @@ $("#messageForm").submit(function (event) {
     var posting = $.ajax({
         url: url,
         type: "POST",
-        data: message,
+        data: JSON.stringify(message),
+        contentType: "application/json",
         dataType: "json",
         success: function (data) {
             addMessage(data, false, false);
@@ -53,8 +54,9 @@ function addMessage(message, error, me = null) {
         status = "";
     }
 
-    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\">" + message.Content + "</span>");
-    $("#messageContainer").scrollTop = $("#messageContainer").scrollHeight;
+    $("#messageContainer").append("<span class=\"message " + poster + " " + status + "\" style=\"white-space: pre-wrap;\">" + message.Content + "</span>");
+    var objDiv = $("#messageContainer")[0];
+    objDiv.scrollTop = objDiv.scrollHeight;
 }
 
 function addErrorMessage(errorMessage) {
@@ -71,8 +73,8 @@ function ensureSession() {
                 datatype: "json",
                 success: function (data) {
                     if (data !== "undefined" && data != null) {
-                        key = JSON.stringify(data);
-                        localStorage.setItem("sessionKey", key);
+                        key = data;
+                        localStorage.setItem("sessionKey", JSON.stringify(key));
                     } else {
                         addErrorMessage("Unable to start session", true);
                     }
@@ -82,7 +84,7 @@ function ensureSession() {
                 }
             })
         } else {
-            key = _sessionKey;
+            key = JSON.parse(_sessionKey);
         }
     } else {
         addErrorMessage("Sorry! No Web Storage support.", true);

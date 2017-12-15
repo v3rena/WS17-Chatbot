@@ -1,29 +1,38 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    min-height: 100vh;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 40px;
     position: absolute;
     top: 65px;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
-.row {
+.body-content > * {
+    flex-grow: 0;
+}
+
+#messageContainer {
     display: flex;
     flex-direction: column;
     padding: 0em 1em;
     margin-bottom: 2em;
     overflow: auto;
+}
+
+#messageContainer {
+    flex: 1 0 200px;
 }
 
 .messageFormContainer {
@@ -72,7 +81,7 @@
 }
 
 .message.other {
-    border: 2px solid #555555;
+    border: 2px solid #444444;
     background: linear-gradient(white, #eeeeee);
     box-shadow: 1px 2px 3px #BBBBBB;
     margin-right: auto;
@@ -84,7 +93,7 @@
     height: 0;
     border-top: 0.3em solid transparent;
     border-bottom: 0.3em solid transparent;
-    border-right: 0.3em solid #555555;
+    border-right: 0.3em solid #444444;
     position: absolute;
     bottom: 0.5em;
     left: calc(-0.3em - 2px);
@@ -106,4 +115,26 @@
 .message.info.error {
     background-color: #dc3545;
     color: white;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40px; /* Set the fixed height of the footer here */
+    line-height: 30px; /* Vertically center the text there */
+    /*background-color: #bbbbbb;*/
+    background: #bbbbbb; /* For browsers that do not support gradients */
+    /* Safari 5.1 to 6.0 */
+    background: -webkit-linear-gradient(white 5%, #bbbbbb 95%);
+    /* Opera 11.1 to 12.0 */
+    background: -o-linear-gradient(white 5%, #bbbbbb 95%);
+    /* Firefox 3.6 to 15 */
+    background: -moz-linear-gradient(white 5%, #bbbbbb 95%);
+    /* Standard syntax */
+    background: linear-gradient(white 5%, #bbbbbb 95%);
+}
+
+.footer p {
+    margin-top: 10px;
 }
