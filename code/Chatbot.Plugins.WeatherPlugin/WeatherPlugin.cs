@@ -9,10 +9,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Chatbot.Plugins.WeatherPlugin
 {
@@ -52,28 +56,14 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public WeatherPlugin()
         {
-            SetDefaultConfig();
+            ReadDefaultConfiguration();
+
             domain = "https://api.openweathermap.org";
 
             //TODO: update library
             stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken", "nebel" };
             cache = new Cache();
             commands = new List<ICommand>();
-        }
-
-        private void SetDefaultConfig()
-        {
-            //TODO read from config
-            apiKey = "664f03abf48459c28bd6ddfea499f069ASDF";
-            defaultCity = "Wien";
-            language = "de";
-
-            defaultConfig = new Dictionary<string, string>()
-            {
-                { "ApiKey", apiKey },
-                { "DefaultCity", defaultCity },
-                { "Language", language }
-            };
         }
 
         public float CanHandle(Message message)
@@ -201,6 +191,19 @@ namespace Chatbot.Plugins.WeatherPlugin
         }
 
         #region Configuration
+        private void ReadDefaultConfiguration()
+        {
+            defaultConfig = new Dictionary<string, string>();
+
+            string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string configFileName = Path.Combine(assemblyFolder, "Chatbot.Plugins.WeatherPlugin.dll.config");
+
+            XDocument config = XDocument.Load(configFileName);
+            XElement root = config.Element("configuration");
+            XElement appsettings = root.Element("appSettings");
+
+            appsettings.Elements().ToList().ForEach(e => defaultConfig.Add(e.Attribute("key").Value, e.Attribute("value").Value));
+        }
 
         public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
         {
@@ -232,6 +235,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             {
                 apiKey = configuration["ApiKey"];
                 defaultCity = configuration["DefaultCity"];
+                language = defaultConfig["Language"];
             }
             catch (KeyNotFoundException e)
             {

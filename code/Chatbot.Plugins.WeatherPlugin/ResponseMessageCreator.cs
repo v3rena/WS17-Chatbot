@@ -14,7 +14,7 @@ namespace Chatbot.Plugins.WeatherPlugin
     {
         public static Message Ok(List<ICommand> commands, WeatherInformation weatherInformation)
         {
-            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName}:");
+            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName}: ");
 
             commands.ForEach(rs => stringBuilder.AppendLine($"{rs.GetInformation(weatherInformation)}"));
 
@@ -23,12 +23,12 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public static Message CityNotFoundMessage(string city)
         {
-            return new Message($"Ich kann die Stadt '{city}' nicht finden!");
+            return new Message($"Mein Informant für Wetterdaten hat die Stadt '{city}' nicht gefunden!");
         }
 
         public static Message Unauthorized()
         {
-            return new Message($@"Ich habe auf diese Wetterdaten keinen Zugriff.");
+            return new Message($"Mir wurde der Zugriff auf die Wetterdaten verweigert.");
         }
 
         public static Message APIError()

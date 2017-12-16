@@ -13,7 +13,6 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
         public string GetInformation(WeatherInformation weatherInformation)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            //TODO check if works
             weatherInformation.Weather.ToList().ForEach(w => stringBuilder.Append($"{w.Description}, "));
             return stringBuilder.Remove(stringBuilder.Length - 2, 2).ToString();
         }
