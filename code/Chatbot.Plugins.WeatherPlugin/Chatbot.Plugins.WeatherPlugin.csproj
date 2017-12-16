@@ -49,12 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache.cs" />
+    <Compile Include="Commands\GetDefaultInformationCommand.cs" />
     <Compile Include="Commands\GetPressureCommand.cs" />
     <Compile Include="Commands\GetTemperatureCommand.cs" />
-    <Compile Include="Commands\GetWeatherDescriptionCommand.cs" />
+    <Compile Include="Commands\GetCloudinessCommand.cs" />
     <Compile Include="Commands\GetAllCommand.cs" />
     <Compile Include="Commands\GetHumidityCommand.cs" />
     <Compile Include="Commands\GetWindCommand.cs" />
+    <Compile Include="Exceptions\APIErrorException.cs" />
+    <Compile Include="Exceptions\APIUnauthorizedException.cs" />
+    <Compile Include="Exceptions\CityNotFoundException.cs" />
+    <Compile Include="Exceptions\UnknownErrorException.cs" />
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Models\WeatherInformation.cs" />
     <Compile Include="ResponseMessageCreator.cs" />

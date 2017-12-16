@@ -1,10 +1,12 @@
 ﻿using Chatbot.BusinessLayer.Models;
 using Chatbot.Common.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Commands;
+using Chatbot.Plugins.WeatherPlugin.Exceptions;
 using Chatbot.Plugins.WeatherPlugin.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Models;
 using Microsoft.SqlServer.Management.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,34 +22,18 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         #region Private Members
 
-        private static List<string> stringLibrary;
-        private IDictionary<string, WeatherInformation> storedWeatherInformations;
         private IDictionary<string, string> defaultConfig;
-        private bool CurrentWeatherinformationOfCityIsCached => City != null && storedWeatherInformations.ContainsKey(City) ? !WeatherinformationIsOutDated : false;
+        private static List<string> stringLibrary;
 
-        private bool WeatherinformationIsOutDated
-        {
-            get
-            {
-                WeatherInformation weatherInformation = storedWeatherInformations[City];
-                bool isOutdated = DateTime.Now.AddMinutes(-10) > weatherInformation.CreationDate;
-                if (isOutdated)
-                {
-                    storedWeatherInformations.Remove(City);
-                }
-                return isOutdated;
-            }
-        }
-
+        private Cache cache;
         private List<ICommand> commands;
-
+        private string domain;
         private string apiKey;
         private string defaultCity;
         private string city;
         private string language;
 
         private static HttpClient client;
-
 
         private string City
         {
@@ -57,7 +43,8 @@ namespace Chatbot.Plugins.WeatherPlugin
             }
             set
             {
-                city = value?.ToLower();
+                if (value != null)
+                    city = value.ToLower();
             }
         }
 
@@ -66,16 +53,18 @@ namespace Chatbot.Plugins.WeatherPlugin
         public WeatherPlugin()
         {
             SetDefaultConfig();
+            domain = "https://api.openweathermap.org";
 
             //TODO: update library
-            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken" };
-            storedWeatherInformations = new Dictionary<string, WeatherInformation>();
+            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken", "nebel" };
+            cache = new Cache();
             commands = new List<ICommand>();
         }
 
         private void SetDefaultConfig()
         {
-            apiKey = "664f03abf48459c28bd6ddfea499f069";
+            //TODO read from config
+            apiKey = "664f03abf48459c28bd6ddfea499f069ASDF";
             defaultCity = "Wien";
             language = "de";
 
@@ -103,18 +92,32 @@ namespace Chatbot.Plugins.WeatherPlugin
 
             try
             {
-                WeatherInformation result = !CurrentWeatherinformationOfCityIsCached ? CallWeatherApi() : storedWeatherInformations[City];
+                WeatherInformation result = cache.WeatherInformationIsCached(City) ? cache.Get(City) : CallWeatherApi();
                 return ResponseMessage.Ok(commands, result);
             }
-            catch (ApplicationException)
+            catch (CityNotFoundException)
             {
                 return ResponseMessage.CityNotFoundMessage(City);
+            }
+            catch (APIUnauthorizedException)
+            {
+                return ResponseMessage.Unauthorized();
+            }
+            catch (APIErrorException)
+            {
+                return ResponseMessage.APIError();
+            }
+            catch (UnknownErrorException)
+            {
+                return ResponseMessage.UnknownError();
             }
         }
 
         private void SetCommands(Message message)
         {
             commands.Clear();
+            commands.Add(new GetDefaultInformationCommand());
+
             string content = message.Content.ToLower();
 
             if (content.Contains("detail"))
@@ -128,7 +131,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             if (content.Contains("wetter") || content.Contains("wie") || content.Contains("schön") || content.Contains("wolke") ||
                 content.Contains("regen") || content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") ||
                 content.Contains("nebel"))
-                commands.Add(new GetWeatherDescriptionCommand());
+                commands.Add(new GetCloudinessCommand());
             if (content.Contains("feucht") || content.Contains("humid") || content.Contains("nebel"))
                 commands.Add(new GetHumidityCommand());
             if (content.Contains("wind") || content.Contains("sturm") || content.Contains("böhe"))
@@ -138,7 +141,7 @@ namespace Chatbot.Plugins.WeatherPlugin
         private WeatherInformation CallWeatherApi()
         {
             client = new HttpClient();
-            string url = $"https://api.openweathermap.org/data/2.5/weather?APPID={apiKey}&q={City}&units=metric&lang={language}";
+            string url = $"{domain}/data/2.5/weather?APPID={apiKey}&q={City}&units=metric&lang={language}";
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -147,7 +150,7 @@ namespace Chatbot.Plugins.WeatherPlugin
             {
                 // Get the weatherInformation
                 WeatherInformation weatherInformation = GetWeatherInformation(client.BaseAddress);
-                storedWeatherInformations.Add(City, weatherInformation);
+                cache.Add(City, weatherInformation);
                 return weatherInformation;
             }
             catch (ApplicationException)
@@ -169,8 +172,32 @@ namespace Chatbot.Plugins.WeatherPlugin
                 return JsonConvert.DeserializeObject<WeatherInformation>(jsonString);
             }
             else
-                //TODO differentiate if city not found or api cannot be accessed
-                throw new ApplicationException();
+            {
+                var errorResponse = GetErrorResponse(response.Content);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new CityNotFoundException(errorResponse.Item1, errorResponse.Item2);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new APIUnauthorizedException(errorResponse.Item1, errorResponse.Item2);
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    throw new APIErrorException(errorResponse.Item1, errorResponse.Item2);
+                }
+                else
+                {
+                    throw new UnknownErrorException(errorResponse.Item1, errorResponse.Item2);
+                }
+            }
+        }
+
+        private Tuple<int, string> GetErrorResponse(HttpContent content)
+        {
+            var json = content.ReadAsStringAsync().Result;
+            var JSONObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            return new Tuple<int, string>(int.Parse(JSONObj["cod"]), JSONObj["message"]);
         }
 
         #region Configuration

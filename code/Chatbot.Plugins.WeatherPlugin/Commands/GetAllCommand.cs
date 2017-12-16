@@ -14,7 +14,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
             commands = new List<ICommand>
             {
                 new GetTemperatureCommand(true),
-                new GetWeatherDescriptionCommand(),
+                new GetCloudinessCommand(),
                 new GetHumidityCommand(),
                 new GetPressureCommand(),
                 new GetWindCommand()
