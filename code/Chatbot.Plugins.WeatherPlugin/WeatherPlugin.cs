@@ -24,7 +24,7 @@ namespace Chatbot.Plugins.WeatherPlugin
         #region Private Members
 
         private IDictionary<string, string> defaultConfig;
-        private static List<string> stringLibrary;
+        private IDictionary<string, float> canHandleLibrary;
 
         private Cache cache;
         private List<ICommand> commands;
@@ -53,23 +53,30 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public WeatherPlugin()
         {
+            defaultConfig = new Dictionary<string, string>();
             ReadDefaultConfiguration();
-
             domain = "https://api.openweathermap.org";
-
-            //TODO: update library
-            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "regne", "schnee", "schnei", "sonne", "wolke",
-                "nebel", "kalt", "warm", "wind", "nass" };
+            InitLibrary();
             cache = new Cache();
             commands = new List<ICommand>();
         }
 
         public float CanHandle(Message message)
         {
-            if (stringLibrary.Any(s => message.Content.ToLower().Contains(s)))
-                return 1;
-            else
-                return 0;
+            string content = message.Content.ToLower();
+            float value = 0;
+
+            foreach (string element in canHandleLibrary.Keys.ToList())
+            {
+                if (content.Contains(element))
+                {
+                    value += canHandleLibrary[element];
+                    if (value >= 1)
+                        return 0.99f;
+                }
+            }
+
+            return value;
         }
 
         public Message Handle(Message message)
@@ -192,8 +199,6 @@ namespace Chatbot.Plugins.WeatherPlugin
         #region Configuration
         private void ReadDefaultConfiguration()
         {
-            defaultConfig = new Dictionary<string, string>();
-
             string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string configFileName = Path.Combine(assemblyFolder, "Chatbot.Plugins.WeatherPlugin.dll.config");
 
@@ -243,5 +248,25 @@ namespace Chatbot.Plugins.WeatherPlugin
         }
 
         #endregion
+        private void InitLibrary()
+        {
+            canHandleLibrary = new Dictionary<string, float>
+            {
+                { "wetter", 0.9f},
+                { "temperatur", 0.75f},
+                { "regen", 0.75f},
+                { "regne", 0.75f},
+                { "schnee", 0.5f},
+                { "schnei", 0.5f},
+                { "sonne", 0.5f},
+                { "sonnig", 0.5f},
+                { "wolke", 0.5f},
+                { "wind", 0.5f},
+                { "nebel", 0.4f},
+                { "kalt", 0.3f},
+                { "warm", 0.3f},
+                { "nass", 0.25f},
+            };
+        }
     }
 }
