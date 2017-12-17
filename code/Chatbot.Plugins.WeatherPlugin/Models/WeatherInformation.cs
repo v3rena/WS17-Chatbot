@@ -23,7 +23,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Models
         [JsonProperty("main")]
         public WeatherInformationMain Main { get; set; }
 
-        [JsonProperty("visibilty")]
+        [JsonProperty("visibility")]
         public long Visibilty { get; set; }
 
         [JsonProperty("wind")]
@@ -95,7 +95,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Models
     public class WeatherInformationDownfall
     {
         [JsonProperty("3h")]
-        public int Volumne { get; set; }
+        public int Volume { get; set; }
     }
 
     #endregion

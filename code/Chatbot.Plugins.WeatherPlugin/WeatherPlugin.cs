@@ -6,16 +6,13 @@ using Chatbot.Plugins.WeatherPlugin.Interfaces;
 using Chatbot.Plugins.WeatherPlugin.Models;
 using Microsoft.SqlServer.Management.Common;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 using System.Xml.Linq;
 
 namespace Chatbot.Plugins.WeatherPlugin
@@ -61,7 +58,8 @@ namespace Chatbot.Plugins.WeatherPlugin
             domain = "https://api.openweathermap.org";
 
             //TODO: update library
-            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "sonne", "wolken", "nebel" };
+            stringLibrary = new List<string> { "wetter", "temperatur", "regen", "regne", "schnee", "schnei", "sonne", "wolke",
+                "nebel", "kalt", "warm", "wind", "nass" };
             cache = new Cache();
             commands = new List<ICommand>();
         }
@@ -76,7 +74,7 @@ namespace Chatbot.Plugins.WeatherPlugin
 
         public Message Handle(Message message)
         {
-            //TODO use Textinterpreter instead of HelperMethod + use Textinterpreter in SetStates
+            //TODO use Textinterpreter instead of HelperMethod + use Textinterpreter in SetCommands
             City = TextInterpreterHelper.HelperMethodReadCity(message);
             SetCommands(message);
 
@@ -119,13 +117,18 @@ namespace Chatbot.Plugins.WeatherPlugin
             if (content.Contains("temperatur") || content.Contains("warm") || content.Contains("kalt") || content.Contains("wie"))
                 commands.Add(new GetTemperatureCommand(content.Contains("max") || content.Contains("min")));
             if (content.Contains("wetter") || content.Contains("wie") || content.Contains("schön") || content.Contains("wolke") ||
-                content.Contains("regen") || content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") ||
-                content.Contains("nebel"))
+                content.Contains("bewölk") || content.Contains("nebel"))
                 commands.Add(new GetCloudinessCommand());
+            if (content.Contains("regen") || content.Contains("regne") || content.Contains("schnee") || content.Contains("schnei") ||
+                content.Contains("niederschlag") || content.Contains("niesel") || content.Contains("nass"))
+                commands.Add(new GetDownfallCommand());
+            if (content.Contains("wind") || content.Contains("sturm") || content.Contains("böhe") || content.Contains("weht") || 
+                content.Contains("wehen"))
+                commands.Add(new GetWindCommand());
             if (content.Contains("feucht") || content.Contains("humid") || content.Contains("nebel"))
                 commands.Add(new GetHumidityCommand());
-            if (content.Contains("wind") || content.Contains("sturm") || content.Contains("böhe"))
-                commands.Add(new GetWindCommand());
+            if (content.Contains("druck"))
+                commands.Add(new GetPressureCommand());
         }
 
         private WeatherInformation CallWeatherApi()
@@ -142,10 +145,6 @@ namespace Chatbot.Plugins.WeatherPlugin
                 WeatherInformation weatherInformation = GetWeatherInformation(client.BaseAddress);
                 cache.Add(City, weatherInformation);
                 return weatherInformation;
-            }
-            catch (ApplicationException)
-            {
-                throw;
             }
             finally
             {

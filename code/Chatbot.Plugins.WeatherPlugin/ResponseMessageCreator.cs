@@ -14,7 +14,7 @@ namespace Chatbot.Plugins.WeatherPlugin
     {
         public static Message Ok(List<ICommand> commands, WeatherInformation weatherInformation)
         {
-            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName}: ");
+            StringBuilder stringBuilder = new StringBuilder($"Wetter in {weatherInformation.CityName} ({weatherInformation.Date}): ");
 
             commands.ForEach(rs => stringBuilder.AppendLine($"{rs.GetInformation(weatherInformation)}"));
 

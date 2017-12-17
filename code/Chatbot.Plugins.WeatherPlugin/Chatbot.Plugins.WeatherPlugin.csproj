@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Cache.cs" />
     <Compile Include="Commands\GetDefaultInformationCommand.cs" />
+    <Compile Include="Commands\GetDownfallCommand.cs" />
     <Compile Include="Commands\GetPressureCommand.cs" />
     <Compile Include="Commands\GetTemperatureCommand.cs" />
     <Compile Include="Commands\GetCloudinessCommand.cs" />
