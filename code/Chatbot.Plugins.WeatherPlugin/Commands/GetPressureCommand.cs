@@ -7,7 +7,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
     {
         public string GetInformation(WeatherInformation weatherInformation)
         {
-            return $"Luftdruck: {weatherInformation.Main.Pressure}hPa";
+            return $"Der Luftdruck beträgt {weatherInformation.Main.Pressure}hPa.";
         }
     }
 }

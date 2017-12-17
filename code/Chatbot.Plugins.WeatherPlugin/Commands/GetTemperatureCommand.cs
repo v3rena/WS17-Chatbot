@@ -18,15 +18,18 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
         public string GetInformation(WeatherInformation weatherInformation)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Temperatur: {weatherInformation.Main.Temperature}°C");
+            stringBuilder.Append($"Es hat aktuell {weatherInformation.Main.Temperature}°C");
 
             if (showDetails)
             {
-                stringBuilder.AppendLine($"TemperaturMin: {weatherInformation.Main.MinTemperature}°C");
-                stringBuilder.AppendLine($"TemperaturMax: {weatherInformation.Main.MaxTemperature}°C");
+                if (weatherInformation.Main.MinTemperature != weatherInformation.Main.MaxTemperature)
+                {
+                    stringBuilder.Append($" (kann zwischen {weatherInformation.Main.MinTemperature}");
+                    stringBuilder.Append($" und {weatherInformation.Main.MaxTemperature}°C schwanken)");
+                }
 
             }
-            return stringBuilder.ToString();
+            return stringBuilder.Append(".").ToString();
         }
     }
 }

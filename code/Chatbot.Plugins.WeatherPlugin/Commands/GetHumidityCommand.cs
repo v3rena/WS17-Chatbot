@@ -7,7 +7,7 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
     {
         public string GetInformation(WeatherInformation weatherInformation)
         {
-            return $"Luftfeuchtigkeit: {weatherInformation.Main.Humidity}%";
+            return $"Die Luftfeuchtigkeit beträgt {weatherInformation.Main.Humidity}%.";
         }
     }
 }

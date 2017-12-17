@@ -14,16 +14,23 @@ namespace Chatbot.Plugins.WeatherPlugin.Commands
             commands = new List<ICommand>
             {
                 new GetTemperatureCommand(true),
-                new GetWeatherDescriptionCommand(),
+                new GetCloudinessCommand(),
+                new GetDownfallCommand(),
+                new GetWindCommand(),
                 new GetHumidityCommand(),
-                new GetWindCommand()
+                new GetPressureCommand()
             };
         }
 
         public string GetInformation(WeatherInformation weatherInformation)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            commands.ForEach(c => stringBuilder.AppendLine(c.GetInformation(weatherInformation)));
+            commands.ForEach(command =>
+            {
+                string info = command.GetInformation(weatherInformation);
+                if (!string.IsNullOrWhiteSpace(info))
+                    stringBuilder.AppendLine(info);
+            });
             return stringBuilder.ToString();
         }
     }

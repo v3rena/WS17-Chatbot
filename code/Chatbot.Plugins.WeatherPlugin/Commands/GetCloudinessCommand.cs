@@ -8,14 +8,14 @@ using Chatbot.Plugins.WeatherPlugin.Models;
 
 namespace Chatbot.Plugins.WeatherPlugin.Commands
 {
-    class GetWeatherDescriptionCommand : ICommand
+    class GetCloudinessCommand : ICommand
     {
         public string GetInformation(WeatherInformation weatherInformation)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            weatherInformation.Weather.ToList().ForEach(w => stringBuilder.AppendLine($"\t\t{w.WeatherParameter}: {w.Description}"));
-            stringBuilder.Append($"Bewölknung: {weatherInformation.Clouds.CloudinessPercentage}%"); 
-            return $"{stringBuilder.ToString()}";
+            stringBuilder.Append($"Es ist zu {weatherInformation.Clouds.CloudinessPercentage}% bewölkt. ");
+            stringBuilder.Append($"Die Sichtweite beträgt {weatherInformation.Visibilty}m.");
+            return stringBuilder.ToString();
         }
     }
 }
