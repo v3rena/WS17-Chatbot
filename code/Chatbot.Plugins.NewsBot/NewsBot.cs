@@ -37,7 +37,6 @@ namespace Chatbot.Plugins.NewsBot
 
 		public IDictionary<string, string> EnsureDefaultConfiguration(IDictionary<string, string> configuration)
 		{
-			//TODO: Read Api key from config
 			return configuration;
         }
 
